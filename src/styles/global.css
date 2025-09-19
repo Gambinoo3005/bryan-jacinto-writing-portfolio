@@ -1,0 +1,155 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Tell Tailwind v4: apply `dark:` styles when `.dark` is on a parent */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, Arial, sans-serif;
+  --font-serif: "Source Serif 4", ui-serif, Georgia, serif;
+}
+
+html { font-family: var(--font-sans); }
+
+/* Long-form reading uses the serif; headings stay in sans */
+.prose { font-family: var(--font-serif); }
+.prose h1, .prose h2, .prose h3,
+.prose h4, .prose strong, .prose b,
+.prose blockquote,
+.prose code, .prose pre {
+  font-family: var(--font-sans);
+}
+
+
+/* === Minimal, theme-aware background (no dots/blobs) === */
+
+:root {
+  /* Light */
+  --bg-start: #fafafa;           /* top */
+  --bg-end:   #f2f5ff;           /* bottom */
+  --vignette: rgba(2, 6, 23, 0.06);
+  --sheen:    rgba(255, 255, 255, 0.35);
+}
+
+.dark {
+  /* Dark */
+  --bg-start: #0b1020;
+  --bg-end:   #090e18;
+  --vignette: rgba(0, 0, 0, 0.45);
+  --sheen:    rgba(255, 255, 255, 0.05);
+}
+
+/* Base vertical gradient */
+.bg-base {
+  background: linear-gradient(180deg, var(--bg-start), var(--bg-end));
+}
+
+/* Soft edge vignette (top & bottom) */
+.bg-vignette {
+  background:
+    radial-gradient(120% 100% at 50% -10%, transparent 58%, var(--vignette) 100%),
+    radial-gradient(100% 80% at 50% 110%, transparent 60%, var(--vignette) 100%);
+}
+
+/* Gentle diagonal sheen that drifts across the page */
+.bg-sheen {
+  background: linear-gradient(115deg, transparent 0%, var(--sheen) 40%, transparent 70%);
+  opacity: .6;                               /* keep it subtle */
+  transform: translate3d(-40%, 0, 0);        /* start left */
+  will-change: transform;
+  animation: sheen-drift 18s ease-in-out infinite alternate;
+}
+
+@keyframes sheen-drift {
+  0%   { transform: translate3d(-40%, 0, 0); }
+  100% { transform: translate3d(40%, 0, 0); }
+}
+
+/* Motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .bg-sheen { animation: none !important; opacity: 0; }
+}
+
+/* ===========================
+   Smooth light/dark transitions
+   =========================== */
+@media (prefers-reduced-motion: no-preference) {
+  /* Cross-fade core UI colors */
+  .theme-xfade,
+  .theme-xfade * {
+    transition:
+      background-color 520ms ease,
+      color 520ms ease,
+      border-color 520ms ease,
+      fill 520ms ease,
+      stroke 520ms ease,
+      box-shadow 520ms ease;
+  }
+
+  /* Ease gradients/vignette too */
+  .theme-xfade .bg-base,
+  .theme-xfade .bg-vignette {
+    transition: background 520ms ease;
+  }
+
+  /* Soft veil overlay to mask abrupt pops during the swap */
+  .theme-xfade::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    background: linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.02));
+    opacity: 0;
+    transition: opacity 520ms ease;
+  }
+
+  /* In dark mode, use a lighter veil so it doesn't over-darken */
+  .theme-xfade.dark::before {
+    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+  }
+
+  /* Activate veil during the crossfade */
+  .theme-xfade.theme-xfade--active::before {
+    opacity: .8; /* tweak between .5 and .9 per taste */
+  }
+}
+
+/* Reusable icon button (Tailwind v4 @utility) */
+@utility icon-btn {
+  @apply inline-flex items-center justify-center h-10 w-10 rounded-full
+         border border-zinc-300/80 dark:border-zinc-700/80
+         bg-white/60 dark:bg-zinc-900/60
+         text-zinc-700 dark:text-zinc-200
+         hover:bg-zinc-50 dark:hover:bg-zinc-800
+         shadow-sm ring-1 ring-black/5 dark:ring-white/10
+         transition;
+}
+
+
+
+
+/* Nav pill buttons (consistent height + centering) */
+@utility nav-link {
+  @apply inline-flex h-10 items-center justify-center px-3 rounded-full
+         text-[13px] font-semibold uppercase tracking-wider leading-none
+         text-zinc-800/90 dark:text-zinc-200/90
+         hover:text-[#0a5cff] dark:hover:text-[#86b7ff]
+         transition;
+}
+
+/* Active page state */
+@utility nav-link-active {
+  @apply text-[#0a5cff] dark:text-[#86b7ff]
+         bg-zinc-100/70 dark:bg-zinc-800/60;
+}
+
+/* ---------- Layout stability + gutter color (RIGHT edge only) ---------- */
+html {
+  overflow-y: scroll;        /* always reserve vertical scrollbar area */
+  scrollbar-gutter: stable;  /* right edge only — no left strip */
+  background-color: var(--bg-end); /* paints the gutter on some UAs */
+}
+
+/* Make sure the page itself always fills the viewport height */
+body { min-height: 100svh; }
