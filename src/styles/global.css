@@ -5,7 +5,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, Arial, sans-serif;
+  --font-sans: "Inter", "Plus Jakarta Sans", ui-sans-serif, system-ui, Arial, sans-serif;
   --font-serif: "Source Serif 4", ui-serif, Georgia, serif;
 }
 
@@ -20,23 +20,43 @@ html { font-family: var(--font-sans); }
   font-family: var(--font-sans);
 }
 
-
-/* === Minimal, theme-aware background (no dots/blobs) === */
-
+/* Palette tokens */
 :root {
-  /* Light */
-  --bg-start: #fafafa;           /* top */
-  --bg-end:   #f2f5ff;           /* bottom */
-  --vignette: rgba(2, 6, 23, 0.06);
-  --sheen:    rgba(255, 255, 255, 0.35);
+  --color-bg: #F7F9FC;
+  --color-surface: #FFFFFF;
+  --color-text: #0C1222;
+  --color-muted: #5B6472;
+  --color-border: #D9E0EA;
+  --color-link: #0A5CFF;
+  --color-accent: #0E3357;
+  --header-from: #EAF2FF;
+  --header-to: #E6EEFC;
+
+  --bg-start: #EAF2FF;
+  --bg-end: #F7F9FC;
+  --vignette: rgba(14, 51, 87, 0.08);
+  --sheen: rgba(255, 255, 255, 0.35);
+  --surface-glass: color-mix(in srgb, var(--color-surface) 78%, transparent);
+  --surface-glass-strong: color-mix(in srgb, var(--color-surface) 88%, transparent);
 }
 
 .dark {
-  /* Dark */
-  --bg-start: #0b1020;
-  --bg-end:   #090e18;
-  --vignette: rgba(0, 0, 0, 0.45);
-  --sheen:    rgba(255, 255, 255, 0.05);
+  --color-bg: #090E18;
+  --color-surface: #0C1220;
+  --color-text: #E8EDF7;
+  --color-muted: #A6ADBB;
+  --color-border: #2B3140;
+  --color-link: #86B7FF;
+  --color-accent: #0E3357;
+  --header-from: #0A2540;
+  --header-to: #071A2E;
+
+  --bg-start: #0A2540;
+  --bg-end: #090E18;
+  --vignette: rgba(7, 26, 46, 0.55);
+  --sheen: rgba(134, 183, 255, 0.08);
+  --surface-glass: color-mix(in srgb, var(--color-surface) 62%, transparent);
+  --surface-glass-strong: color-mix(in srgb, var(--color-surface) 74%, transparent);
 }
 
 /* Base vertical gradient */
@@ -68,6 +88,44 @@ html { font-family: var(--font-sans); }
 /* Motion safety */
 @media (prefers-reduced-motion: reduce) {
   .bg-sheen { animation: none !important; opacity: 0; }
+}
+
+body {
+  min-height: 100svh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+a {
+  color: var(--color-link);
+  transition: color 180ms ease;
+}
+
+a:hover {
+  color: color-mix(in srgb, var(--color-link) 78%, var(--color-accent) 22%);
+}
+
+.dark a:hover {
+  color: color-mix(in srgb, var(--color-link) 86%, white 14%);
+}
+
+.prose {
+  --tw-prose-body: var(--color-text);
+  --tw-prose-headings: var(--color-text);
+  --tw-prose-links: var(--color-link);
+  --tw-prose-bold: var(--color-text);
+  --tw-prose-counters: var(--color-muted);
+  --tw-prose-bullets: var(--color-muted);
+  --tw-prose-hr: var(--color-border);
+  --tw-prose-quotes: var(--color-text);
+  --tw-prose-quote-borders: var(--color-border);
+  --tw-prose-captions: var(--color-muted);
+  --tw-prose-code: var(--color-accent);
+  color: var(--color-text);
+}
+
+.dark .prose {
+  --tw-prose-code: var(--color-link);
 }
 
 /* ===========================
@@ -115,39 +173,43 @@ html { font-family: var(--font-sans); }
   }
 }
 
-/* Reusable icon button (Tailwind v4 @utility) */
+/* Reusable icon button */
 @utility icon-btn {
-  @apply inline-flex items-center justify-center h-10 w-10 rounded-full
-         border border-zinc-300/80 dark:border-zinc-700/80
-         bg-white/60 dark:bg-zinc-900/60
-         text-zinc-700 dark:text-zinc-200
-         hover:bg-zinc-50 dark:hover:bg-zinc-800
-         shadow-sm ring-1 ring-black/5 dark:ring-white/10
-         transition;
+  @apply inline-flex items-center justify-center h-10 w-10 rounded-full transition;
+  background-color: var(--surface-glass);
+  border: 1px solid color-mix(in srgb, var(--color-border) 92%, transparent);
+  color: color-mix(in srgb, var(--color-text) 92%, transparent);
+  box-shadow: 0 10px 30px rgba(14, 51, 87, 0.08);
 }
 
+.icon-btn:hover {
+  background-color: var(--surface-glass-strong);
+  border-color: var(--color-border);
+  color: var(--color-text);
+  box-shadow: 0 12px 36px rgba(14, 51, 87, 0.12);
+}
 
-
-
-/* Nav pill buttons (consistent height + centering) */
+/* Nav pill buttons */
 @utility nav-link {
-  @apply inline-flex h-10 items-center justify-center px-3 rounded-full
-         text-[13px] font-semibold uppercase tracking-wider leading-none
-         text-zinc-800/90 dark:text-zinc-200/90
-         hover:text-[#0a5cff] dark:hover:text-[#86b7ff]
-         transition;
+  @apply inline-flex h-10 items-center justify-center px-3 rounded-full text-[13px] font-semibold uppercase tracking-wider leading-none transition;
+  color: color-mix(in srgb, var(--color-text) 88%, transparent);
+}
+
+.nav-link:hover {
+  color: var(--color-link);
 }
 
 /* Active page state */
 @utility nav-link-active {
-  @apply text-[#0a5cff] dark:text-[#86b7ff]
-         bg-zinc-100/70 dark:bg-zinc-800/60;
+  color: var(--color-link);
+  background-color: color-mix(in srgb, var(--color-surface) 86%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-border) 90%, transparent);
 }
 
 /* ---------- Layout stability + gutter color (RIGHT edge only) ---------- */
 html {
   overflow-y: scroll;        /* always reserve vertical scrollbar area */
-  scrollbar-gutter: stable;  /* right edge only — no left strip */
+  scrollbar-gutter: stable;  /* right edge only - no left strip */
   background-color: var(--bg-end); /* paints the gutter on some UAs */
 }
 

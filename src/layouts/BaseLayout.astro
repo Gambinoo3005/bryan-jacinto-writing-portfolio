@@ -10,7 +10,7 @@ interface Props {
   ogImage?: string;
 }
 const {
-  title = "Bryan Jacinto — Copywriter & SEO",
+  title = "Bryan Jacinto - Copywriter & SEO",
   description = "UX & SEO writing portfolio.",
   ogImage = "/og/default.png",
 } = Astro.props;
@@ -32,11 +32,11 @@ const url = Astro.url?.href ?? "";
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- Fonts: Plus Jakarta Sans (variable) + Source Serif 4 (variable) -->
+    <!-- Fonts: Inter (variable) + Source Serif 4 (variable) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:opsz,wght@14..32,300..800&family=Source+Serif+4:opsz,wght@8..60,300..800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=Source+Serif+4:opsz,wght@8..60,300..800&display=swap"
       rel="stylesheet"
     />
 
@@ -54,12 +54,12 @@ const url = Astro.url?.href ?? "";
   </head>
 
   <!-- Normal document flow; viewport scroll bar stays as-is -->
-  <body class="bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 antialiased min-h-svh flex flex-col">
+  <body class="antialiased min-h-svh flex flex-col theme-xfade">
     <!-- Site-wide layered background (z-0) -->
     <Background />
 
     <!-- Only the header is sticky -->
-    <div class="sticky top-0 z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur">
+    <div class="sticky top-0 z-50 backdrop-blur bg-[var(--surface-glass-strong)]">
       <Header />
     </div>
 
@@ -74,3 +74,4 @@ const url = Astro.url?.href ?? "";
     </div>
   </body>
 </html>
+

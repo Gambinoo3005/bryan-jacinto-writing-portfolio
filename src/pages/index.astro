@@ -10,17 +10,17 @@ const roles = [
 ---
 
 <BaseLayout
-  title="Bryan Jacinto — Copy & SEO"
+  title="Bryan Jacinto - Copy & SEO"
   description="Copywriting, editing, B2B content, and SEO-focused writing."
 >
-  <section class="min-h-[70vh] grid place-items-center py-16">
+  <section class="min-h-[70vh] grid place-items-center py-16 text-[var(--color-text)]">
     <div class="mx-auto max-w-3xl px-5 text-center">
       <!-- Name (subtle neutral gradient) -->
       <h1 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight">
         <span
           class="text-transparent bg-clip-text bg-gradient-to-r
-                 from-zinc-800 to-zinc-600
-                 dark:from-zinc-100 dark:to-zinc-300"
+                 from-[#0E3357] to-[#0A5CFF]
+                 dark:from-[#86B7FF] dark:to-[#E8EDF7]"
         >
           Bryan Jacinto
         </span>
@@ -33,10 +33,10 @@ const roles = [
             class="inline-flex items-center gap-2 rounded-md
                    px-3.5 py-1.5
                    text-[12.5px] sm:text-[13px] font-medium tracking-tight
-                   text-zinc-700 dark:text-zinc-200
-                   bg-white/70 dark:bg-zinc-900/60
-                   border border-zinc-200/80 dark:border-zinc-800
-                   ring-1 ring-black/5 dark:ring-white/5
+                   text-[var(--color-text)]
+                   bg-[var(--surface-glass)]
+                   border border-[var(--color-border)]
+                   ring-1 ring-[#0E335733] dark:ring-[#86B7FF2D]
                    shadow-sm hover:shadow transition
                    hover:-translate-y-0.5"
           >
@@ -47,8 +47,8 @@ const roles = [
       </ul>
 
       <!-- Compact blurb -->
-      <p class="mt-5 text-[15px] sm:text-base md:text-[17px] leading-relaxed text-zinc-600 dark:text-zinc-300 mx-auto max-w-2xl">
-        I’m a copywriter with 7 years of experience serving global clients. I focus on clarity and search—SEO articles, blog posts, landing pages, and B2B/B2C marketing content. Flexible voice, quick to adapt. Currently freelancing and open to full-time roles.
+      <p class="mt-5 text-[15px] sm:text-base md:text-[17px] leading-relaxed text-[var(--color-muted)] mx-auto max-w-2xl">
+        I'm a copywriter with 7 years of experience serving global clients. I focus on clarity and search-SEO articles, blog posts, landing pages, and B2B/B2C marketing content. Flexible voice, quick to adapt. Currently freelancing and open to full-time roles.
       </p>
 
       <!-- CTAs -->
@@ -61,7 +61,7 @@ const roles = [
         </a>
         <a
           href="/contact"
-          class="inline-flex h-11 items-center justify-center rounded-full px-5 text-sm font-semibold border border-zinc-300/80 dark:border-zinc-700/80 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition"
+          class="inline-flex h-11 items-center justify-center rounded-full px-5 text-sm font-semibold border border-[var(--color-border)] hover:bg-[var(--surface-glass)] transition"
         >
           Contact
         </a>
@@ -70,7 +70,7 @@ const roles = [
       <!-- Subtle scroll link to "My Experiences" (no layout changes elsewhere) -->
       <a
         href="#my-experiences"
-        class="mt-9 inline-flex items-center justify-center gap-2 text-sm text-zinc-600 hover:text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-300"
+        class="mt-9 inline-flex items-center justify-center gap-2 text-sm text-[var(--color-muted)] hover:text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-border)]"
         aria-label="View my experience"
       >
         <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -83,29 +83,29 @@ const roles = [
   </section>
 
   <!-- Experience placeholder target (only addition) -->
-  <section id="my-experiences" class="scroll-mt-28 py-16">
+  <section id="my-experiences" class="scroll-mt-28 py-16 text-[var(--color-text)]">
     <div class="mx-auto max-w-3xl px-5">
       <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Experience</h2>
-      <p class="mt-2 opacity-80">
-        Temporary placeholder content — replace with your real timeline when ready.
+      <p class="mt-2 text-[var(--color-muted)]">
+        Temporary placeholder content - replace with your real timeline when ready.
       </p>
 
       <!-- Simple placeholder list -->
       <ul class="mt-6 space-y-4 text-sm">
         <li>
-          <strong>Role Title — Company</strong>
-          <div class="text-zinc-500">2024 — Present · Location</div>
-          <div class="mt-1">One–two lines describing impact and scope.</div>
+          <strong>Role Title - Company</strong>
+          <div class="text-[var(--color-muted)]">2024 - Present - Location</div>
+          <div class="mt-1 text-[var(--color-muted)] opacity-90">One-two lines describing impact and scope.</div>
         </li>
         <li>
-          <strong>Role Title — Company</strong>
-          <div class="text-zinc-500">2022 — 2024 · Location</div>
-          <div class="mt-1">One–two lines describing impact and scope.</div>
+          <strong>Role Title - Company</strong>
+          <div class="text-[var(--color-muted)]">2022 - 2024 - Location</div>
+          <div class="mt-1 text-[var(--color-muted)] opacity-90">One-two lines describing impact and scope.</div>
         </li>
         <li>
-          <strong>Role Title — Company</strong>
-          <div class="text-zinc-500">2018 — 2022 · Location</div>
-          <div class="mt-1">One–two lines describing impact and scope.</div>
+          <strong>Role Title - Company</strong>
+          <div class="text-[var(--color-muted)]">2018 - 2022 - Location</div>
+          <div class="mt-1 text-[var(--color-muted)] opacity-90">One-two lines describing impact and scope.</div>
         </li>
       </ul>
     </div>
@@ -116,3 +116,4 @@ const roles = [
     html { scroll-behavior: smooth; }
   </style>
 </BaseLayout>
+

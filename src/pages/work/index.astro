@@ -4,19 +4,19 @@ import { getCollection } from "astro:content";
 const items = (await getCollection("work", ({ data }) => !data.draft))
   .sort((a, b) => +b.data.pubDate - +a.data.pubDate);
 ---
-<BaseLayout title="Work — Case Studies" description="Selected client projects and outcomes.">
-  <section class="mx-auto max-w-6xl py-12">
+<BaseLayout title="Work - Case Studies" description="Selected client projects and outcomes.">
+  <section class="mx-auto max-w-6xl py-12 text-[var(--color-text)]">
     <h1 class="text-3xl font-bold mb-6">Case Studies</h1>
     <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((it) => (
-        <li class="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-5 hover:shadow-sm">
+        <li class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm transition hover:shadow-md">
           <a href={`/work/${it.slug}`} class="block">
             <h2 class="font-semibold">{it.data.title}</h2>
-            <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-300">{it.data.summary}</p>
+            <p class="mt-1 text-sm text-[var(--color-muted)]">{it.data.summary}</p>
             {it.data.results && <p class="mt-2 text-xs font-medium text-emerald-600">{it.data.results}</p>}
             <div class="mt-3 flex flex-wrap gap-2">
               {it.data.tags?.slice(0, 3).map((t) => (
-                <span class="text-xs rounded-full border px-2 py-0.5">{t}</span>
+                <span class="text-xs rounded-full border border-[var(--color-border)] px-2 py-0.5 text-[var(--color-muted)]">{t}</span>
               ))}
             </div>
           </a>
@@ -25,3 +25,4 @@ const items = (await getCollection("work", ({ data }) => !data.draft))
     </ul>
   </section>
 </BaseLayout>
+

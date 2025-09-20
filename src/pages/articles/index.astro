@@ -5,15 +5,15 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft))
   .sort((a, b) => +b.data.pubDate - +a.data.pubDate);
 ---
 <BaseLayout title="Articles" description="Notes on UX writing, SEO, and content design.">
-  <section class="mx-auto max-w-6xl py-12">
+  <section class="mx-auto max-w-6xl py-12 text-[var(--color-text)]">
     <h1 class="text-3xl font-bold mb-6">Articles</h1>
     <ul class="space-y-5">
       {posts.map((p) => (
-        <li class="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-5 hover:shadow-sm">
+        <li class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm transition hover:shadow-md">
           <a href={`/articles/${p.slug}`} class="block">
             <h2 class="font-semibold">{p.data.title}</h2>
-            <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-300">{p.data.description}</p>
-            <time class="mt-2 block text-xs text-zinc-500" datetime={p.data.pubDate.toISOString()}>
+            <p class="mt-1 text-sm text-[var(--color-muted)]">{p.data.description}</p>
+            <time class="mt-2 block text-xs text-[var(--color-muted)]" datetime={p.data.pubDate.toISOString()}>
               {p.data.pubDate.toDateString()}
             </time>
           </a>
@@ -22,3 +22,4 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft))
     </ul>
   </section>
 </BaseLayout>
+
