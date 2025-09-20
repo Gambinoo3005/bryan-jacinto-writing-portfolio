@@ -5,6 +5,9 @@ export interface Props {
     id: string;
     title: string;
     description: string;
+    company?: string;
+    period?: string;
+    location?: string;
     image?: string;
     link?: string;
   }>;
@@ -66,10 +69,21 @@ if (!cards || cards.length === 0) {
               </div>
             )}
             <div class="card-body">
-              <h3 class="card-title">{card.title}</h3>
+              <div class="card-header">
+                <h3 class="card-title">{card.title}</h3>
+                {card.company && (
+                  <div class="card-meta">
+                    <span class="card-company">{card.company}</span>
+                    {card.period && <span class="card-period">{card.period}</span>}
+                    {card.location && <span class="card-location">{card.location}</span>}
+                  </div>
+                )}
+              </div>
               <p class="card-description">{card.description}</p>
-              {card.link && (
-                <a href={card.link} class="card-link">Learn more</a>
+              {index === 0 && cards.length > 1 && (
+                <div class="card-stack-indicator">
+                  <span class="stack-count">{cards.length} experiences</span>
+                </div>
               )}
             </div>
           </div>
@@ -199,7 +213,7 @@ if (!cards || cards.length === 0) {
         const distance = index - this.currentIndex;
         
         // Remove all classes first
-        cardElement.classList.remove('card-active', 'card-stacked', 'card-hidden');
+        cardElement.classList.remove('card-active', 'card-stacked', 'card-hidden', 'card-hidden-text');
         
         // Smoother staggered delay
         const delay = Math.abs(distance) * 25; // Reduced delay for smoother feel
@@ -212,23 +226,23 @@ if (!cards || cards.length === 0) {
           cardElement.style.opacity = '1';
           cardElement.style.zIndex = '100';
         } else if (distance > 0) {
-          // Future cards (right side, tilted)
-          cardElement.classList.add('card-stacked');
+          // Future cards (right side, tilted) - hide text content
+          cardElement.classList.add('card-stacked', 'card-hidden-text');
           const offset = distance * this.getStackShift();
-          const scale = Math.max(0.88, 1 - (distance * this.getStackScale())); // Better scaling
+          const scale = Math.max(0.92, 1 - (distance * this.getStackScale())); // Less aggressive scaling
           const rotation = this.getEnterRotation() * (1 - distance * 0.08); // Smoother rotation
-          const opacity = Math.max(0.25, this.getEnterOpacity() - (distance * 0.12)); // Better opacity
+          const opacity = Math.max(0.4, this.getEnterOpacity() - (distance * 0.08)); // Better opacity
           
           cardElement.style.transitionDelay = `${delay}ms`;
           cardElement.style.transform = `translateX(calc(-50% + ${offset}px)) scale(${scale}) rotate(${rotation}deg)`;
           cardElement.style.opacity = opacity.toString();
           cardElement.style.zIndex = (50 - distance).toString();
         } else {
-          // Past cards (left side, stacked)
-          cardElement.classList.add('card-stacked');
+          // Past cards (left side, stacked) - hide text content
+          cardElement.classList.add('card-stacked', 'card-hidden-text');
           const offset = distance * this.getStackShift();
-          const scale = Math.max(0.88, 1 - (Math.abs(distance) * this.getStackScale())); // Better scaling
-          const opacity = Math.max(0.25, 0.65 - (Math.abs(distance) * 0.12)); // Better opacity
+          const scale = Math.max(0.92, 1 - (Math.abs(distance) * this.getStackScale())); // Less aggressive scaling
+          const opacity = Math.max(0.4, 0.7 - (Math.abs(distance) * 0.08)); // Better opacity
           
           cardElement.style.transitionDelay = `${delay}ms`;
           cardElement.style.transform = `translateX(calc(-50% + ${offset}px)) scale(${scale}) rotate(0deg)`;
@@ -362,9 +376,13 @@ if (!cards || cards.length === 0) {
     touch-action: pan-y; /* Allow vertical scrolling but handle horizontal swipes */
     margin: 0 auto;
     max-width: calc(100vw - 8rem);
-    overflow: visible;
+    overflow: visible; /* Allow cards to extend beyond deck for stacking effect */
     isolation: isolate;
     z-index: 10;
+    /* Ensure proper stacking context */
+    transform-style: preserve-3d;
+    /* Ensure proper rendering of child elements */
+    contain: none;
   }
 
   .card {
@@ -379,7 +397,11 @@ if (!cards || cards.length === 0) {
     cursor: pointer;
     will-change: transform, opacity;
     isolation: isolate;
-    contain: layout style paint;
+    /* Removed contain property to fix edge rendering issues */
+    /* Improve text rendering during transforms */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   .card-content {
@@ -388,7 +410,7 @@ if (!cards || cards.length === 0) {
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: 16px;
-    overflow: hidden;
+    overflow: hidden; /* Keep hidden to maintain card boundaries */
     box-shadow: var(--shadow-stacked);
     transition: box-shadow 800ms cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
@@ -397,19 +419,66 @@ if (!cards || cards.length === 0) {
     isolation: isolate;
     position: relative;
     z-index: 1;
+    /* Ensure proper border rendering */
+    box-sizing: border-box;
+    /* Add subtle outline to ensure edges are visible */
+    outline: 1px solid transparent;
+    outline-offset: -1px;
   }
 
   .card-active .card-content {
     box-shadow: var(--shadow-active);
   }
 
+  /* Ensure card borders are always visible with pseudo-element */
+  .card-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Hide all text content on stacked cards while keeping card structure visible */
+  .card-hidden-text .card-body {
+    opacity: 0;
+    transition: opacity 400ms ease;
+  }
+
+  .card-active .card-body {
+    opacity: 1;
+    transition: opacity 400ms ease;
+  }
+
+  /* Ensure card structure remains visible even when text is hidden */
+  .card-hidden-text .card-content {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    /* Add subtle visual depth for stacked cards */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
   .card:hover {
-    transform: translateX(-50%) scale(1.02) !important;
-    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transform: translateX(-50%) translateY(-2px) !important;
+    transition: transform 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 200ms ease !important;
+  }
+
+  .card:hover .card-content {
+    box-shadow: 0 25px 50px rgba(14, 51, 87, 0.2) !important;
   }
 
   .card-active:hover {
-    transform: translateX(-50%) scale(1.05) !important;
+    transform: translateX(-50%) translateY(-3px) !important;
+    transition: transform 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 200ms ease !important;
+  }
+
+  .card-active:hover .card-content {
+    box-shadow: 0 30px 60px rgba(14, 51, 87, 0.25) !important;
   }
 
   .card-image {
@@ -437,35 +506,101 @@ if (!cards || cards.length === 0) {
     flex-direction: column;
     justify-content: space-between;
     position: relative;
-    z-index: 2;
+    z-index: 2; /* Above the pseudo-element border */
     background-color: var(--color-surface);
+    /* Ensure content fits within card boundaries */
+    overflow: hidden;
+    box-sizing: border-box;
+    /* Improve text rendering during hover transforms */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    backface-visibility: hidden;
+    transform: translateZ(0); /* Force hardware acceleration */
+  }
+
+  .card-header {
+    margin-bottom: 0.75rem;
   }
 
   .card-title {
-    font-size: 1.25rem;
+    font-size: 1.75rem;
     font-weight: 700;
     color: var(--color-heading);
-    margin: 0 0 0.75rem 0;
+    margin: 0 0 1rem 0;
     line-height: 1.3;
+    /* Prevent text blurriness during hover */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.25rem;
+  }
+
+  .card-company {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-link);
+    background-color: var(--surface-glass);
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--color-border);
+  }
+
+  .card-period {
+    font-size: 1rem;
+    color: var(--color-muted);
+    font-weight: 500;
+  }
+
+  .card-location {
+    font-size: 1rem;
+    color: var(--color-muted);
+    font-weight: 500;
   }
 
   .card-description {
+    font-size: 1.125rem;
     color: var(--color-muted);
-    line-height: 1.5;
-    margin: 0 0 1rem 0;
+    line-height: 1.6;
+    margin: 0 0 1.5rem 0;
     flex: 1;
+    /* Prevent text blurriness during hover */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
-  .card-link {
-    color: var(--color-link);
-    font-weight: 600;
-    text-decoration: none;
+
+  .card-stack-indicator {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: var(--surface-glass);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-muted);
+    backdrop-filter: blur(8px);
+  }
+
+  .stack-count {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .stack-count::before {
+    content: "📚";
     font-size: 0.875rem;
-    transition: color var(--transition-duration) ease;
-  }
-
-  .card-link:hover {
-    color: color-mix(in srgb, var(--color-link) 78%, var(--color-accent) 22%);
   }
 
   /* Responsive adjustments */
@@ -503,7 +638,21 @@ if (!cards || cards.length === 0) {
     }
 
     .card-title {
-      font-size: 1.125rem;
+      font-size: 1.625rem;
+    }
+
+    .card-company {
+      font-size: 1rem;
+      padding: 0.4rem 0.8rem;
+    }
+
+    .card-period,
+    .card-location {
+      font-size: 0.95rem;
+    }
+
+    .card-description {
+      font-size: 1.05rem;
     }
 
     .nav-button {
@@ -532,12 +681,22 @@ if (!cards || cards.length === 0) {
     }
 
     .card-title {
-      font-size: 1rem;
+      font-size: 1.5rem;
       margin-bottom: 0.5rem;
     }
 
+    .card-company {
+      font-size: 0.95rem;
+      padding: 0.35rem 0.7rem;
+    }
+
+    .card-period,
+    .card-location {
+      font-size: 0.9rem;
+    }
+
     .card-description {
-      font-size: 0.875rem;
+      font-size: 1rem;
       margin-bottom: 0.75rem;
     }
 
@@ -563,15 +722,21 @@ if (!cards || cards.length === 0) {
     }
 
     .card-title {
+      font-size: 1.375rem;
+    }
+
+    .card-company {
       font-size: 0.9rem;
+      padding: 0.3rem 0.6rem;
+    }
+
+    .card-period,
+    .card-location {
+      font-size: 0.85rem;
     }
 
     .card-description {
-      font-size: 0.8rem;
-    }
-
-    .card-link {
-      font-size: 0.8rem;
+      font-size: 0.95rem;
     }
   }
 

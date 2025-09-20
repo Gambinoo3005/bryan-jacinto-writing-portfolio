@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CardStack from "../components/CardStack.astro";
+import ClientTestimonialCarousel from "../components/ClientTestimonialCarousel.astro";
+import WritingProcessTimeline from "../components/WritingProcessTimeline.astro";
 
 const roles = [
   "Copywriter",
@@ -11,28 +13,183 @@ const roles = [
 
 const experienceCards = [
   {
-    id: "senior-copywriter",
-    title: "Senior Copywriter",
-    description: "Led content strategy for B2B SaaS companies, increasing conversion rates by 40% through targeted messaging and A/B testing.",
-    link: "/work/senior-copywriter"
+    id: "web-copywriter-junior-manager",
+    title: "Web Copywriter / Junior Manager",
+    company: "GrumpyHare",
+    period: "March 2025 - Present",
+    location: "Connecticut",
+    description: "Wrote and optimized SEO blog posts, landing pages, and web copy for 70+ real estate clients, boosting organic traffic and engagement across WordPress-hosted sites. Led a team of six writers during management gap, handling task delegation and quality control.",
+    link: "/work/grumpyhare"
   },
   {
-    id: "content-strategist",
-    title: "Content Strategist",
-    description: "Developed comprehensive content calendars and SEO strategies for e-commerce brands, resulting in 60% organic traffic growth.",
-    link: "/work/content-strategist"
+    id: "content-writer-ai-trainer",
+    title: "Content Writer / AI Trainer",
+    company: "Monok",
+    period: "February 2025 - Present",
+    location: "Sweden",
+    description: "Optimized AI-generated drafts to meet client requirements and maintain quality standards. Trained AI models through iterative writing and editing, enhancing their language understanding and overall performance.",
+    link: "/work/monok"
   },
   {
-    id: "freelance-writer",
-    title: "Freelance Writer",
-    description: "Delivered high-quality copy for diverse clients across tech, healthcare, and finance sectors, maintaining 98% client satisfaction.",
-    link: "/work/freelance"
+    id: "seo-copywriter-hipnode",
+    title: "SEO Copywriter",
+    company: "Hipnode",
+    period: "August 2023 - February 2025",
+    location: "Lisbon",
+    description: "Created SEO-optimized copies using Frase, Jasper, and ChatGPT for research and keyword planning while maintaining consistent brand voice. Managed two content-driven websites and promoted content via Buffer and Hootsuite.",
+    link: "/work/hipnode"
   },
   {
-    id: "seo-specialist",
-    title: "SEO Content Specialist",
-    description: "Optimized content for search engines while maintaining readability, achieving top 3 rankings for 85% of target keywords.",
-    link: "/work/seo-specialist"
+    id: "web-copywriter-amplify",
+    title: "Web Copywriter",
+    company: "Amplify Ventures",
+    period: "October 2023 - October 2024",
+    location: "United Kingdom",
+    description: "Produced and edited B2B SEO-driven blog posts for crypto, technology, and healthcare clients. Focused on creating engaging content that drives organic traffic and supports client business objectives.",
+    link: "/work/amplify-ventures"
+  },
+  {
+    id: "marketing-copywriter-aptean",
+    title: "Marketing Copywriter / Email Copywriter",
+    company: "Aptean",
+    period: "November 2022 - August 2023",
+    location: "Georgia",
+    description: "Developed hub-and-spoke blog content including in-depth pillar articles and supporting posts to improve SEO structure. Authored customer case studies and contributed to white papers highlighting industry solutions.",
+    link: "/work/aptean"
+  },
+  {
+    id: "copywriter-editor-bluepen",
+    title: "Copywriter / Editor",
+    company: "Bluepen Articles",
+    period: "September 2020 - August 2022",
+    location: "United States",
+    description: "Produced website content including landing pages, blog posts and product descriptions that improved user experience and increased conversion rates. Assumed editing responsibilities, reviewing team content for consistency.",
+    link: "/work/bluepen"
+  },
+  {
+    id: "seo-manager-ipresence",
+    title: "SEO Manager",
+    company: "iPresence Digital Marketing",
+    period: "July 2017 - June 2020",
+    location: "Philippines",
+    description: "Managed SEO campaigns for 32 local brands, developing blog content and integrating target keywords to improve search visibility. Executed both on-page optimization and off-page initiatives including link building.",
+    link: "/work/ipresence"
+  }
+];
+
+const clientTestimonials = [
+  {
+    id: "testimonial-1",
+    name: "Sarah Chen",
+    role: "Marketing Director",
+    company: "TechFlow Solutions",
+    content: "Bryan transformed our homepage copy from confusing jargon into clear, compelling messaging. Our conversion rate increased by 45% in just three months. His strategic approach and attention to detail made all the difference.",
+    rating: 5,
+    project: "SaaS Homepage Redesign",
+    results: "45% increase in conversions"
+  },
+  {
+    id: "testimonial-2",
+    name: "Marcus Rodriguez",
+    role: "CEO",
+    company: "StyleHub",
+    content: "The SEO content strategy Bryan developed for us was game-changing. We saw a 120% increase in organic traffic and significantly improved our search rankings. His expertise in both content and SEO is unmatched.",
+    rating: 5,
+    project: "SEO Content Strategy",
+    results: "120% organic traffic growth"
+  },
+  {
+    id: "testimonial-3",
+    name: "Emily Watson",
+    role: "Head of Growth",
+    company: "GrowthCo",
+    content: "Bryan's email campaign series helped us nurture leads more effectively than ever before. The open rates improved by 35%, and we're seeing much better engagement throughout the funnel. Highly recommend his services.",
+    rating: 5,
+    project: "Email Nurture Campaigns",
+    results: "35% higher open rates"
+  },
+  {
+    id: "testimonial-4",
+    name: "David Kim",
+    role: "Founder",
+    company: "HealthTech Innovations",
+    content: "Working with Bryan was a game-changer for our B2B content strategy. His ability to translate complex healthcare technology into accessible, persuasive copy helped us close 40% more deals. Exceptional work.",
+    rating: 5,
+    project: "B2B Content Strategy",
+    results: "40% increase in deal closure"
+  }
+];
+
+const writingProcessSteps = [
+  {
+    id: "research",
+    title: "Research & Discovery",
+    description: "Deep dive into your audience, competitors, and market landscape to understand what makes your audience tick and what content gaps exist.",
+    duration: "2-3 hours",
+    tools: ["Google Analytics", "SEMrush", "Ahrefs", "Surveys", "Interviews"],
+    deliverables: ["Audience Personas", "Competitive Analysis", "Content Audit", "Keyword Research"],
+    tips: [
+      "Always start with your audience's pain points, not your product features",
+      "Look for content gaps your competitors are missing",
+      "Use multiple research methods for comprehensive insights"
+    ],
+    icon: "research"
+  },
+  {
+    id: "strategy",
+    title: "Strategy & Planning",
+    description: "Develop a comprehensive content strategy that aligns with your business goals and audience needs, including content pillars, messaging framework, and distribution plan.",
+    duration: "3-4 hours",
+    tools: ["Figma", "Notion", "Content Calendar", "Messaging Framework"],
+    deliverables: ["Content Strategy Document", "Messaging Framework", "Content Calendar", "Brand Voice Guide"],
+    tips: [
+      "Align content strategy with business objectives",
+      "Create a messaging hierarchy that prioritizes key messages",
+      "Plan for different stages of the buyer's journey"
+    ],
+    icon: "strategy"
+  },
+  {
+    id: "writing",
+    title: "Content Creation",
+    description: "Craft compelling, SEO-optimized content that speaks directly to your audience while maintaining your brand voice and driving toward your conversion goals.",
+    duration: "4-6 hours",
+    tools: ["Google Docs", "Grammarly", "Hemingway Editor", "Yoast SEO"],
+    deliverables: ["First Draft", "SEO Optimization", "Internal Linking", "Call-to-Action Integration"],
+    tips: [
+      "Write for humans first, search engines second",
+      "Use active voice and clear, concise language",
+      "Include specific, measurable calls-to-action"
+    ],
+    icon: "writing"
+  },
+  {
+    id: "review",
+    title: "Review & Refinement",
+    description: "Thorough review process including fact-checking, SEO optimization, readability improvements, and alignment with brand guidelines and business objectives.",
+    duration: "1-2 hours",
+    tools: ["Proofreading Tools", "SEO Checkers", "Readability Analyzers"],
+    deliverables: ["Final Copy", "SEO Report", "Readability Score", "Brand Compliance Check"],
+    tips: [
+      "Take breaks between writing and reviewing for fresh perspective",
+      "Read content aloud to catch awkward phrasing",
+      "Test calls-to-action for clarity and urgency"
+    ],
+    icon: "review"
+  },
+  {
+    id: "optimize",
+    title: "Optimization & Launch",
+    description: "Final optimization for performance, including A/B testing setup, conversion tracking, and launch preparation with monitoring and iteration plans.",
+    duration: "1-2 hours",
+    tools: ["Google Tag Manager", "A/B Testing Tools", "Analytics Platforms"],
+    deliverables: ["Launch-Ready Content", "Tracking Setup", "Performance Baseline", "Optimization Plan"],
+    tips: [
+      "Set up conversion tracking before launch",
+      "Plan for A/B testing different headlines and CTAs",
+      "Monitor performance closely in the first 48 hours"
+    ],
+    icon: "optimize"
   }
 ];
 ---
@@ -120,6 +277,27 @@ const experienceCards = [
         enterOpacity={0.7}
         transitionDuration={400}
       />
+    </div>
+  </section>
+
+  <!-- Client Testimonials Section -->
+  <section class="py-16 bg-[var(--surface-glass)]">
+    <div class="mx-auto max-w-6xl px-5">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-[var(--color-heading)] mb-4">What Clients Say</h2>
+        <p class="text-lg text-[var(--color-muted)] max-w-2xl mx-auto">
+          Don't just take my word for it. Here's what clients have to say about working with me 
+          and the results we've achieved together.
+        </p>
+      </div>
+      <ClientTestimonialCarousel testimonials={clientTestimonials} />
+    </div>
+  </section>
+
+  <!-- Writing Process Section -->
+  <section class="py-16">
+    <div class="mx-auto max-w-6xl px-5">
+      <WritingProcessTimeline processSteps={writingProcessSteps} />
     </div>
   </section>
 

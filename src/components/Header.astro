@@ -8,14 +8,16 @@ const nav = [
 
 // Contact information
 const LINKS = {
-  linkedin: "https://www.linkedin.com/in/bryan-jacinto",
-  phone: "+63-900-000-0000",
-  email: "bryan@advdms.com",
+  linkedin: "https://www.linkedin.com/in/bryan-jacinto-writer/",
+  phone: "+639944011975",
+  email: "jacintobryan3@gmail.com",
 };
 
 const current = Astro.url.pathname;
 ---
-<header class="sticky top-0 z-50 bg-[var(--header-bg)] py-3 text-[var(--color-text)]">
+<header class="sticky top-0 z-50 bg-[var(--header-bg)] dark:bg-gradient-to-br dark:from-[var(--header-bg)] dark:via-[var(--header-bg)] dark:to-[color-mix(in_srgb,var(--header-bg)_95%,var(--color-accent)_5%)] py-3 text-[var(--color-text)] relative">
+  <!-- Dark mode grain texture overlay -->
+  <div class="absolute inset-0 opacity-0 dark:opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxmaWx0ZXIgaWQ9Im5vaXNlIj4KICAgICAgPGZlVHVyYnVsZW5jZSBiYXNlRnJlcXVlbmN5PSIwLjkiIG51bU9jdGF2ZXM9IjQiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz4KICAgIDwvZmlsdGVyPgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+Cjwvc3ZnPg==')] pointer-events-none"></div>
   <div class="mx-auto max-w-6xl px-4">
     <!-- grid: 1fr (left) | auto (center nav) | 1fr (right) -->
     <div
@@ -73,6 +75,13 @@ const current = Astro.url.pathname;
           </svg>
         </a>
 
+        <a href="/Bryan Jacinto - Resume.pdf" download="Bryan-Jacinto-Resume.pdf" class="icon-btn" aria-label="Download CV" title="Download CV">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7,10 12,15 17,10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </a>
 
         <button id="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false" class="icon-btn" title="Toggle theme">
           <span class="sr-only">Toggle theme</span>
@@ -127,6 +136,13 @@ const current = Astro.url.pathname;
               <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>
                 <path d="m22 6-10 7L2 6"/>
+              </svg>
+            </a>
+            <a href="/Bryan Jacinto - Resume.pdf" download="Bryan-Jacinto-Resume.pdf" class="icon-btn w-full justify-center" aria-label="Download CV">
+              <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7,10 12,15 17,10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
               </svg>
             </a>
           </div>

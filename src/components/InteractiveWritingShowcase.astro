@@ -1,0 +1,505 @@
+---
+export interface Props {
+  writingSamples: Array<{
+    id: string;
+    title: string;
+    type: 'article' | 'case-study' | 'copy' | 'seo';
+    category: string;
+    client?: string;
+    results?: string;
+    excerpt: string;
+    tags: string[];
+    readTime: string;
+    publishedDate: string;
+    link: string;
+    featured?: boolean;
+  }>;
+}
+
+const { writingSamples } = Astro.props;
+---
+
+<div class="interactive-showcase">
+  <!-- Search and Filter Controls -->
+  <div class="showcase-controls">
+    <div class="search-container">
+      <input 
+        type="text" 
+        id="writing-search" 
+        placeholder="Search writing samples..." 
+        class="search-input"
+      />
+      <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd"/>
+      </svg>
+    </div>
+    
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="all">All Work</button>
+      <button class="filter-tab" data-filter="case-study">Case Studies</button>
+      <button class="filter-tab" data-filter="article">Articles</button>
+      <button class="filter-tab" data-filter="copy">Copywriting</button>
+      <button class="filter-tab" data-filter="seo">SEO Content</button>
+    </div>
+  </div>
+
+  <!-- Results Counter -->
+  <div class="results-info">
+    <span id="results-count">{writingSamples.length}</span> writing samples found
+  </div>
+
+  <!-- Writing Samples Grid -->
+  <div class="writing-grid" id="writing-grid">
+    {writingSamples.map((sample) => (
+      <article 
+        class={`writing-card ${sample.featured ? 'featured' : ''}`}
+        data-type={sample.type}
+        data-category={sample.category}
+        data-tags={sample.tags.join(' ')}
+        data-title={sample.title.toLowerCase()}
+        data-excerpt={sample.excerpt.toLowerCase()}
+      >
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="card-type">{sample.type.replace('-', ' ')}</span>
+            {sample.client && <span class="card-client">{sample.client}</span>}
+          </div>
+          {sample.featured && <span class="featured-badge">Featured</span>}
+        </div>
+        
+        <h3 class="card-title">{sample.title}</h3>
+        <p class="card-excerpt">{sample.excerpt}</p>
+        
+        {sample.results && (
+          <div class="card-results">
+            <span class="results-label">Results:</span>
+            <span class="results-value">{sample.results}</span>
+          </div>
+        )}
+        
+        <div class="card-tags">
+          {sample.tags.slice(0, 3).map((tag) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+        
+        <div class="card-footer">
+          <div class="card-meta-info">
+            <span class="read-time">{sample.readTime}</span>
+            <span class="publish-date">{new Date(sample.publishedDate).toLocaleDateString()}</span>
+          </div>
+          <a href={sample.link} class="card-link">
+            Read More
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <!-- No Results Message -->
+  <div class="no-results" id="no-results" style="display: none;">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="11" cy="11" r="8"/>
+      <path d="m21 21-4.35-4.35"/>
+    </svg>
+    <h3>No writing samples found</h3>
+    <p>Try adjusting your search terms or filters</p>
+  </div>
+</div>
+
+<script>
+  class InteractiveWritingShowcase {
+    private searchInput: HTMLInputElement;
+    private filterTabs: NodeListOf<HTMLButtonElement>;
+    private writingGrid: HTMLElement;
+    private resultsCount: HTMLElement;
+    private noResults: HTMLElement;
+    private cards: NodeListOf<HTMLElement>;
+    private currentFilter: string = 'all';
+    private currentSearch: string = '';
+
+    constructor() {
+      this.searchInput = document.getElementById('writing-search') as HTMLInputElement;
+      this.filterTabs = document.querySelectorAll('.filter-tab');
+      this.writingGrid = document.getElementById('writing-grid') as HTMLElement;
+      this.resultsCount = document.getElementById('results-count') as HTMLElement;
+      this.noResults = document.getElementById('no-results') as HTMLElement;
+      this.cards = document.querySelectorAll('.writing-card');
+      
+      this.init();
+    }
+
+    init() {
+      this.setupEventListeners();
+      this.updateResults();
+    }
+
+    setupEventListeners() {
+      // Search functionality
+      this.searchInput.addEventListener('input', (e) => {
+        this.currentSearch = (e.target as HTMLInputElement).value.toLowerCase();
+        this.updateResults();
+      });
+
+      // Filter functionality
+      this.filterTabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          const target = e.target as HTMLButtonElement;
+          this.currentFilter = target.dataset.filter || 'all';
+          
+          // Update active tab
+          this.filterTabs.forEach(t => t.classList.remove('active'));
+          target.classList.add('active');
+          
+          this.updateResults();
+        });
+      });
+
+      // Card hover effects
+      this.cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          card.style.transform = 'translateY(-4px)';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'translateY(0)';
+        });
+      });
+    }
+
+    updateResults() {
+      let visibleCount = 0;
+      
+      this.cards.forEach(card => {
+        const matchesFilter = this.currentFilter === 'all' || 
+                             card.dataset.type === this.currentFilter;
+        
+        const matchesSearch = !this.currentSearch || 
+                             card.dataset.title?.includes(this.currentSearch) ||
+                             card.dataset.excerpt?.includes(this.currentSearch) ||
+                             card.dataset.tags?.includes(this.currentSearch);
+        
+        if (matchesFilter && matchesSearch) {
+          card.style.display = 'block';
+          card.style.animation = 'fadeInUp 0.3s ease forwards';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Update results count
+      this.resultsCount.textContent = visibleCount.toString();
+      
+      // Show/hide no results message
+      if (visibleCount === 0) {
+        this.noResults.style.display = 'flex';
+        this.writingGrid.style.display = 'none';
+      } else {
+        this.noResults.style.display = 'none';
+        this.writingGrid.style.display = 'grid';
+      }
+    }
+  }
+
+  // Initialize when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    new InteractiveWritingShowcase();
+  });
+</script>
+
+<style>
+  .interactive-showcase {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .showcase-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .search-container {
+    position: relative;
+    max-width: 400px;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--color-link);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-muted);
+    pointer-events: none;
+  }
+
+  .filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-tab {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 2rem;
+    background-color: var(--color-surface);
+    color: var(--color-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .filter-tab:hover {
+    background-color: var(--surface-glass);
+    color: var(--color-text);
+  }
+
+  .filter-tab.active {
+    background-color: var(--color-link);
+    color: white;
+    border-color: var(--color-link);
+  }
+
+  .results-info {
+    color: var(--color-muted);
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .writing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .writing-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .writing-card:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .writing-card.featured {
+    border-color: var(--color-link);
+    background: linear-gradient(135deg, var(--color-surface) 0%, rgba(59, 130, 246, 0.05) 100%);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  .card-meta {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .card-type {
+    background-color: var(--surface-glass);
+    color: var(--color-text);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .card-client {
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .featured-badge {
+    background-color: var(--color-link);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .card-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-heading);
+    margin: 0 0 0.75rem 0;
+    line-height: 1.4;
+  }
+
+  .card-excerpt {
+    color: var(--color-muted);
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+    font-size: 0.875rem;
+  }
+
+  .card-results {
+    background-color: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .results-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgb(34, 197, 94);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .results-value {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-top: 0.25rem;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .tag {
+    background-color: var(--surface-glass);
+    color: var(--color-muted);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+  }
+
+  .card-meta-info {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: var(--color-muted);
+  }
+
+  .card-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-link);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .card-link:hover {
+    color: var(--color-accent);
+    transform: translateX(2px);
+  }
+
+  .no-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: var(--color-muted);
+  }
+
+  .no-results svg {
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  .no-results h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: var(--color-text);
+  }
+
+  .no-results p {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .interactive-showcase {
+      padding: 1rem;
+    }
+
+    .writing-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .showcase-controls {
+      gap: 1rem;
+    }
+
+    .filter-tabs {
+      gap: 0.25rem;
+    }
+
+    .filter-tab {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.8rem;
+    }
+  }
+</style>

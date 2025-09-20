@@ -1,0 +1,789 @@
+---
+export interface Props {
+  article: {
+    title: string;
+    content: string;
+    readingTime: string;
+    wordCount: number;
+    publishedDate: string;
+    tags: string[];
+  };
+  showProgress?: boolean;
+  showTableOfContents?: boolean;
+  enableHighlights?: boolean;
+}
+
+const { 
+  article, 
+  showProgress = true, 
+  showTableOfContents = true, 
+  enableHighlights = true 
+} = Astro.props;
+---
+
+<div class="interactive-reading" id="interactive-reading">
+  {showProgress && (
+    <div class="reading-progress">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+  )}
+
+  <div class="reading-container">
+    <aside class="reading-sidebar" id="reading-sidebar">
+      <div class="sidebar-content">
+        {showTableOfContents && (
+          <div class="table-of-contents">
+            <h3 class="toc-title">Table of Contents</h3>
+            <nav class="toc-nav" id="toc-nav">
+              <!-- Populated by JavaScript -->
+            </nav>
+          </div>
+        )}
+
+        <div class="reading-stats">
+          <div class="stat">
+            <span class="stat-value">{article.readingTime}</span>
+            <span class="stat-label">Reading time</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{article.wordCount.toLocaleString()}</span>
+            <span class="stat-label">Words</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{new Date(article.publishedDate).toLocaleDateString()}</span>
+            <span class="stat-label">Published</span>
+          </div>
+        </div>
+
+        {enableHighlights && (
+          <div class="highlight-controls">
+            <button class="highlight-btn" id="highlight-btn" data-active="false">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+              <span>Highlight Mode</span>
+            </button>
+          </div>
+        )}
+
+        <div class="reading-tags">
+          <h4 class="tags-title">Tags</h4>
+          <div class="tags-list">
+            {article.tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="reading-main">
+      <article class="article-content" id="article-content">
+        <header class="article-header">
+          <h1 class="article-title">{article.title}</h1>
+          <div class="article-meta">
+            <time class="publish-date" datetime={article.publishedDate}>
+              {new Date(article.publishedDate).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              })}
+            </time>
+            <span class="reading-time">{article.readingTime} read</span>
+          </div>
+        </header>
+
+        <div class="article-body" set:html={article.content}></div>
+
+        <footer class="article-footer">
+          <div class="share-controls">
+            <button class="share-btn" id="share-btn">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"/>
+              </svg>
+              Share Article
+            </button>
+          </div>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <!-- Floating Action Button -->
+  <div class="floating-actions">
+    <button class="fab" id="sidebar-toggle" aria-label="Toggle sidebar">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z" clip-rule="evenodd"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  class InteractiveReadingExperience {
+    private progressBar: HTMLElement;
+    private sidebar: HTMLElement;
+    private articleContent: HTMLElement;
+    private tocNav: HTMLElement;
+    private highlightBtn: HTMLButtonElement;
+    private shareBtn: HTMLButtonElement;
+    private sidebarToggle: HTMLButtonElement;
+    private isHighlightMode: boolean = false;
+    private isSidebarOpen: boolean = true;
+
+    constructor() {
+      this.progressBar = document.getElementById('progress-bar') as HTMLElement;
+      this.sidebar = document.getElementById('reading-sidebar') as HTMLElement;
+      this.articleContent = document.getElementById('article-content') as HTMLElement;
+      this.tocNav = document.getElementById('toc-nav') as HTMLElement;
+      this.highlightBtn = document.getElementById('highlight-btn') as HTMLButtonElement;
+      this.shareBtn = document.getElementById('share-btn') as HTMLButtonElement;
+      this.sidebarToggle = document.getElementById('sidebar-toggle') as HTMLButtonElement;
+      
+      this.init();
+    }
+
+    init() {
+      this.setupProgressTracking();
+      this.setupTableOfContents();
+      this.setupHighlightMode();
+      this.setupShareFunctionality();
+      this.setupSidebarToggle();
+      this.setupKeyboardShortcuts();
+    }
+
+    setupProgressTracking() {
+      if (!this.progressBar) return;
+
+      const updateProgress = () => {
+        const articleHeight = this.articleContent.scrollHeight - window.innerHeight;
+        const scrolled = window.scrollY;
+        const progress = Math.min((scrolled / articleHeight) * 100, 100);
+        this.progressBar.style.width = `${progress}%`;
+      };
+
+      window.addEventListener('scroll', updateProgress);
+      window.addEventListener('resize', updateProgress);
+    }
+
+    setupTableOfContents() {
+      if (!this.tocNav) return;
+
+      const headings = this.articleContent.querySelectorAll('h2, h3, h4');
+      const tocItems: string[] = [];
+
+      headings.forEach((heading, index) => {
+        const id = `heading-${index}`;
+        heading.id = id;
+        
+        const level = parseInt(heading.tagName.charAt(1));
+        const text = heading.textContent || '';
+        
+        tocItems.push(`
+          <a href="#${id}" class="toc-link toc-level-${level}" data-heading="${id}">
+            ${text}
+          </a>
+        `);
+      });
+
+      this.tocNav.innerHTML = tocItems.join('');
+
+      // Smooth scroll to headings
+      this.tocNav.addEventListener('click', (e) => {
+        const target = e.target as HTMLAnchorElement;
+        if (target.classList.contains('toc-link')) {
+          e.preventDefault();
+          const headingId = target.getAttribute('href')?.substring(1);
+          const heading = document.getElementById(headingId || '');
+          if (heading) {
+            heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      });
+
+      // Highlight current section
+      this.highlightCurrentSection();
+      window.addEventListener('scroll', () => this.highlightCurrentSection());
+    }
+
+    highlightCurrentSection() {
+      const headings = this.articleContent.querySelectorAll('h2, h3, h4');
+      const tocLinks = this.tocNav.querySelectorAll('.toc-link');
+      
+      let currentHeading = '';
+      
+      headings.forEach((heading) => {
+        const rect = heading.getBoundingClientRect();
+        if (rect.top <= 100) {
+          currentHeading = heading.id;
+        }
+      });
+
+      tocLinks.forEach((link) => {
+        link.classList.remove('active');
+        if (link.getAttribute('data-heading') === currentHeading) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    setupHighlightMode() {
+      if (!this.highlightBtn) return;
+
+      this.highlightBtn.addEventListener('click', () => {
+        this.isHighlightMode = !this.isHighlightMode;
+        
+        if (this.isHighlightMode) {
+          this.enableHighlightMode();
+        } else {
+          this.disableHighlightMode();
+        }
+      });
+    }
+
+    enableHighlightMode() {
+      this.highlightBtn.classList.add('active');
+      this.highlightBtn.dataset.active = 'true';
+      this.articleContent.classList.add('highlight-mode');
+      
+      // Add text selection event listeners
+      this.articleContent.addEventListener('mouseup', this.handleTextSelection.bind(this));
+    }
+
+    disableHighlightMode() {
+      this.highlightBtn.classList.remove('active');
+      this.highlightBtn.dataset.active = 'false';
+      this.articleContent.classList.remove('highlight-mode');
+      
+      // Remove existing highlights
+      const highlights = this.articleContent.querySelectorAll('.user-highlight');
+      highlights.forEach(highlight => {
+        const parent = highlight.parentNode;
+        if (parent) {
+          parent.replaceChild(document.createTextNode(highlight.textContent || ''), highlight);
+          parent.normalize();
+        }
+      });
+    }
+
+    handleTextSelection(e: MouseEvent) {
+      const selection = window.getSelection();
+      if (!selection || selection.toString().length < 3) return;
+
+      const range = selection.getRangeAt(0);
+      const selectedText = selection.toString();
+      
+      // Create highlight element
+      const highlight = document.createElement('span');
+      highlight.className = 'user-highlight';
+      highlight.textContent = selectedText;
+      
+      try {
+        range.deleteContents();
+        range.insertNode(highlight);
+        selection.removeAllRanges();
+      } catch (error) {
+        console.warn('Could not highlight text:', error);
+      }
+    }
+
+    setupShareFunctionality() {
+      if (!this.shareBtn) return;
+
+      this.shareBtn.addEventListener('click', async () => {
+        const shareData = {
+          title: document.title,
+          text: this.articleContent.querySelector('.article-title')?.textContent || '',
+          url: window.location.href
+        };
+
+        if (navigator.share) {
+          try {
+            await navigator.share(shareData);
+          } catch (error) {
+            console.log('Share cancelled');
+          }
+        } else {
+          // Fallback: copy to clipboard
+          await navigator.clipboard.writeText(window.location.href);
+          this.showToast('Link copied to clipboard!');
+        }
+      });
+    }
+
+    setupSidebarToggle() {
+      if (!this.sidebarToggle) return;
+
+      this.sidebarToggle.addEventListener('click', () => {
+        this.isSidebarOpen = !this.isSidebarOpen;
+        
+        if (this.isSidebarOpen) {
+          this.sidebar.classList.remove('sidebar-hidden');
+          this.sidebarToggle.classList.remove('sidebar-closed');
+        } else {
+          this.sidebar.classList.add('sidebar-hidden');
+          this.sidebarToggle.classList.add('sidebar-closed');
+        }
+      });
+    }
+
+    setupKeyboardShortcuts() {
+      document.addEventListener('keydown', (e) => {
+        // Toggle sidebar with 's' key
+        if (e.key === 's' && !e.ctrlKey && !e.metaKey) {
+          e.preventDefault();
+          this.sidebarToggle.click();
+        }
+        
+        // Toggle highlight mode with 'h' key
+        if (e.key === 'h' && !e.ctrlKey && !e.metaKey) {
+          e.preventDefault();
+          this.highlightBtn.click();
+        }
+      });
+    }
+
+    showToast(message: string) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 100);
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+          document.body.removeChild(toast);
+        }, 300);
+      }, 3000);
+    }
+  }
+
+  // Initialize when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    new InteractiveReadingExperience();
+  });
+</script>
+
+<style>
+  .interactive-reading {
+    position: relative;
+    min-height: 100vh;
+  }
+
+  .reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--color-border);
+    z-index: 1000;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-link), var(--color-accent));
+    width: 0%;
+    transition: width 0.1s ease;
+  }
+
+  .reading-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .reading-sidebar {
+    position: sticky;
+    top: 2rem;
+    height: fit-content;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .sidebar-hidden {
+    transform: translateX(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sidebar-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .table-of-contents {
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1.5rem;
+  }
+
+  .toc-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-heading);
+    margin: 0 0 1rem 0;
+  }
+
+  .toc-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .toc-link {
+    color: var(--color-muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+  }
+
+  .toc-link:hover {
+    background-color: var(--surface-glass);
+    color: var(--color-text);
+  }
+
+  .toc-link.active {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: var(--color-link);
+    border-left-color: var(--color-link);
+  }
+
+  .toc-level-3 {
+    padding-left: 1.5rem;
+  }
+
+  .toc-level-4 {
+    padding-left: 2.5rem;
+  }
+
+  .reading-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background-color: var(--surface-glass);
+    border-radius: 0.5rem;
+  }
+
+  .stat-value {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: var(--color-muted);
+  }
+
+  .highlight-controls {
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.5rem;
+  }
+
+  .highlight-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem;
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    color: var(--color-muted);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .highlight-btn:hover {
+    background-color: var(--surface-glass);
+    color: var(--color-text);
+  }
+
+  .highlight-btn.active {
+    background-color: var(--color-link);
+    color: white;
+    border-color: var(--color-link);
+  }
+
+  .reading-tags {
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.5rem;
+  }
+
+  .tags-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-heading);
+    margin: 0 0 0.75rem 0;
+  }
+
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    background-color: var(--surface-glass);
+    color: var(--color-muted);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .reading-main {
+    max-width: 800px;
+  }
+
+  .article-content {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    padding: 2rem;
+  }
+
+  .article-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .article-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--color-heading);
+    line-height: 1.2;
+    margin: 0 0 1rem 0;
+  }
+
+  .article-meta {
+    display: flex;
+    gap: 1rem;
+    color: var(--color-muted);
+    font-size: 0.875rem;
+  }
+
+  .article-body {
+    color: var(--color-text);
+    line-height: 1.7;
+    font-size: 1.125rem;
+  }
+
+  .article-body h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-heading);
+    margin: 2rem 0 1rem 0;
+    padding-top: 1rem;
+  }
+
+  .article-body h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-heading);
+    margin: 1.5rem 0 0.75rem 0;
+  }
+
+  .article-body p {
+    margin: 0 0 1.5rem 0;
+  }
+
+  .article-body ul, .article-body ol {
+    margin: 0 0 1.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .article-body li {
+    margin: 0.5rem 0;
+  }
+
+  .article-body blockquote {
+    border-left: 4px solid var(--color-link);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--color-muted);
+  }
+
+  .article-body code {
+    background-color: var(--surface-glass);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.875em;
+  }
+
+  .article-body pre {
+    background-color: var(--surface-glass);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  .article-body pre code {
+    background: none;
+    padding: 0;
+  }
+
+  .highlight-mode {
+    user-select: text;
+  }
+
+  .user-highlight {
+    background-color: rgba(255, 235, 59, 0.3);
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .user-highlight:hover {
+    background-color: rgba(255, 235, 59, 0.5);
+  }
+
+  .article-footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .share-controls {
+    display: flex;
+    justify-content: center;
+  }
+
+  .share-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--color-link);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .share-btn:hover {
+    background-color: var(--color-accent);
+    transform: translateY(-1px);
+  }
+
+  .floating-actions {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 100;
+  }
+
+  .fab {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--color-link);
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .fab:hover {
+    background-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .fab.sidebar-closed {
+    background-color: var(--color-muted);
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    transition: transform 0.3s ease;
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @media (max-width: 1024px) {
+    .reading-container {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .reading-sidebar {
+      position: relative;
+      top: 0;
+      order: 2;
+    }
+
+    .sidebar-hidden {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .article-content {
+      padding: 1.5rem;
+    }
+
+    .article-title {
+      font-size: 2rem;
+    }
+
+    .article-body {
+      font-size: 1rem;
+    }
+
+    .floating-actions {
+      bottom: 1rem;
+      right: 1rem;
+    }
+
+    .fab {
+      width: 48px;
+      height: 48px;
+    }
+  }
+</style>

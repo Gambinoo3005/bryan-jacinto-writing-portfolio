@@ -22,7 +22,7 @@ html { font-family: var(--font-sans); }
 
 /* Palette tokens */
 :root {
-  --color-bg: #F7F9FC;
+  --color-bg: #E8F2FF;
   --color-surface: #FFFFFF;
   --color-text: #0C1222;
   --color-heading: #0A1A2E;
@@ -30,7 +30,7 @@ html { font-family: var(--font-sans); }
   --color-border: #D9E0EA;
   --color-link: #0A5CFF;
   --color-accent: #0E3357;
-  --header-bg: #E8F2FF;
+  --header-bg: #D6E8FF;
 
   --surface-glass: color-mix(in srgb, var(--color-surface) 78%, transparent);
   --surface-glass-strong: color-mix(in srgb, var(--color-surface) 88%, transparent);
@@ -45,7 +45,7 @@ html { font-family: var(--font-sans); }
   --color-border: #2B3140;
   --color-link: #4A7C9D;
   --color-accent: #0E3357;
-  --header-bg: #0A2540;
+  --header-bg: #0B1420;
 
   --surface-glass: color-mix(in srgb, var(--color-surface) 62%, transparent);
   --surface-glass-strong: color-mix(in srgb, var(--color-surface) 74%, transparent);

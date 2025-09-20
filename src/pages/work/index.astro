@@ -1,28 +1,98 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import InteractiveWritingShowcase from "../../components/InteractiveWritingShowcase.astro";
 import { getCollection } from "astro:content";
-const items = (await getCollection("work", ({ data }) => !data.draft))
+
+const workItems = (await getCollection("work", ({ data }) => !data.draft))
   .sort((a, b) => +b.data.pubDate - +a.data.pubDate);
+
+const posts = (await getCollection("posts", ({ data }) => !data.draft))
+  .sort((a, b) => +b.data.pubDate - +a.data.pubDate);
+
+// Combine work items and posts into writing samples
+const writingSamples = [
+  ...workItems.map((item) => ({
+    id: `work-${item.slug}`,
+    title: item.data.title,
+    type: 'case-study' as const,
+    category: 'Client Work',
+    client: item.data.client || 'Confidential',
+    results: item.data.results,
+    excerpt: item.data.summary || 'A detailed case study showcasing strategic content development and measurable results.',
+    tags: item.data.tags || [],
+    readTime: '5 min read',
+    publishedDate: item.data.pubDate.toISOString(),
+    link: `/work/${item.slug}`,
+    featured: (item.data as any).featured || false
+  })),
+  ...posts.map((post) => ({
+    id: `post-${post.slug}`,
+    title: post.data.title,
+    type: 'article' as const,
+    category: 'Thought Leadership',
+    excerpt: post.data.description || 'An insightful article on content strategy, SEO, and writing best practices.',
+    tags: (post.data as any).tags || ['writing', 'content strategy'],
+    readTime: '3 min read',
+    publishedDate: post.data.pubDate.toISOString(),
+    link: `/articles/${post.slug}`,
+    featured: false
+  })),
+  // Add some sample work to demonstrate the showcase
+  {
+    id: "saas-homepage-copy",
+    title: "SaaS Homepage Copy That Converts",
+    type: "copy" as const,
+    category: "B2B SaaS",
+    client: "TechFlow Solutions",
+    results: "↑ 45% conversion rate",
+    excerpt: "Complete homepage rewrite that transformed a confusing value proposition into clear, compelling copy that speaks directly to the target audience's pain points.",
+    tags: ["B2B", "SaaS", "Conversion", "Homepage"],
+    readTime: "8 min read",
+    publishedDate: "2024-01-15T00:00:00Z",
+    link: "/work/saas-homepage-copy",
+    featured: true
+  },
+  {
+    id: "seo-content-strategy",
+    title: "SEO Content Strategy for E-commerce",
+    type: "seo" as const,
+    category: "E-commerce",
+    client: "StyleHub",
+    results: "↑ 120% organic traffic",
+    excerpt: "Developed and executed a comprehensive SEO content strategy that increased organic traffic by 120% and improved keyword rankings across 200+ target terms.",
+    tags: ["SEO", "E-commerce", "Content Strategy", "Analytics"],
+    readTime: "12 min read",
+    publishedDate: "2024-01-10T00:00:00Z",
+    link: "/work/seo-content-strategy",
+    featured: true
+  },
+  {
+    id: "email-campaign-series",
+    title: "Email Campaign Series That Nurtures",
+    type: "copy" as const,
+    category: "Email Marketing",
+    client: "GrowthCo",
+    results: "↑ 35% open rates",
+    excerpt: "Created a 7-email nurture sequence that guides prospects through the buyer's journey with personalized, value-driven content that builds trust and drives conversions.",
+    tags: ["Email Marketing", "Nurture Campaigns", "B2B", "Automation"],
+    readTime: "6 min read",
+    publishedDate: "2024-01-05T00:00:00Z",
+    link: "/work/email-campaign-series",
+    featured: false
+  }
+].sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime());
 ---
 <BaseLayout title="Work - Case Studies" description="Selected client projects and outcomes.">
   <section class="mx-auto max-w-6xl py-12 text-[var(--color-text)]">
-    <h1 class="text-3xl font-bold mb-6">Case Studies</h1>
-    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {items.map((it) => (
-        <li class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm transition hover:shadow-md">
-          <a href={`/work/${it.slug}`} class="block">
-            <h2 class="font-semibold">{it.data.title}</h2>
-            <p class="mt-1 text-sm text-[var(--color-muted)]">{it.data.summary}</p>
-            {it.data.results && <p class="mt-2 text-xs font-medium text-emerald-600">{it.data.results}</p>}
-            <div class="mt-3 flex flex-wrap gap-2">
-              {it.data.tags?.slice(0, 3).map((t) => (
-                <span class="text-xs rounded-full border border-[var(--color-border)] px-2 py-0.5 text-[var(--color-muted)]">{t}</span>
-              ))}
-            </div>
-          </a>
-        </li>
-      ))}
-    </ul>
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold mb-4">My Writing Portfolio</h1>
+      <p class="text-lg text-[var(--color-muted)] max-w-2xl mx-auto">
+        Explore my case studies, articles, and writing samples. Each piece demonstrates strategic thinking, 
+        measurable results, and a commitment to quality content that converts.
+      </p>
+    </div>
+    
+    <InteractiveWritingShowcase writingSamples={writingSamples} />
   </section>
 </BaseLayout>
 

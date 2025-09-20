@@ -4,8 +4,172 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 <BaseLayout title="Contact - Bryan Jacinto" description="Work inquiries and collaborations.">
   <section class="mx-auto max-w-3xl py-12 text-[var(--color-text)]">
     <h1 class="text-3xl font-bold mb-6">Contact</h1>
-    <p class="mb-4 text-[var(--color-muted)]">Email me at <a class="underline" href="mailto:bryan@advdms.com">bryan@advdms.com</a>.</p>
-    <!-- Placeholder: we'll wire a form later -->
+    <p class="mb-4 text-[var(--color-muted)]">Get in touch for work inquiries and collaborations.</p>
+    
+    <div class="mt-8">
+      <form id="contact-form" class="space-y-6">
+        <div>
+          <label for="name" class="block text-sm font-medium mb-2">Name *</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            class="w-full px-4 py-3 border border-[var(--color-border)] rounded-lg bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-link)] focus:border-transparent transition-colors"
+            placeholder="Your full name"
+          />
+        </div>
+        
+        <div>
+          <label for="email" class="block text-sm font-medium mb-2">Email *</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            class="w-full px-4 py-3 border border-[var(--color-border)] rounded-lg bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-link)] focus:border-transparent transition-colors"
+            placeholder="your.email@example.com"
+          />
+        </div>
+        
+        <div>
+          <label for="phone" class="block text-sm font-medium mb-2">Contact Number</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            class="w-full px-4 py-3 border border-[var(--color-border)] rounded-lg bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-link)] focus:border-transparent transition-colors"
+            placeholder="+1 (555) 123-4567"
+          />
+        </div>
+        
+        <div>
+          <label for="message" class="block text-sm font-medium mb-2">Message *</label>
+          <textarea
+            id="message"
+            name="message"
+            required
+            rows="6"
+            class="w-full px-4 py-3 border border-[var(--color-border)] rounded-lg bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-link)] focus:border-transparent transition-colors resize-vertical"
+            placeholder="Tell me about your project, collaboration ideas, or any questions you have..."
+          ></textarea>
+        </div>
+        
+        <button
+          type="submit"
+          class="btn-primary w-full h-11 rounded-full px-6 text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span id="submit-text">Send Message</span>
+          <span id="submit-loading" class="hidden">Sending...</span>
+        </button>
+      </form>
+      
+      <div id="form-message" class="mt-4 hidden"></div>
+    </div>
+    
+    <div class="mt-12 pt-8 border-t border-[var(--color-border)]">
+      <h2 class="text-xl font-semibold mb-4">Direct Contact</h2>
+      <p class="text-[var(--color-muted)]">
+        You can also reach me directly at <a class="underline hover:text-[var(--color-primary)] transition-colors" href="mailto:bryan@advdms.com">bryan@advdms.com</a>
+      </p>
+    </div>
   </section>
 </BaseLayout>
+
+<script>
+  // EmailJS configuration
+  const EMAILJS_SERVICE_ID = 'service_cqw060t';
+  const EMAILJS_TEMPLATE_ID = 'template_njckoni';
+  const EMAILJS_PUBLIC_KEY = 'F5U2wUTubr4DDX6Ei';
+
+  // Initialize EmailJS
+  (function() {
+    // Load EmailJS script if not already loaded
+    if (!window.emailjs) {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+      script.onload = function() {
+        window.emailjs.init(EMAILJS_PUBLIC_KEY);
+      };
+      document.head.appendChild(script);
+    } else {
+      window.emailjs.init(EMAILJS_PUBLIC_KEY);
+    }
+  })();
+
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const form = e.target as HTMLFormElement;
+      const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const submitText = document.getElementById('submit-text');
+      const submitLoading = document.getElementById('submit-loading');
+      const formMessage = document.getElementById('form-message');
+      
+      if (!submitButton || !submitText || !submitLoading || !formMessage) {
+        console.error('Form elements not found');
+        return;
+      }
+      
+      // Show loading state
+      submitButton.disabled = true;
+      submitText.classList.add('hidden');
+      submitLoading.classList.remove('hidden');
+      formMessage.classList.add('hidden');
+      
+      try {
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        // Validate required fields
+        if (!data.name || !data.email || !data.message) {
+          throw new Error('Name, email, and message are required');
+        }
+        
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(data.email as string)) {
+          throw new Error('Please provide a valid email address');
+        }
+        
+        // Wait for EmailJS to be ready
+        if (!window.emailjs) {
+          throw new Error('EmailJS is not loaded yet. Please try again.');
+        }
+        
+        // Send email using EmailJS
+        const templateParams = {
+          from_name: data.name,
+          from_email: data.email,
+          phone: data.phone || 'Not provided',
+          message: data.message,
+          to_email: 'bryan@advdms.com'
+        };
+        
+        await window.emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_TEMPLATE_ID,
+          templateParams
+        );
+        
+        formMessage.textContent = 'Thank you! Your message has been sent successfully.';
+        formMessage.className = 'mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg';
+        form.reset();
+        
+      } catch (error) {
+        console.error('Contact form error:', error);
+        formMessage.textContent = 'Sorry, there was an error sending your message. Please try again or contact me directly at bryan@advdms.com';
+        formMessage.className = 'mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg';
+      } finally {
+        // Reset button state
+        submitButton.disabled = false;
+        submitText.classList.remove('hidden');
+        submitLoading.classList.add('hidden');
+        formMessage.classList.remove('hidden');
+      }
+    });
+  }
+</script>
 
