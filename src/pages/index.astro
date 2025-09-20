@@ -1,11 +1,39 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import CardStack from "../components/CardStack.astro";
 
 const roles = [
   "Copywriter",
   "Copyeditor",
   "B2B Content Writer",
   "SEO Content Writer",
+];
+
+const experienceCards = [
+  {
+    id: "senior-copywriter",
+    title: "Senior Copywriter",
+    description: "Led content strategy for B2B SaaS companies, increasing conversion rates by 40% through targeted messaging and A/B testing.",
+    link: "/work/senior-copywriter"
+  },
+  {
+    id: "content-strategist",
+    title: "Content Strategist",
+    description: "Developed comprehensive content calendars and SEO strategies for e-commerce brands, resulting in 60% organic traffic growth.",
+    link: "/work/content-strategist"
+  },
+  {
+    id: "freelance-writer",
+    title: "Freelance Writer",
+    description: "Delivered high-quality copy for diverse clients across tech, healthcare, and finance sectors, maintaining 98% client satisfaction.",
+    link: "/work/freelance"
+  },
+  {
+    id: "seo-specialist",
+    title: "SEO Content Specialist",
+    description: "Optimized content for search engines while maintaining readability, achieving top 3 rankings for 85% of target keywords.",
+    link: "/work/seo-specialist"
+  }
 ];
 ---
 
@@ -15,15 +43,9 @@ const roles = [
 >
   <section class="min-h-[70vh] grid place-items-center py-16 text-[var(--color-text)]">
     <div class="mx-auto max-w-3xl px-5 text-center">
-      <!-- Name (subtle neutral gradient) -->
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight">
-        <span
-          class="text-transparent bg-clip-text bg-gradient-to-r
-                 from-[#0E3357] to-[#0A5CFF]
-                 dark:from-[#86B7FF] dark:to-[#E8EDF7]"
-        >
-          Bryan Jacinto
-        </span>
+      <!-- Name -->
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight text-[var(--color-text)]">
+        Bryan Jacinto
       </h1>
 
       <!-- Roles as refined chips -->
@@ -55,7 +77,7 @@ const roles = [
       <div class="mt-7 flex items-center justify-center gap-3">
         <a
           href="/work"
-          class="inline-flex h-11 items-center justify-center rounded-full px-5 text-sm font-semibold bg-[#0e3357] text-white hover:brightness-110 active:brightness-95 focus-visible:outline outline-2 outline-offset-2 outline-[#0e3357] transition"
+          class="btn-primary inline-flex h-11 items-center justify-center rounded-full px-5 text-sm font-semibold transition-all duration-200"
         >
           See my work
         </a>
@@ -67,47 +89,37 @@ const roles = [
         </a>
       </div>
 
-      <!-- Subtle scroll link to "My Experiences" (no layout changes elsewhere) -->
-      <a
-        href="#my-experiences"
-        class="mt-9 inline-flex items-center justify-center gap-2 text-sm text-[var(--color-muted)] hover:text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-border)]"
-        aria-label="View my experience"
-      >
-        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
-        </svg>
-        <span>View my experience</span>
-      </a>
+      <!-- Experience button with enhanced styling -->
+      <div class="mt-9 flex justify-center">
+        <a
+          href="#my-experiences"
+          class="group inline-flex h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold border border-[var(--color-border)] hover:bg-[var(--surface-glass)] hover:border-[var(--color-link)] hover:text-[var(--color-link)] transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-link)]/10 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[var(--color-link)] focus:ring-offset-2 focus:ring-offset-[var(--bg-start)]"
+          aria-label="View my experience"
+        >
+          <span>View my experience</span>
+          <svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
+          </svg>
+        </a>
+      </div>
       <!-- Make sure your experiences section elsewhere on the page has: id="my-experiences" -->
     </div>
   </section>
 
-  <!-- Experience placeholder target (only addition) -->
-  <section id="my-experiences" class="scroll-mt-28 py-16 text-[var(--color-text)]">
-    <div class="mx-auto max-w-3xl px-5">
-      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Experience</h2>
-      <p class="mt-2 text-[var(--color-muted)]">
-        Temporary placeholder content - replace with your real timeline when ready.
-      </p>
-
-      <!-- Simple placeholder list -->
-      <ul class="mt-6 space-y-4 text-sm">
-        <li>
-          <strong>Role Title - Company</strong>
-          <div class="text-[var(--color-muted)]">2024 - Present - Location</div>
-          <div class="mt-1 text-[var(--color-muted)] opacity-90">One-two lines describing impact and scope.</div>
-        </li>
-        <li>
-          <strong>Role Title - Company</strong>
-          <div class="text-[var(--color-muted)]">2022 - 2024 - Location</div>
-          <div class="mt-1 text-[var(--color-muted)] opacity-90">One-two lines describing impact and scope.</div>
-        </li>
-        <li>
-          <strong>Role Title - Company</strong>
-          <div class="text-[var(--color-muted)]">2018 - 2022 - Location</div>
-          <div class="mt-1 text-[var(--color-muted)] opacity-90">One-two lines describing impact and scope.</div>
-        </li>
-      </ul>
+  <!-- Experience section with Card Stack -->
+  <section id="my-experiences" class="scroll-mt-[80px] min-h-screen flex items-center justify-center py-4 text-[var(--color-text)]">
+    <div class="mx-auto max-w-6xl px-5">
+      <!-- Card Stack Component -->
+      <CardStack 
+        cards={experienceCards}
+        cardWidth="784px"
+        cardHeight="343px"
+        stackShift={60}
+        stackScale={0.05}
+        enterRotation={6}
+        enterOpacity={0.7}
+        transitionDuration={400}
+      />
     </div>
   </section>
 

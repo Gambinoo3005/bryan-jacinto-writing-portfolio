@@ -25,17 +25,13 @@ html { font-family: var(--font-sans); }
   --color-bg: #F7F9FC;
   --color-surface: #FFFFFF;
   --color-text: #0C1222;
+  --color-heading: #0A1A2E;
   --color-muted: #5B6472;
   --color-border: #D9E0EA;
   --color-link: #0A5CFF;
   --color-accent: #0E3357;
-  --header-from: #EAF2FF;
-  --header-to: #E6EEFC;
+  --header-bg: #E8F2FF;
 
-  --bg-start: #EAF2FF;
-  --bg-end: #F7F9FC;
-  --vignette: rgba(14, 51, 87, 0.08);
-  --sheen: rgba(255, 255, 255, 0.35);
   --surface-glass: color-mix(in srgb, var(--color-surface) 78%, transparent);
   --surface-glass-strong: color-mix(in srgb, var(--color-surface) 88%, transparent);
 }
@@ -44,51 +40,17 @@ html { font-family: var(--font-sans); }
   --color-bg: #090E18;
   --color-surface: #0C1220;
   --color-text: #E8EDF7;
+  --color-heading: #F0F4F8;
   --color-muted: #A6ADBB;
   --color-border: #2B3140;
-  --color-link: #86B7FF;
+  --color-link: #4A7C9D;
   --color-accent: #0E3357;
-  --header-from: #0A2540;
-  --header-to: #071A2E;
+  --header-bg: #0A2540;
 
-  --bg-start: #0A2540;
-  --bg-end: #090E18;
-  --vignette: rgba(7, 26, 46, 0.55);
-  --sheen: rgba(134, 183, 255, 0.08);
   --surface-glass: color-mix(in srgb, var(--color-surface) 62%, transparent);
   --surface-glass-strong: color-mix(in srgb, var(--color-surface) 74%, transparent);
 }
 
-/* Base vertical gradient */
-.bg-base {
-  background: linear-gradient(180deg, var(--bg-start), var(--bg-end));
-}
-
-/* Soft edge vignette (top & bottom) */
-.bg-vignette {
-  background:
-    radial-gradient(120% 100% at 50% -10%, transparent 58%, var(--vignette) 100%),
-    radial-gradient(100% 80% at 50% 110%, transparent 60%, var(--vignette) 100%);
-}
-
-/* Gentle diagonal sheen that drifts across the page */
-.bg-sheen {
-  background: linear-gradient(115deg, transparent 0%, var(--sheen) 40%, transparent 70%);
-  opacity: .6;                               /* keep it subtle */
-  transform: translate3d(-40%, 0, 0);        /* start left */
-  will-change: transform;
-  animation: sheen-drift 18s ease-in-out infinite alternate;
-}
-
-@keyframes sheen-drift {
-  0%   { transform: translate3d(-40%, 0, 0); }
-  100% { transform: translate3d(40%, 0, 0); }
-}
-
-/* Motion safety */
-@media (prefers-reduced-motion: reduce) {
-  .bg-sheen { animation: none !important; opacity: 0; }
-}
 
 body {
   min-height: 100svh;
@@ -111,7 +73,7 @@ a:hover {
 
 .prose {
   --tw-prose-body: var(--color-text);
-  --tw-prose-headings: var(--color-text);
+  --tw-prose-headings: var(--color-heading);
   --tw-prose-links: var(--color-link);
   --tw-prose-bold: var(--color-text);
   --tw-prose-counters: var(--color-muted);
@@ -215,3 +177,48 @@ html {
 
 /* Make sure the page itself always fills the viewport height */
 body { min-height: 100svh; }
+
+/* Global hover nudge effect for buttons and header links */
+button:hover,
+.btn-primary:hover,
+.icon-btn:hover,
+.nav-link:hover,
+header a:hover,
+a[href="/contact"]:hover,
+a[href="/work"]:hover {
+  transform: translateY(-1px);
+  transition: transform 150ms ease-out;
+}
+
+button:active,
+.btn-primary:active,
+.icon-btn:active,
+.nav-link:active,
+header a:active,
+a[href="/contact"]:active,
+a[href="/work"]:active {
+  transform: translateY(0);
+  transition: transform 100ms ease-out;
+}
+
+/* Button styles to ensure proper visibility and no unwanted outlines */
+.btn-primary {
+  background-color: var(--color-link) !important;
+  color: white !important;
+  border: none !important;
+  outline: none !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1) !important;
+}
+
+.btn-primary:active {
+  filter: brightness(0.95) !important;
+}
+
+.btn-primary:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 2px white, 0 0 0 4px var(--color-link) !important;
+}
