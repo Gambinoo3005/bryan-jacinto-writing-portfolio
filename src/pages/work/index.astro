@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import InteractiveWritingShowcase from "../../components/InteractiveWritingShowcase.astro";
+import SimpleWritingShowcase from "../../components/SimpleWritingShowcase.astro";
 import { getCollection } from "astro:content";
 
 const workItems = (await getCollection("work", ({ data }) => !data.draft))
@@ -15,10 +15,9 @@ const writingSamples = [
     id: `work-${item.slug}`,
     title: item.data.title,
     type: 'case-study' as const,
-    category: 'Client Work',
-    client: item.data.client || 'Confidential',
-    results: item.data.results,
-    excerpt: item.data.summary || 'A detailed case study showcasing strategic content development and measurable results.',
+    category: 'Case Study',
+    client: item.data.client || 'Aptean',
+    excerpt: item.data.summary || 'A comprehensive case study documenting successful ERP implementation and business transformation.',
     tags: item.data.tags || [],
     readTime: '5 min read',
     publishedDate: item.data.pubDate.toISOString(),
@@ -37,62 +36,54 @@ const writingSamples = [
     link: `/articles/${post.slug}`,
     featured: false
   })),
-  // Add some sample work to demonstrate the showcase
+  // Website projects
   {
-    id: "saas-homepage-copy",
-    title: "SaaS Homepage Copy That Converts",
-    type: "copy" as const,
-    category: "B2B SaaS",
-    client: "TechFlow Solutions",
-    results: "↑ 45% conversion rate",
-    excerpt: "Complete homepage rewrite that transformed a confusing value proposition into clear, compelling copy that speaks directly to the target audience's pain points.",
-    tags: ["B2B", "SaaS", "Conversion", "Homepage"],
-    readTime: "8 min read",
-    publishedDate: "2024-01-15T00:00:00Z",
-    link: "/work/saas-homepage-copy",
+    id: 'website-1',
+    title: 'Uragon Transport Services',
+    type: 'copy' as const,
+    category: 'Website Development',
+    client: 'Uragon Transport Services',
+    excerpt: 'Complete full-stack web development project including frontend design, backend development, SEO optimization, and copywriting for a car rental service in Bicol Region, Philippines.',
+    tags: ['full-stack development', 'SEO', 'copywriting', 'web design'],
+    readTime: '5 min read',
+    publishedDate: new Date('2025').toISOString(),
+    link: 'https://uragon-transport-services.vercel.app/',
     featured: true
   },
   {
-    id: "seo-content-strategy",
-    title: "SEO Content Strategy for E-commerce",
-    type: "seo" as const,
-    category: "E-commerce",
-    client: "StyleHub",
-    results: "↑ 120% organic traffic",
-    excerpt: "Developed and executed a comprehensive SEO content strategy that increased organic traffic by 120% and improved keyword rankings across 200+ target terms.",
-    tags: ["SEO", "E-commerce", "Content Strategy", "Analytics"],
-    readTime: "12 min read",
-    publishedDate: "2024-01-10T00:00:00Z",
-    link: "/work/seo-content-strategy",
-    featured: true
-  },
-  {
-    id: "email-campaign-series",
-    title: "Email Campaign Series That Nurtures",
-    type: "copy" as const,
-    category: "Email Marketing",
-    client: "GrowthCo",
-    results: "↑ 35% open rates",
-    excerpt: "Created a 7-email nurture sequence that guides prospects through the buyer's journey with personalized, value-driven content that builds trust and drives conversions.",
-    tags: ["Email Marketing", "Nurture Campaigns", "B2B", "Automation"],
-    readTime: "6 min read",
-    publishedDate: "2024-01-05T00:00:00Z",
-    link: "/work/email-campaign-series",
+    id: 'website-2',
+    title: 'Portfolio CMS',
+    type: 'copy' as const,
+    category: 'Website Development',
+    client: 'Portfolio CMS Agency',
+    excerpt: 'Full-stack web development for a portfolio agency offering custom CMS solutions. Complete build including Next.js frontend, custom CMS implementation, database design, SEO optimization, and comprehensive design system.',
+    tags: ['full-stack development', 'CMS development', 'Next.js', 'database design', 'SEO'],
+    readTime: '6 min read',
+    publishedDate: new Date('2025').toISOString(),
+    link: 'https://folio-marketing.vercel.app/',
     featured: false
   }
-].sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime());
+].sort((a, b) => {
+  // Featured items first
+  if (a.featured && !b.featured) return -1;
+  if (!a.featured && b.featured) return 1;
+  
+  // Then sort by date (newest first)
+  return new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime();
+});
 ---
 <BaseLayout title="Work - Case Studies" description="Selected client projects and outcomes.">
-  <section class="mx-auto max-w-6xl py-12 text-[var(--color-text)]">
-    <div class="text-center mb-12">
-      <h1 class="text-4xl font-bold mb-4">My Writing Portfolio</h1>
-      <p class="text-lg text-[var(--color-muted)] max-w-2xl mx-auto">
-        Explore my case studies, articles, and writing samples. Each piece demonstrates strategic thinking, 
-        measurable results, and a commitment to quality content that converts.
-      </p>
+  <section class="w-full" style="background-color: var(--section-bg-primary);">
+    <div class="mx-auto max-w-6xl px-5 sm:px-6 py-16 scroll-reveal">
+      <div class="text-center" style="margin-bottom: 50px;">
+        <h1 class="mb-4">My Writing Portfolio</h1>
+        <p class="text-lg text-[var(--color-muted)] max-w-2xl mx-auto">
+          Explore my case studies, articles, and writing samples.
+        </p>
+      </div>
+      
+      <SimpleWritingShowcase writingSamples={writingSamples} />
     </div>
-    
-    <InteractiveWritingShowcase writingSamples={writingSamples} />
   </section>
 </BaseLayout>
 

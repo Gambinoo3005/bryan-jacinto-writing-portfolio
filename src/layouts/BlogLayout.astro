@@ -18,9 +18,9 @@ const {
 } = Astro.props;
 ---
 <BaseLayout title={title} description={description} ogImage={ogImage}>
-  <article class="mx-auto max-w-3xl py-12 text-[var(--color-text)]">
+  <article class="mx-auto max-w-5xl py-12 text-[var(--color-text)]">
     <header class="mb-8">
-      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">{title}</h1>
+      <h1>{title}</h1>
       <div class="mt-2 flex flex-wrap items-center gap-3 text-sm text-[var(--color-muted)]">
         {pubDate && <time datetime={pubDate.toISOString()}>{pubDate.toDateString()}</time>}
         {tags.length > 0 && (
@@ -30,9 +30,8 @@ const {
         )}
       </div>
     </header>
-    <div class="prose">
+    <div class="prose prose-lg max-w-none">
       <slot />
     </div>
   </article>
 </BaseLayout>
-

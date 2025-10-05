@@ -1,0 +1,348 @@
+---
+export interface Props {
+  writingSamples: Array<{
+    id: string;
+    title: string;
+    type: 'article' | 'case-study' | 'copy' | 'seo';
+    category: string;
+    client?: string;
+    results?: string;
+    excerpt: string;
+    tags: string[];
+    readTime: string;
+    publishedDate: string;
+    link: string;
+    featured?: boolean;
+  }>;
+}
+
+const { writingSamples } = Astro.props;
+---
+
+<div class="simple-showcase">
+  <!-- Filter Controls -->
+  <div class="filter-tabs">
+    <button class="filter-tab active" data-filter="all">All Work</button>
+    <button class="filter-tab" data-filter="case-study">Case Studies</button>
+    <button class="filter-tab" data-filter="article">Blog Posts</button>
+    <button class="filter-tab" data-filter="copy">Websites</button>
+  </div>
+
+  <!-- Writing Samples Grid -->
+  <div class="writing-grid" id="writing-grid">
+    {writingSamples.map((sample) => (
+      <a 
+        href={sample.link}
+        class={`writing-card ${sample.featured ? 'featured' : ''}`}
+        data-type={sample.type}
+        data-title={sample.title.toLowerCase()}
+        data-excerpt={sample.excerpt.toLowerCase()}
+        data-tags={sample.tags.join(' ').toLowerCase()}
+      >
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="card-type">{sample.type.replace('-', ' ')}</span>
+            {sample.client && <span class="card-client">{sample.client}</span>}
+          </div>
+          {sample.featured && <span class="featured-badge">Featured</span>}
+        </div>
+
+        <h3 class="card-title">{sample.title}</h3>
+        <p class="card-excerpt">{sample.excerpt}</p>
+
+        <div class="card-tags">
+          {sample.tags.map((tag) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+
+        <div class="card-footer">
+          <div class="card-meta-info">
+            {sample.type !== 'copy' && <span>{sample.readTime}</span>}
+            <span>{sample.type === 'copy' ? new Date(sample.publishedDate).getFullYear() : new Date(sample.publishedDate).toLocaleDateString()}</span>
+          </div>
+        </div>
+      </a>
+    ))}
+  </div>
+</div>
+
+<script>
+  class SimpleWritingShowcase {
+    private filterTabs: NodeListOf<HTMLButtonElement>;
+    private cards: NodeListOf<HTMLElement>;
+    private currentFilter: string = 'all';
+
+    constructor() {
+      this.filterTabs = document.querySelectorAll('.filter-tab');
+      this.cards = document.querySelectorAll('.writing-card');
+      
+      this.init();
+    }
+
+    init() {
+      this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+      // Filter functionality
+      this.filterTabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          const target = e.target as HTMLButtonElement;
+          this.currentFilter = target.dataset.filter || 'all';
+          
+          // Update active tab
+          this.filterTabs.forEach(t => t.classList.remove('active'));
+          target.classList.add('active');
+          
+          this.updateResults();
+        });
+      });
+
+      // Card hover effects
+      this.cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          card.style.transform = 'translateY(-4px)';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'translateY(0)';
+        });
+      });
+    }
+
+    updateResults() {
+      this.cards.forEach(card => {
+        const matchesFilter = this.currentFilter === 'all' || 
+                             card.dataset.type === this.currentFilter;
+        
+        if (matchesFilter) {
+          card.style.display = 'block';
+          card.style.animation = 'fadeInUp 0.3s ease forwards';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  }
+
+  // Initialize when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    new SimpleWritingShowcase();
+  });
+</script>
+
+<style>
+  .simple-showcase {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem 2rem 2rem;
+  }
+
+  .filter-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0;
+    flex-wrap: wrap;
+  }
+
+  .filter-tab {
+    background: var(--card-bg);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+
+  .filter-tab:hover {
+    background: var(--color-surface);
+    border-color: var(--color-accent);
+    transform: translateY(-1px);
+  }
+
+  .filter-tab.active {
+    background: var(--color-link);
+    color: white;
+    border-color: var(--color-link);
+  }
+
+  /* Dark mode adjustments for active filter tab */
+  html.dark .filter-tab.active,
+  .dark .filter-tab.active {
+    background: white !important;
+    color: black !important;
+    border-color: white !important;
+  }
+
+  .writing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .writing-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .writing-card:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .writing-card.featured {
+    border-color: var(--color-link);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  .card-meta {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .card-type {
+    background-color: var(--surface-glass);
+    color: var(--color-text);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .card-client {
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .featured-badge {
+    background-color: var(--color-link);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  /* Dark mode adjustments for featured badge */
+  html.dark .featured-badge,
+  .dark .featured-badge {
+    background-color: white !important;
+    color: black !important;
+  }
+
+  .card-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-heading);
+    margin: 0 0 0.75rem 0;
+    line-height: 1.4;
+  }
+
+  .card-excerpt {
+    color: var(--color-muted);
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+    font-size: 0.875rem;
+  }
+
+  .card-results {
+    background-color: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .results-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgb(34, 197, 94);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .results-value {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-top: 0.25rem;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .tag {
+    background-color: var(--surface-glass);
+    color: var(--color-muted);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+  }
+
+  .card-meta-info {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: var(--color-muted);
+  }
+
+
+  @media (max-width: 768px) {
+    .simple-showcase {
+      padding: 1rem;
+    }
+
+    .filter-tabs {
+      gap: 0.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-tab {
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+    }
+
+    .writing-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+</style>

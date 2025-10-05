@@ -11,8 +11,8 @@
 
 html { font-family: var(--font-sans); }
 
-/* Long-form reading uses the serif; headings stay in sans */
-.prose { font-family: var(--font-serif); }
+/* Use Inter for all content including long-form reading */
+.prose { font-family: var(--font-sans); }
 .prose h1, .prose h2, .prose h3,
 .prose h4, .prose strong, .prose b,
 .prose blockquote,
@@ -20,37 +20,202 @@ html { font-family: var(--font-sans); }
   font-family: var(--font-sans);
 }
 
-/* Palette tokens */
+/* ===========================
+   Unified Header System
+   =========================== */
+
+/* H1 - Main page titles and hero headings */
+h1, .h1 {
+  font-size: 2rem; /* 32px - mobile first */
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--color-heading);
+}
+
+@media (min-width: 480px) {
+  h1, .h1 {
+    font-size: 2.25rem; /* 36px */
+  }
+}
+
+@media (min-width: 640px) {
+  h1, .h1 {
+    font-size: 2.5rem; /* 40px */
+  }
+}
+
+@media (min-width: 768px) {
+  h1, .h1 {
+    font-size: 3rem; /* 48px */
+  }
+}
+
+/* H1 Hero variant - for main hero sections */
+h1.hero, .h1.hero {
+  font-size: 2.25rem; /* 36px - mobile first */
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.025em;
+}
+
+@media (min-width: 480px) {
+  h1.hero, .h1.hero {
+    font-size: 2.5rem; /* 40px */
+  }
+}
+
+@media (min-width: 640px) {
+  h1.hero, .h1.hero {
+    font-size: 3rem; /* 48px */
+  }
+}
+
+@media (min-width: 768px) {
+  h1.hero, .h1.hero {
+    font-size: 3.75rem; /* 60px */
+  }
+}
+
+/* H2 - Section headers */
+h2, .h2 {
+  font-size: 1.5rem; /* 24px - mobile first */
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--color-heading);
+}
+
+@media (min-width: 480px) {
+  h2, .h2 {
+    font-size: 1.75rem; /* 28px */
+  }
+}
+
+@media (min-width: 640px) {
+  h2, .h2 {
+    font-size: 2.25rem; /* 36px */
+  }
+}
+
+/* H3 - Subsection headers */
+h3, .h3 {
+  font-size: 1.25rem; /* 20px - mobile first */
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--color-heading);
+}
+
+@media (min-width: 480px) {
+  h3, .h3 {
+    font-size: 1.375rem; /* 22px */
+  }
+}
+
+@media (min-width: 640px) {
+  h3, .h3 {
+    font-size: 1.75rem; /* 28px */
+  }
+}
+
+/* H4 - Component titles and small section headers */
+h4, .h4 {
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--color-heading);
+}
+
+@media (min-width: 640px) {
+  h4, .h4 {
+    font-size: 1.375rem; /* 22px */
+  }
+}
+
+/* H5 - Small headers */
+h5 {
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--color-heading);
+}
+
+/* H6 - Smallest headers */
+h6 {
+  font-size: 1rem; /* 16px */
+  line-height: 1.5;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--color-heading);
+}
+
+/* Prose content headers inherit the unified system */
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  color: var(--color-heading);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.prose h1:first-child, .prose h2:first-child, .prose h3:first-child, 
+.prose h4:first-child, .prose h5:first-child, .prose h6:first-child {
+  margin-top: 0;
+}
+
+/* Palette tokens - Simplified Cohesive Design System */
 :root {
-  --color-bg: #E8F2FF;
-  --color-surface: #FFFFFF;
-  --color-text: #0C1222;
-  --color-heading: #0A1A2E;
-  --color-muted: #5B6472;
-  --color-border: #D9E0EA;
-  --color-link: #0A5CFF;
-  --color-accent: #0E3357;
-  --header-bg: #D6E8FF;
+  /* Light theme - Clean white with consistent dark accents */
+  --color-bg: #ffffff;           /* Pure white background */
+  --color-surface: #ffffff;      /* White surface */
+  --color-text: #212529;         /* Dark gray text */
+  --color-heading: #000000;      /* Black headings */
+  --color-muted: #495057;        /* Darker gray muted text for better readability */
+  --color-border: #dee2e6;       /* Light gray borders */
+  --color-link: #212529;         /* Dark gray links */
+  --color-accent: #495057;       /* Darker gray accent for consistency */
+  --header-bg: #212529;          /* Dark gray header background */
+
+  /* Section background colors - consistent */
+  --section-bg: #ffffff;             /* Unified section background */
 
   --surface-glass: color-mix(in srgb, var(--color-surface) 78%, transparent);
   --surface-glass-strong: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  --card-bg: #f8f9fa;  /* Card background - slightly off-white for subtle distinction */
 }
 
 .dark {
-  --color-bg: #090E18;
-  --color-surface: #0C1220;
-  --color-text: #E8EDF7;
-  --color-heading: #F0F4F8;
-  --color-muted: #A6ADBB;
-  --color-border: #2B3140;
-  --color-link: #4A7C9D;
-  --color-accent: #0E3357;
-  --header-bg: #0B1420;
+  /* Dark theme - Consistent dark with light accents */
+  --color-bg: #000000;           /* Black background */
+  --color-surface: #000000;      /* Black surface */
+  --color-text: #ffffff;         /* White text */
+  --color-heading: #ffffff;      /* White headings */
+  --color-muted: #6c757d;        /* Medium gray muted text */
+  --color-border: #495057;       /* Dark gray borders */
+  --color-link: #ffffff;         /* White links */
+  --color-accent: #6c757d;       /* Medium gray accent */
+  --header-bg: #212529;          /* Dark gray header background */
+
+  /* Section background colors - consistent */
+  --section-bg: #000000;             /* Unified section background */
 
   --surface-glass: color-mix(in srgb, var(--color-surface) 62%, transparent);
   --surface-glass-strong: color-mix(in srgb, var(--color-surface) 74%, transparent);
+  --card-bg: #0a0a0a;  /* Card background - slightly lighter than pure black for distinction */
 }
 
+
+html {
+  overflow-x: hidden; /* Prevent horizontal scrolling at root level */
+}
+
+/* Ensure sections extend full width */
+section {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
 
 body {
   min-height: 100svh;
@@ -91,47 +256,49 @@ a:hover {
 }
 
 /* ===========================
-   Smooth light/dark transitions
+   Smooth light/dark transitions - DRAMATIC MODE
    =========================== */
 @media (prefers-reduced-motion: no-preference) {
-  /* Cross-fade core UI colors */
-  .theme-xfade,
-  .theme-xfade * {
+  /* Apply smooth transitions to all elements */
+  html,
+  html * {
     transition:
-      background-color 520ms ease,
-      color 520ms ease,
-      border-color 520ms ease,
-      fill 520ms ease,
-      stroke 520ms ease,
-      box-shadow 520ms ease;
+      background-color 800ms cubic-bezier(0.4, 0, 0.2, 1),
+      color 800ms cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 800ms cubic-bezier(0.4, 0, 0.2, 1),
+      fill 800ms cubic-bezier(0.4, 0, 0.2, 1),
+      stroke 800ms cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 800ms cubic-bezier(0.4, 0, 0.2, 1),
+      background 800ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Ease gradients/vignette too */
-  .theme-xfade .bg-base,
-  .theme-xfade .bg-vignette {
-    transition: background 520ms ease;
+  /* Exclude elements that need instant feedback */
+  button:active,
+  a:active,
+  .no-transition {
+    transition-duration: 150ms;
   }
 
-  /* Soft veil overlay to mask abrupt pops during the swap */
-  .theme-xfade::before {
+  /* Soft veil overlay for dramatic effect */
+  html::before {
     content: "";
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: 50;
-    background: linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.02));
+    z-index: 9999;
+    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.15) 100%);
     opacity: 0;
-    transition: opacity 520ms ease;
+    transition: opacity 400ms ease-in-out;
   }
 
-  /* In dark mode, use a lighter veil so it doesn't over-darken */
-  .theme-xfade.dark::before {
-    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+  /* In dark mode, use a lighter veil */
+  html.dark::before {
+    background: radial-gradient(circle at center, transparent 0%, rgba(255,255,255,0.08) 100%);
   }
 
-  /* Activate veil during the crossfade */
-  .theme-xfade.theme-xfade--active::before {
-    opacity: .8; /* tweak between .5 and .9 per taste */
+  /* Activate veil during theme change */
+  html.theme-transitioning::before {
+    opacity: 1;
   }
 }
 
@@ -172,7 +339,64 @@ a:hover {
 html {
   overflow-y: scroll;        /* always reserve vertical scrollbar area */
   scrollbar-gutter: stable;  /* right edge only - no left strip */
-  background-color: var(--bg-end); /* paints the gutter on some UAs */
+  background-color: var(--color-bg); /* paints the gutter on some UAs */
+}
+
+/* ===========================
+   Custom Scrollbar Styling
+   =========================== */
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-text) 30%, transparent);
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-text) 50%, transparent);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: color-mix(in srgb, var(--color-text) 70%, transparent);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox */
+html {
+  scrollbar-width: auto;
+  scrollbar-color: color-mix(in srgb, var(--color-text) 30%, transparent) transparent;
+}
+
+/* Dark mode adjustments */
+.dark ::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-text) 25%, transparent);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-text) 40%, transparent);
+}
+
+.dark ::-webkit-scrollbar-thumb:active {
+  background: color-mix(in srgb, var(--color-text) 60%, transparent);
+}
+
+.dark html {
+  scrollbar-color: color-mix(in srgb, var(--color-text) 25%, transparent) transparent;
 }
 
 /* Make sure the page itself always fills the viewport height */
@@ -204,7 +428,7 @@ a[href="/work"]:active {
 /* Button styles to ensure proper visibility and no unwanted outlines */
 .btn-primary {
   background-color: var(--color-link) !important;
-  color: white !important;
+  color: var(--color-bg) !important; /* Use background color for text to ensure contrast */
   border: none !important;
   outline: none !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -221,4 +445,519 @@ a[href="/work"]:active {
 .btn-primary:focus-visible {
   outline: none !important;
   box-shadow: 0 0 0 2px white, 0 0 0 4px var(--color-link) !important;
+}
+
+/* ===========================
+   Snake Border Animation
+   =========================== */
+@property --snake-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes snake-flow {
+  from {
+    --snake-angle: 0deg;
+  }
+  to {
+    --snake-angle: 360deg;
+  }
+}
+
+.snake-border-button {
+  position: relative;
+  border: none !important;
+  background: var(--color-bg) !important;
+  color: var(--color-text) !important;
+  z-index: 1;
+  --snake-angle: 0deg;
+}
+
+.snake-border-button::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  padding: 4px;
+  background: conic-gradient(
+    from var(--snake-angle) at 50% 50%,
+    var(--color-text),
+    var(--color-text),
+    var(--color-muted),
+    var(--color-accent),
+    var(--color-text),
+    var(--color-muted),
+    var(--color-accent),
+    var(--color-text),
+    var(--color-muted),
+    var(--color-accent),
+    var(--color-text),
+    var(--color-text)
+  );
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: snake-flow 4s linear infinite;
+  z-index: -1;
+  filter: drop-shadow(0 0 16px color-mix(in srgb, var(--color-text) 50%, transparent));
+}
+
+/* Light theme specific snake border - enhanced with white for better visibility */
+:root:not(.dark) .snake-border-button::before {
+  background: conic-gradient(
+    from var(--snake-angle) at 50% 50%,
+    var(--color-text),     /* #212529 - Dark gray */
+    #ffffff,              /* White for better distinction */
+    var(--color-muted),    /* #495057 - Darker gray */
+    #ffffff,              /* White for better distinction */
+    var(--color-text),     /* #212529 - Dark gray */
+    #ffffff,              /* White for better distinction */
+    var(--color-muted),    /* #495057 - Darker gray */
+    var(--color-text),     /* #212529 - Dark gray */
+    #ffffff,              /* White for better distinction */
+    var(--color-muted),    /* #495057 - Darker gray */
+    var(--color-text)      /* #212529 - Dark gray */
+  );
+  animation: snake-flow 4s linear infinite;
+  filter: drop-shadow(0 0 16px color-mix(in srgb, var(--color-text) 50%, transparent));
+}
+
+.snake-border-button::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  border: 4px solid color-mix(in srgb, var(--color-text) 20%, transparent);
+  z-index: -2;
+  pointer-events: none;
+  box-shadow: 
+    0 0 0 1px color-mix(in srgb, var(--color-text) 25%, transparent),
+    0 2px 10px color-mix(in srgb, var(--color-text) 20%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--color-text) 15%, transparent);
+}
+
+.snake-border-button:hover::before {
+  filter: drop-shadow(0 0 20px color-mix(in srgb, var(--color-text) 65%, transparent));
+}
+
+.snake-border-button:hover::after {
+  border-color: color-mix(in srgb, var(--color-text) 30%, transparent);
+  box-shadow: 
+    0 0 0 1px color-mix(in srgb, var(--color-text) 35%, transparent),
+    0 3px 14px color-mix(in srgb, var(--color-text) 30%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--color-text) 20%, transparent);
+}
+
+.snake-border-button:hover {
+  background: var(--surface-glass) !important;
+  transform: translateY(-1px) !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.snake-border-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-border) 50%, transparent);
+}
+
+.snake-border-button:active {
+  transform: translateY(0) !important;
+}
+
+/* Theme toggle icon hover effects */
+#theme-toggle:hover svg:first-child {
+  stroke: #fbbf24 !important; /* Yellow color for sun icon on hover */
+}
+
+#theme-toggle:hover svg:last-child {
+  stroke: #60a5fa !important; /* Blue color for moon icon on hover */
+}
+
+/* CardStack navigation controls positioning */
+.card-nav-controls {
+  /* Removed negative translateY to prevent overlap */
+}
+
+/* ===========================
+   Case Study Styling
+   =========================== */
+
+/* Better text flow and spacing for case studies */
+.prose p {
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  hyphens: none;
+  word-spacing: 0.1em;
+}
+
+.prose h2 {
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.prose h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Responsive adjustments for case study layout */
+@media (max-width: 1024px) {
+  .max-w-5xl {
+    max-width: 56rem !important; /* 4xl */
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .max-w-5xl {
+    max-width: 48rem !important; /* 3xl */
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .prose p {
+    text-align: left; /* Better for mobile */
+    line-height: 1.6;
+  }
+}
+
+/* Case study hero section */
+.case-study-hero {
+  background: linear-gradient(135deg, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg) 95%, var(--color-muted) 5%) 100%);
+  border-bottom: 1px solid var(--color-border);
+  padding: 3rem 0;
+  margin-bottom: 3rem;
+}
+
+.case-study-hero h1 {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  color: var(--color-heading);
+}
+
+.case-study-hero .subtitle {
+  font-size: 1.25rem;
+  color: var(--color-muted);
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+/* Case study metadata grid */
+.case-study-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+  padding: 2rem;
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+}
+
+.case-study-meta h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-heading);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.case-study-meta ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.case-study-meta li {
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.case-study-meta li::before {
+  content: "▶";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-weight: bold;
+}
+
+
+.challenge-section,
+.benefit-section {
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+.challenge-section {
+  background: color-mix(in srgb, #fef2f2 50%, var(--color-bg) 50%);
+  border-left: 4px solid #ef4444;
+}
+
+.benefit-section {
+  background: color-mix(in srgb, #f0fdf4 50%, var(--color-bg) 50%);
+  border-left: 4px solid #22c55e;
+}
+
+.challenge-section h3,
+.benefit-section h3 {
+  margin-bottom: 1rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.challenge-section h3 {
+  color: #dc2626;
+}
+
+.benefit-section h3 {
+  color: #16a34a;
+}
+
+/* Company background section */
+.company-background {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  margin: 2rem 0;
+}
+
+/* Quote styling */
+.case-study-quote {
+  background: var(--card-bg);
+  border-left: 4px solid var(--color-accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+}
+
+.case-study-quote p {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.case-study-quote .attribution {
+  margin-top: 1rem;
+  font-style: normal;
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+/* Section headers with icons */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 3rem 0 1.5rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.section-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--color-accent);
+}
+
+/* Results highlight */
+.results-highlight {
+  background: linear-gradient(135deg, var(--color-accent) 0%, color-mix(in srgb, var(--color-accent) 80%, var(--color-text) 20%) 100%);
+  color: var(--color-bg);
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  text-align: center;
+  margin: 2rem 0;
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+
+/* CTA section */
+.cta-section {
+  background: var(--card-bg);
+  padding: 2.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  text-align: center;
+  margin: 3rem 0;
+}
+
+.cta-section h3 {
+  margin-bottom: 1rem;
+  color: var(--color-heading);
+}
+
+.cta-section p {
+  color: var(--color-muted);
+  margin-bottom: 1.5rem;
+}
+
+/* About section */
+.about-section {
+  background: color-mix(in srgb, var(--color-bg) 95%, var(--color-muted) 5%);
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  margin: 2rem 0;
+}
+
+.about-section h3 {
+  color: var(--color-heading);
+  margin-bottom: 1rem;
+}
+
+/* Original source section */
+.original-source {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.original-source p {
+  margin: 0;
+}
+
+.original-source a {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.original-source a:hover {
+  color: var(--color-link);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .case-study-meta {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .case-study-hero h1 {
+    font-size: 2rem;
+  }
+  
+  .case-study-hero .subtitle {
+    font-size: 1.125rem;
+  }
+}
+
+/* Dark mode adjustments */
+.dark .challenge-section {
+  background: color-mix(in srgb, #7f1d1d 20%, var(--color-bg) 80%);
+}
+
+.dark .benefit-section {
+  background: color-mix(in srgb, #14532d 20%, var(--color-bg) 80%);
+}
+
+/* ===========================
+   Blog Post Styling
+   =========================== */
+
+
+/* Blog intro section */
+.blog-intro {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  margin: 2rem 0;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+/* Blog sections */
+.blog-section {
+  margin: 2rem 0;
+}
+
+.blog-section p {
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+}
+
+/* Blog section headers */
+.blog-section-header {
+  margin: 3rem 0 1.5rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.blog-section-header h2 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-heading);
+}
+
+/* Blog stat card */
+.blog-stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--color-border);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  color: var(--color-accent);
+}
+
+.stat-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* Responsive adjustments for blog posts */
+@media (max-width: 768px) {
+  .blog-intro {
+    padding: 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .blog-section-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .stat-number {
+    font-size: 2.5rem;
+  }
+  
+  .stat-text {
+    font-size: 1rem;
+  }
+  
+}
+
+.dark .results-highlight {
+  background: linear-gradient(135deg, var(--color-accent) 0%, color-mix(in srgb, var(--color-accent) 80%, var(--color-text) 20%) 100%);
+  color: var(--color-bg);
 }

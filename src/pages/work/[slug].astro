@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import ArticleLayout from "../../layouts/ArticleLayout.astro";
+import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("work", ({ data }) => !data.draft);
@@ -14,7 +14,7 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 ---
 
-<ArticleLayout
+<CaseStudyLayout
   title={entry.data.title}
   description={entry.data.summary}
   pubDate={entry.data.pubDate}
@@ -22,4 +22,4 @@ const { Content } = await entry.render();
   ogImage={entry.data.ogImage}
 >
   <Content />
-</ArticleLayout>
+</CaseStudyLayout>

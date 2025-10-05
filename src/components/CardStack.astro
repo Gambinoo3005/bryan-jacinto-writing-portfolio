@@ -70,7 +70,7 @@ if (!cards || cards.length === 0) {
             )}
             <div class="card-body">
               <div class="card-header">
-                <h3 class="card-title">{card.title}</h3>
+                <h3>{card.title}</h3>
                 {card.company && (
                   <div class="card-meta">
                     <span class="card-company">{card.company}</span>
@@ -80,36 +80,46 @@ if (!cards || cards.length === 0) {
                 )}
               </div>
               <p class="card-description">{card.description}</p>
-              {index === 0 && cards.length > 1 && (
-                <div class="card-stack-indicator">
-                  <span class="stack-count">{cards.length} experiences</span>
-                </div>
-              )}
             </div>
           </div>
         </div>
       ))}
     </div>
 
-    <!-- Navigation Controls -->
-    <div class="card-stack-controls">
+    <!-- Mobile Swipe Hint -->
+    <div class="swipe-hint">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="5 12 12 12 12 5"></polyline>
+        <path d="M12 12l7 7-7 7"></path>
+      </svg>
+      <span>Swipe to navigate</span>
+    </div>
+
+    <!-- Navigation Controls - Redesigned -->
+    <div class="card-nav-controls">
       <button 
-        class="nav-button nav-button-left" 
-        aria-label="Previous card"
+        class="card-nav-btn card-nav-prev" 
+        aria-label="Previous experience"
         disabled
       >
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd"/>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </button>
       
+      <div class="card-nav-indicator">
+        <span class="current-position">1</span>
+        <span class="nav-separator">/</span>
+        <span class="total-cards">{cards.length}</span>
+      </div>
+      
       <button 
-        class="nav-button nav-button-right" 
-        aria-label="Next card"
+        class="card-nav-btn card-nav-next" 
+        aria-label="Next experience"
         disabled={cards.length <= 1}
       >
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"/>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
       </button>
     </div>
@@ -120,18 +130,32 @@ if (!cards || cards.length === 0) {
   class CardStack {
     private container: HTMLElement;
     private cards: HTMLElement[];
-    private leftButton: HTMLButtonElement;
-    private rightButton: HTMLButtonElement;
+    private prevButton: HTMLButtonElement;
+    private nextButton: HTMLButtonElement;
+    private positionIndicator: HTMLElement | null;
+    private swipeHint: HTMLElement | null;
     private currentIndex: number;
     private totalCards: number;
+    private hoveredCard: HTMLElement | null = null;
+    private cardRandomOffsets: Array<{ x: number; y: number; rotation: number }> = [];
 
     constructor(container: HTMLElement) {
       this.container = container;
       this.cards = Array.from(container.querySelectorAll('.card')) as HTMLElement[];
-      this.leftButton = container.querySelector('.nav-button-left') as HTMLButtonElement;
-      this.rightButton = container.querySelector('.nav-button-right') as HTMLButtonElement;
+      this.prevButton = container.querySelector('.card-nav-prev') as HTMLButtonElement;
+      this.nextButton = container.querySelector('.card-nav-next') as HTMLButtonElement;
+      this.positionIndicator = container.querySelector('.current-position');
+      this.swipeHint = container.querySelector('.swipe-hint');
       this.currentIndex = 0;
       this.totalCards = this.cards.length;
+      this.hoveredCard = null;
+      
+      // Generate random offsets for each card to create organic stack appearance
+      this.cardRandomOffsets = this.cards.map(() => ({
+        x: (Math.random() - 0.5) * 8, // Random x offset between -4px and 4px
+        y: (Math.random() - 0.5) * 6, // Random y offset between -3px and 3px
+        rotation: (Math.random() - 0.5) * 2 // Random rotation between -1deg and 1deg
+      }));
       
       this.init();
     }
@@ -143,8 +167,8 @@ if (!cards || cards.length === 0) {
     }
 
     setupEventListeners() {
-      this.leftButton.addEventListener('click', () => this.previousCard());
-      this.rightButton.addEventListener('click', () => this.nextCard());
+      this.prevButton.addEventListener('click', () => this.previousCard());
+      this.nextButton.addEventListener('click', () => this.nextCard());
       
       // Keyboard support
       document.addEventListener('keydown', (e) => {
@@ -189,10 +213,128 @@ if (!cards || cards.length === 0) {
         startX = 0;
         startY = 0;
       });
+
+      // Hover effect for stacked cards - pull upward like pulling from a deck
+      this.cards.forEach((card: HTMLElement, index: number) => {
+        card.addEventListener('mouseenter', () => {
+          if (card.classList.contains('card-stacked')) {
+            // Clear any previously hovered card first
+            if (this.hoveredCard && this.hoveredCard !== card) {
+              const prevIndex = this.cards.indexOf(this.hoveredCard);
+              this.removeHoverEffect(this.hoveredCard, prevIndex);
+            }
+            // Apply hover effect to current card
+            this.hoveredCard = card;
+            this.applyHoverEffect(card, index);
+          }
+        });
+
+        card.addEventListener('mouseleave', () => {
+          if (card.classList.contains('card-stacked') && this.hoveredCard === card) {
+            this.removeHoverEffect(card, index);
+            this.hoveredCard = null;
+          }
+        });
+
+        // Click functionality - bring clicked card to front
+        card.addEventListener('click', () => {
+          if (card.classList.contains('card-stacked')) {
+            this.goToCard(index);
+          }
+        });
+      });
+
+      // Clear hover state when mouse leaves the entire card deck
+      const cardDeck = this.container.querySelector('.card-deck');
+      if (cardDeck) {
+        cardDeck.addEventListener('mouseleave', () => {
+          if (this.hoveredCard) {
+            const hoveredIndex = this.cards.indexOf(this.hoveredCard);
+            this.removeHoverEffect(this.hoveredCard, hoveredIndex);
+            this.hoveredCard = null;
+          }
+        });
+      }
+    }
+
+    applyHoverEffect(card: HTMLElement, index: number) {
+      const distance = index - this.currentIndex;
+      
+      // Calculate transform values for hover state
+      const offset = distance * this.getStackShift();
+      const scale = Math.max(0.92, 1 - (Math.abs(distance) * this.getStackScale()));
+      
+      // Minimal pull - just enough to indicate hover
+      const pullUpDistance = -12; // Minimal 12px pull
+      const hoverScale = scale + 0.015; // Very subtle scale increase
+      
+      // Get random offsets for this card
+      const randomOffset = this.cardRandomOffsets[index];
+      const totalXOffset = offset + randomOffset.x;
+      const totalYOffset = randomOffset.y + pullUpDistance;
+      
+      if (distance > 0) {
+        // Future cards (right side)
+        const rotation = this.getEnterRotation() * (1 - distance * 0.08);
+        const totalRotation = rotation + randomOffset.rotation;
+        card.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${totalYOffset}px) scale(${hoverScale}) rotate(${totalRotation}deg)`;
+      } else {
+        // Past cards (left side)
+        const totalRotation = randomOffset.rotation;
+        card.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${totalYOffset}px) scale(${hoverScale}) rotate(${totalRotation}deg)`;
+      }
+      
+      // DON'T change z-index or opacity - maintain stack hierarchy and prevent transparency
+      
+      // Apply shadow and text visibility
+      const cardContent = card.querySelector('.card-content') as HTMLElement;
+      const cardBody = card.querySelector('.card-body') as HTMLElement;
+      if (cardContent) {
+        cardContent.style.boxShadow = 'none';
+      }
+      if (cardBody) {
+        cardBody.style.opacity = '0.2';
+      }
+    }
+
+    removeHoverEffect(card: HTMLElement, index: number) {
+      const distance = index - this.currentIndex;
+      
+      // Restore original transform with random offsets
+      const offset = distance * this.getStackShift();
+      const scale = Math.max(0.92, 1 - (Math.abs(distance) * this.getStackScale()));
+      
+      // Get random offsets for this card
+      const randomOffset = this.cardRandomOffsets[index];
+      const totalXOffset = offset + randomOffset.x;
+      
+      if (distance > 0) {
+        const rotation = this.getEnterRotation() * (1 - distance * 0.08);
+        const totalRotation = rotation + randomOffset.rotation;
+        card.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${randomOffset.y}px) scale(${scale}) rotate(${totalRotation}deg)`;
+        card.style.opacity = '1'; // Keep fully opaque
+        card.style.zIndex = (50 - distance).toString();
+      } else {
+        const totalRotation = randomOffset.rotation;
+        card.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${randomOffset.y}px) scale(${scale}) rotate(${totalRotation}deg)`;
+        card.style.opacity = '1'; // Keep fully opaque
+        card.style.zIndex = (50 + distance).toString();
+      }
+      
+      // Restore original shadow and text visibility
+      const cardContent = card.querySelector('.card-content') as HTMLElement;
+      const cardBody = card.querySelector('.card-body') as HTMLElement;
+      if (cardContent) {
+        cardContent.style.boxShadow = '';
+      }
+      if (cardBody) {
+        cardBody.style.opacity = '';
+      }
     }
 
     nextCard() {
       if (this.currentIndex < this.totalCards - 1) {
+        this.hideSwipeHint();
         this.currentIndex++;
         this.updateCards();
         this.updateButtonStates();
@@ -201,13 +343,39 @@ if (!cards || cards.length === 0) {
 
     previousCard() {
       if (this.currentIndex > 0) {
+        this.hideSwipeHint();
         this.currentIndex--;
         this.updateCards();
         this.updateButtonStates();
       }
     }
 
+    hideSwipeHint() {
+      if (this.swipeHint) {
+        this.swipeHint.style.opacity = '0';
+        this.swipeHint.style.pointerEvents = 'none';
+        setTimeout(() => {
+          if (this.swipeHint) {
+            this.swipeHint.style.display = 'none';
+          }
+        }, 300);
+      }
+    }
+
+    goToCard(index: number) {
+      if (index >= 0 && index < this.totalCards && index !== this.currentIndex) {
+        this.currentIndex = index;
+        this.updateCards();
+        this.updateButtonStates();
+      }
+    }
+
     updateCards() {
+      // Clear any hover state when navigating
+      if (this.hoveredCard) {
+        this.hoveredCard = null;
+      }
+      
       this.cards.forEach((card: HTMLElement, index: number) => {
         const cardElement = card;
         const distance = index - this.currentIndex;
@@ -215,8 +383,19 @@ if (!cards || cards.length === 0) {
         // Remove all classes first
         cardElement.classList.remove('card-active', 'card-stacked', 'card-hidden', 'card-hidden-text');
         
-        // Smoother staggered delay
-        const delay = Math.abs(distance) * 25; // Reduced delay for smoother feel
+        // Clear any inline styles from hover effects to prevent text color bugs
+        const cardContent = card.querySelector('.card-content') as HTMLElement;
+        const cardBody = card.querySelector('.card-body') as HTMLElement;
+        if (cardContent) {
+          cardContent.style.boxShadow = '';
+        }
+        if (cardBody) {
+          cardBody.style.opacity = '';
+        }
+        
+        // Cascading animation - each card animates based on its index position
+        // This creates a consistent wave effect for EVERY navigation (nav buttons or click)
+        const delay = index * 80; // Each card in the stack animates 80ms after the previous one
         
         if (distance === 0) {
           // Active card (centered)
@@ -225,28 +404,36 @@ if (!cards || cards.length === 0) {
           cardElement.style.transform = 'translateX(-50%) scale(1) rotate(0deg)';
           cardElement.style.opacity = '1';
           cardElement.style.zIndex = '100';
-        } else if (distance > 0) {
+         } else if (distance > 0) {
           // Future cards (right side, tilted) - hide text content
           cardElement.classList.add('card-stacked', 'card-hidden-text');
           const offset = distance * this.getStackShift();
           const scale = Math.max(0.92, 1 - (distance * this.getStackScale())); // Less aggressive scaling
           const rotation = this.getEnterRotation() * (1 - distance * 0.08); // Smoother rotation
-          const opacity = Math.max(0.4, this.getEnterOpacity() - (distance * 0.08)); // Better opacity
+          
+          // Add random offsets for organic appearance
+          const randomOffset = this.cardRandomOffsets[index];
+          const totalXOffset = offset + randomOffset.x;
+          const totalRotation = rotation + randomOffset.rotation;
           
           cardElement.style.transitionDelay = `${delay}ms`;
-          cardElement.style.transform = `translateX(calc(-50% + ${offset}px)) scale(${scale}) rotate(${rotation}deg)`;
-          cardElement.style.opacity = opacity.toString();
+          cardElement.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${randomOffset.y}px) scale(${scale}) rotate(${totalRotation}deg)`;
+          cardElement.style.opacity = '1'; // Fully opaque to prevent text bleeding
           cardElement.style.zIndex = (50 - distance).toString();
         } else {
           // Past cards (left side, stacked) - hide text content
           cardElement.classList.add('card-stacked', 'card-hidden-text');
           const offset = distance * this.getStackShift();
           const scale = Math.max(0.92, 1 - (Math.abs(distance) * this.getStackScale())); // Less aggressive scaling
-          const opacity = Math.max(0.4, 0.7 - (Math.abs(distance) * 0.08)); // Better opacity
+          
+          // Add random offsets for organic appearance
+          const randomOffset = this.cardRandomOffsets[index];
+          const totalXOffset = offset + randomOffset.x;
+          const totalRotation = randomOffset.rotation;
           
           cardElement.style.transitionDelay = `${delay}ms`;
-          cardElement.style.transform = `translateX(calc(-50% + ${offset}px)) scale(${scale}) rotate(0deg)`;
-          cardElement.style.opacity = opacity.toString();
+          cardElement.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${randomOffset.y}px) scale(${scale}) rotate(${totalRotation}deg)`;
+          cardElement.style.opacity = '1'; // Fully opaque to prevent text bleeding
           cardElement.style.zIndex = (50 + distance).toString();
         }
       });
@@ -256,12 +443,17 @@ if (!cards || cards.length === 0) {
         this.cards.forEach((card: HTMLElement) => {
           card.style.transitionDelay = '0ms';
         });
-      }, 800 + (this.cards.length * 25)); // Adjusted timing
+      }, 600 + (this.cards.length * 80)); // Adjusted timing to match cascade effect
     }
 
     updateButtonStates() {
-      this.leftButton.disabled = this.currentIndex === 0;
-      this.rightButton.disabled = this.currentIndex === this.totalCards - 1;
+      this.prevButton.disabled = this.currentIndex === 0;
+      this.nextButton.disabled = this.currentIndex === this.totalCards - 1;
+      
+      // Update position indicator
+      if (this.positionIndicator) {
+        this.positionIndicator.textContent = (this.currentIndex + 1).toString();
+      }
     }
 
     positionCards() {
@@ -303,8 +495,29 @@ if (!cards || cards.length === 0) {
     --transition-duration: 400ms;
     --card-width: 784px;
     --card-height: 343px;
-    --shadow-active: 0 20px 40px rgba(14, 51, 87, 0.15);
-    --shadow-stacked: 0 8px 20px rgba(14, 51, 87, 0.08);
+    --shadow-active: none;
+    --shadow-stacked: none;
+  }
+
+  /* Mobile-first responsive card dimensions */
+  @media (max-width: 768px) {
+    .card-stack-container {
+      --card-width: calc(100vw - 3rem);
+      --card-height: 320px;
+      --stack-shift: 25px;
+      --stack-scale: 0.06;
+      --enter-rotation: 3deg;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card-stack-container {
+      --card-width: calc(100vw - 2rem);
+      --card-height: 300px;
+      --stack-shift: 20px;
+      --stack-scale: 0.08;
+      --enter-rotation: 2deg;
+    }
   }
 
   .card-stack-wrapper {
@@ -312,70 +525,156 @@ if (!cards || cards.length === 0) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 15px;
     padding: 1rem;
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
   }
 
-  .card-stack-controls {
-    display: flex;
-    gap: 1rem;
-    z-index: 5;
-    position: relative;
+  /* Swipe Hint - Mobile Only */
+  .swipe-hint {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    background-color: var(--surface-glass);
+    border: 1px solid var(--color-border);
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-muted);
+    margin-bottom: 0.5rem;
+    animation: swipeHintPulse 2s ease-in-out infinite;
+    transition: opacity 300ms ease, display 300ms ease;
+    user-select: none;
   }
 
-  .nav-button {
+  @keyframes swipeHintPulse {
+    0%, 100% {
+      opacity: 0.6;
+      transform: translateX(0);
+    }
+    50% {
+      opacity: 1;
+      transform: translateX(4px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .swipe-hint {
+      display: flex;
+    }
+  }
+
+  .card-nav-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    z-index: 5;
+    position: relative;
+    margin-top: -35px;
+  }
+
+  /* Hide navigation controls on mobile */
+  @media (max-width: 768px) {
+    .card-nav-controls {
+      display: none;
+    }
+  }
+
+  .card-nav-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
-    background-color: var(--surface-glass);
-    border: 1px solid var(--color-border);
+    background-color: var(--card-bg);
+    border: 2px solid var(--color-border);
     color: var(--color-text);
-    transition: all var(--transition-duration) ease;
-    box-shadow: var(--shadow-stacked);
+    box-shadow: none;
     cursor: pointer;
+    transition: all 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
   }
 
-  .nav-button:hover:not(:disabled) {
+  .card-nav-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, var(--color-link) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 250ms ease;
+  }
+
+  .card-nav-btn:hover:not(:disabled) {
     background-color: var(--surface-glass-strong);
     border-color: var(--color-link);
     color: var(--color-link);
-    box-shadow: var(--shadow-active);
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: none;
   }
 
-  .nav-button:disabled {
-    opacity: 0.4;
+  .card-nav-btn:hover:not(:disabled)::before {
+    opacity: 0.06;
+  }
+
+  .card-nav-btn:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+    box-shadow: none;
+  }
+
+  .card-nav-btn:disabled {
+    opacity: 0.3;
     cursor: not-allowed;
-    transform: none;
+    transform: scale(0.95);
   }
 
-  .nav-button:disabled:hover {
-    background-color: var(--surface-glass);
-    border-color: var(--color-border);
-    color: var(--color-text);
-    box-shadow: var(--shadow-stacked);
-    transform: none;
-  }
-
-  .nav-button:focus-visible {
+  .card-nav-btn:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px white, 0 0 0 4px var(--color-link);
+    box-shadow: 0 0 0 3px var(--color-bg), 0 0 0 5px var(--color-link);
+  }
+
+  .card-nav-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background-color: var(--surface-glass);
+    border: 1px solid var(--color-border);
+    border-radius: 2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text);
+    box-shadow: none;
+    user-select: none;
+  }
+
+  .current-position {
+    color: var(--color-link);
+    font-size: 1.1rem;
+  }
+
+  .nav-separator {
+    opacity: 0.4;
+  }
+
+  .total-cards {
+    opacity: 0.6;
   }
 
   .card-deck {
     position: relative;
     width: var(--card-width);
     height: var(--card-height);
+    min-height: 320px;
     perspective: 1000px;
     touch-action: pan-y; /* Allow vertical scrolling but handle horizontal swipes */
     margin: 0 auto;
-    max-width: calc(100vw - 8rem);
+    max-width: calc(100vw - 2rem);
     overflow: visible; /* Allow cards to extend beyond deck for stacking effect */
     isolation: isolate;
     z-index: 10;
@@ -385,16 +684,32 @@ if (!cards || cards.length === 0) {
     contain: none;
   }
 
+  /* Mobile responsive adjustments */
+  @media (max-width: 768px) {
+    .card-deck {
+      max-width: calc(100vw - 3rem);
+      height: 320px;
+      min-height: 320px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card-deck {
+      max-width: calc(100vw - 2rem);
+      height: 300px;
+      min-height: 300px;
+    }
+  }
+
   .card {
     position: absolute;
     top: 0;
     left: 50%;
     width: var(--card-width);
     height: var(--card-height);
-    max-width: calc(100vw - 8rem);
+    max-width: calc(100vw - 2rem);
     transform: translateX(-50%);
-    transition: all 800ms cubic-bezier(0.16, 1, 0.3, 1);
-    cursor: pointer;
+    transition: all 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
     will-change: transform, opacity;
     isolation: isolate;
     /* Removed contain property to fix edge rendering issues */
@@ -404,10 +719,27 @@ if (!cards || cards.length === 0) {
     text-rendering: optimizeLegibility;
   }
 
+  /* Mobile responsive card adjustments */
+  @media (max-width: 768px) {
+    .card {
+      max-width: calc(100vw - 3rem);
+      height: 320px;
+      min-height: 320px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card {
+      max-width: calc(100vw - 2rem);
+      height: 300px;
+      min-height: 300px;
+    }
+  }
+
   .card-content {
     width: 100%;
     height: 100%;
-    background-color: var(--color-surface);
+    background-color: var(--card-bg);
     border: 1px solid var(--color-border);
     border-radius: 16px;
     overflow: hidden; /* Keep hidden to maintain card boundaries */
@@ -457,28 +789,33 @@ if (!cards || cards.length === 0) {
 
   /* Ensure card structure remains visible even when text is hidden */
   .card-hidden-text .card-content {
-    background-color: var(--color-surface);
+    background-color: var(--card-bg);
     border: 1px solid var(--color-border);
     /* Add subtle visual depth for stacked cards */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
-  .card:hover {
-    transform: translateX(-50%) translateY(-2px) !important;
-    transition: transform 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 200ms ease !important;
-  }
-
-  .card:hover .card-content {
-    box-shadow: 0 25px 50px rgba(14, 51, 87, 0.2) !important;
-  }
-
+  /* Active card hover - simple lift */
   .card-active:hover {
-    transform: translateX(-50%) translateY(-3px) !important;
+    transform: translateX(-50%) translateY(-3px) scale(1) rotate(0deg) !important;
     transition: transform 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 200ms ease !important;
   }
 
   .card-active:hover .card-content {
-    box-shadow: 0 30px 60px rgba(14, 51, 87, 0.25) !important;
+    box-shadow: none !important;
+  }
+
+  /* Stacked cards - smooth transitions (hover effects handled by JavaScript) */
+  .card-stacked {
+    transition: transform 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                box-shadow 200ms ease,
+                opacity 200ms ease;
+    cursor: pointer; /* Indicate that stacked cards are clickable */
+  }
+
+  /* Active card has default cursor */
+  .card-active {
+    cursor: default;
   }
 
   .card-image {
@@ -504,10 +841,10 @@ if (!cards || cards.length === 0) {
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     position: relative;
     z-index: 2; /* Above the pseudo-element border */
-    background-color: var(--color-surface);
+    background-color: var(--card-bg);
     /* Ensure content fits within card boundaries */
     overflow: hidden;
     box-sizing: border-box;
@@ -517,10 +854,24 @@ if (!cards || cards.length === 0) {
     text-rendering: optimizeLegibility;
     backface-visibility: hidden;
     transform: translateZ(0); /* Force hardware acceleration */
+    min-height: 0; /* Allow flex shrinking */
+  }
+
+  /* Mobile responsive card body adjustments */
+  @media (max-width: 768px) {
+    .card-body {
+      padding: 1.25rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card-body {
+      padding: 1rem;
+    }
   }
 
   .card-header {
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
   }
 
   .card-title {
@@ -535,12 +886,29 @@ if (!cards || cards.length === 0) {
     text-rendering: optimizeLegibility;
   }
 
+  /* Mobile responsive title adjustments */
+  @media (max-width: 768px) {
+    .card-title {
+      font-size: 1.375rem;
+      margin-bottom: 0.625rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card-title {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.25;
+    }
+  }
+
   .card-meta {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     align-items: center;
-    margin-bottom: 0.25rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
   }
 
   .card-company {
@@ -571,10 +939,33 @@ if (!cards || cards.length === 0) {
     line-height: 1.6;
     margin: 0 0 1.5rem 0;
     flex: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
     /* Prevent text blurriness during hover */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+  }
+
+  /* Mobile responsive description adjustments */
+  @media (max-width: 768px) {
+    .card-description {
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      margin-bottom: 0.875rem;
+      -webkit-line-clamp: 3;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card-description {
+      font-size: 0.875rem;
+      line-height: 1.45;
+      margin-bottom: 0.625rem;
+      -webkit-line-clamp: 2;
+    }
   }
 
 
@@ -610,121 +1001,77 @@ if (!cards || cards.length === 0) {
     }
   }
 
-  @media (max-width: 900px) {
-    .card-deck {
-      width: calc(100vw - 4rem);
-      max-width: none;
-    }
-    
-    .card {
-      width: calc(100vw - 4rem);
-      max-width: none;
-    }
-  }
-
   @media (max-width: 768px) {
-    .card-stack-container {
-      --stack-scale: 0.08;
-      --enter-rotation: 4deg;
-    }
-
     .card-stack-wrapper {
-      padding: 1rem;
-      gap: 1.5rem;
-    }
-
-    .card-body {
-      padding: 1rem;
-    }
-
-    .card-title {
-      font-size: 1.625rem;
+      padding: 0.5rem;
+      gap: 2rem;
     }
 
     .card-company {
-      font-size: 1rem;
-      padding: 0.4rem 0.8rem;
+      font-size: 0.9375rem;
+      padding: 0.4rem 0.75rem;
     }
 
     .card-period,
     .card-location {
-      font-size: 0.95rem;
+      font-size: 0.875rem;
     }
 
-    .card-description {
-      font-size: 1.05rem;
+    .card-nav-btn {
+      width: 50px;
+      height: 50px;
     }
 
-    .nav-button {
-      width: 44px;
-      height: 44px;
+    .card-nav-indicator {
+      padding: 0.625rem 1rem;
+      font-size: 0.875rem;
     }
 
-    .card-stack-controls {
-      gap: 0.75rem;
+    .card-nav-controls {
+      gap: 1.25rem;
+      margin-top: -25px;
     }
   }
 
   @media (max-width: 480px) {
-    .card-stack-container {
-      --stack-scale: 0.1;
-      --enter-rotation: 3deg;
-    }
-
     .card-stack-wrapper {
-      padding: 0.75rem;
-      gap: 1rem;
-    }
-
-    .card-body {
-      padding: 0.75rem;
-    }
-
-    .card-title {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
+      padding: 0.25rem;
+      gap: 1.75rem;
     }
 
     .card-company {
-      font-size: 0.95rem;
-      padding: 0.35rem 0.7rem;
+      font-size: 0.875rem;
+      padding: 0.35rem 0.65rem;
     }
 
     .card-period,
     .card-location {
-      font-size: 0.9rem;
+      font-size: 0.8125rem;
     }
 
-    .card-description {
-      font-size: 1rem;
-      margin-bottom: 0.75rem;
+    .card-nav-btn {
+      width: 46px;
+      height: 46px;
     }
 
-    .nav-button {
-      width: 40px;
-      height: 40px;
+    .card-nav-btn svg {
+      width: 22px;
+      height: 22px;
     }
 
-    .nav-button svg {
-      width: 16px;
-      height: 16px;
+    .card-nav-indicator {
+      padding: 0.5rem 0.875rem;
+      font-size: 0.8125rem;
     }
 
-    .card-stack-controls {
-      gap: 0.5rem;
+    .card-nav-controls {
+      gap: 1rem;
+      margin-top: -20px;
     }
   }
 
   /* Extra small screens */
   @media (max-width: 360px) {
-    .card-body {
-      padding: 0.5rem;
-    }
-
-    .card-title {
-      font-size: 1.375rem;
-    }
-
     .card-company {
       font-size: 0.9rem;
       padding: 0.3rem 0.6rem;
@@ -733,10 +1080,6 @@ if (!cards || cards.length === 0) {
     .card-period,
     .card-location {
       font-size: 0.85rem;
-    }
-
-    .card-description {
-      font-size: 0.95rem;
     }
   }
 
@@ -748,12 +1091,6 @@ if (!cards || cards.length === 0) {
     
     .card-content {
       transition: box-shadow var(--transition-duration) ease;
-    }
-    
-    .nav-button {
-      transition: background-color var(--transition-duration) ease, 
-                  border-color var(--transition-duration) ease, 
-                  color var(--transition-duration) ease;
     }
   }
 </style>

@@ -11,6 +11,9 @@ const work = defineCollection({
     ogImage: z.string().optional(),
     client: z.string().optional(),
     results: z.string().optional(), // e.g., "+31% sign-ups in 90 days"
+    industry: z.string().optional(),
+    challenges: z.array(z.string()).optional(),
+    benefits: z.array(z.string()).optional(),
     draft: z.boolean().default(false),
   }),
 });
@@ -20,6 +23,7 @@ const posts = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
+    tags: z.array(z.string()).default([]),
     pubDate: z.coerce.date(),
     ogImage: z.string().optional(),
     draft: z.boolean().default(false),

@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CardStack from "../components/CardStack.astro";
 import ClientTestimonialCarousel from "../components/ClientTestimonialCarousel.astro";
-import WritingProcessTimeline from "../components/WritingProcessTimeline.astro";
+import ToolsetGrid from "../components/ToolsetGrid.astro";
 
 const roles = [
   "Copywriter",
@@ -14,7 +14,7 @@ const roles = [
 const experienceCards = [
   {
     id: "web-copywriter-junior-manager",
-    title: "Web Copywriter / Junior Manager",
+    title: "SEO Content Writer / Junior Manager",
     company: "GrumpyHare",
     period: "March 2025 - Present",
     location: "Connecticut",
@@ -32,7 +32,7 @@ const experienceCards = [
   },
   {
     id: "seo-copywriter-hipnode",
-    title: "SEO Copywriter",
+    title: "SEO Content Writer",
     company: "Hipnode",
     period: "August 2023 - February 2025",
     location: "Lisbon",
@@ -50,7 +50,7 @@ const experienceCards = [
   },
   {
     id: "marketing-copywriter-aptean",
-    title: "Marketing Copywriter / Email Copywriter",
+    title: "Marketing Content Writer",
     company: "Aptean",
     period: "November 2022 - August 2023",
     location: "Georgia",
@@ -80,117 +80,80 @@ const experienceCards = [
 const clientTestimonials = [
   {
     id: "testimonial-1",
-    name: "Sarah Chen",
-    role: "Marketing Director",
-    company: "TechFlow Solutions",
-    content: "Bryan transformed our homepage copy from confusing jargon into clear, compelling messaging. Our conversion rate increased by 45% in just three months. His strategic approach and attention to detail made all the difference.",
-    rating: 5,
-    project: "SaaS Homepage Redesign",
-    results: "45% increase in conversions"
+    name: "Mae Lagac",
+    role: "Freelance Client",
+    company: "Independent Professional",
+    content: "I've worked with Bryan for 7 years straight, and his professionalism and reliability are unmatched. He's never missed a deadline and always delivers high-quality work on time.",
+    project: "Daily Content Tasks",
+    results: "7 years of consistent partnership"
   },
   {
     id: "testimonial-2",
-    name: "Marcus Rodriguez",
+    name: "Adam Sam",
     role: "CEO",
-    company: "StyleHub",
-    content: "The SEO content strategy Bryan developed for us was game-changing. We saw a 120% increase in organic traffic and significantly improved our search rankings. His expertise in both content and SEO is unmatched.",
-    rating: 5,
-    project: "SEO Content Strategy",
-    results: "120% organic traffic growth"
+    company: "Monok",
+    content: "Bryan's editorial work on our news articles has been exceptional. His tonality perfectly captures our brand voice while maintaining journalistic integrity. His attention to detail makes him invaluable to our team.",
+    project: "News Article Editing",
+    results: "Enhanced brand voice consistency"
   },
   {
     id: "testimonial-3",
-    name: "Emily Watson",
-    role: "Head of Growth",
-    company: "GrowthCo",
-    content: "Bryan's email campaign series helped us nurture leads more effectively than ever before. The open rates improved by 35%, and we're seeing much better engagement throughout the funnel. Highly recommend his services.",
-    rating: 5,
-    project: "Email Nurture Campaigns",
-    results: "35% higher open rates"
+    name: "Urian Buenconsejo",
+    role: "Freelance Client",
+    company: "Independent Professional",
+    content: "Bryan's news article writing is outstanding. He crafts compelling narratives that inform and engage readers. His research skills are thorough and his writing style is both professional and accessible.",
+    project: "News Article Writing",
+    results: "Enhanced publication credibility"
   },
   {
     id: "testimonial-4",
-    name: "David Kim",
-    role: "Founder",
-    company: "HealthTech Innovations",
-    content: "Working with Bryan was a game-changer for our B2B content strategy. His ability to translate complex healthcare technology into accessible, persuasive copy helped us close 40% more deals. Exceptional work.",
-    rating: 5,
-    project: "B2B Content Strategy",
-    results: "40% increase in deal closure"
+    name: "Zaira",
+    role: "Freelance Client",
+    company: "Independent Professional",
+    content: "Working with Bryan on creative projects has been a pleasure. His short stories are beautifully crafted with rich character development. His translation work maintains emotional depth while ensuring perfect readability.",
+    project: "Creative Writing & Translation",
+    results: "High-quality creative deliverables"
   }
 ];
 
-const writingProcessSteps = [
-  {
-    id: "research",
-    title: "Research & Discovery",
-    description: "Deep dive into your audience, competitors, and market landscape to understand what makes your audience tick and what content gaps exist.",
-    duration: "2-3 hours",
-    tools: ["Google Analytics", "SEMrush", "Ahrefs", "Surveys", "Interviews"],
-    deliverables: ["Audience Personas", "Competitive Analysis", "Content Audit", "Keyword Research"],
-    tips: [
-      "Always start with your audience's pain points, not your product features",
-      "Look for content gaps your competitors are missing",
-      "Use multiple research methods for comprehensive insights"
-    ],
-    icon: "research"
-  },
-  {
-    id: "strategy",
-    title: "Strategy & Planning",
-    description: "Develop a comprehensive content strategy that aligns with your business goals and audience needs, including content pillars, messaging framework, and distribution plan.",
-    duration: "3-4 hours",
-    tools: ["Figma", "Notion", "Content Calendar", "Messaging Framework"],
-    deliverables: ["Content Strategy Document", "Messaging Framework", "Content Calendar", "Brand Voice Guide"],
-    tips: [
-      "Align content strategy with business objectives",
-      "Create a messaging hierarchy that prioritizes key messages",
-      "Plan for different stages of the buyer's journey"
-    ],
-    icon: "strategy"
-  },
-  {
-    id: "writing",
-    title: "Content Creation",
-    description: "Craft compelling, SEO-optimized content that speaks directly to your audience while maintaining your brand voice and driving toward your conversion goals.",
-    duration: "4-6 hours",
-    tools: ["Google Docs", "Grammarly", "Hemingway Editor", "Yoast SEO"],
-    deliverables: ["First Draft", "SEO Optimization", "Internal Linking", "Call-to-Action Integration"],
-    tips: [
-      "Write for humans first, search engines second",
-      "Use active voice and clear, concise language",
-      "Include specific, measurable calls-to-action"
-    ],
-    icon: "writing"
-  },
-  {
-    id: "review",
-    title: "Review & Refinement",
-    description: "Thorough review process including fact-checking, SEO optimization, readability improvements, and alignment with brand guidelines and business objectives.",
-    duration: "1-2 hours",
-    tools: ["Proofreading Tools", "SEO Checkers", "Readability Analyzers"],
-    deliverables: ["Final Copy", "SEO Report", "Readability Score", "Brand Compliance Check"],
-    tips: [
-      "Take breaks between writing and reviewing for fresh perspective",
-      "Read content aloud to catch awkward phrasing",
-      "Test calls-to-action for clarity and urgency"
-    ],
-    icon: "review"
-  },
-  {
-    id: "optimize",
-    title: "Optimization & Launch",
-    description: "Final optimization for performance, including A/B testing setup, conversion tracking, and launch preparation with monitoring and iteration plans.",
-    duration: "1-2 hours",
-    tools: ["Google Tag Manager", "A/B Testing Tools", "Analytics Platforms"],
-    deliverables: ["Launch-Ready Content", "Tracking Setup", "Performance Baseline", "Optimization Plan"],
-    tips: [
-      "Set up conversion tracking before launch",
-      "Plan for A/B testing different headlines and CTAs",
-      "Monitor performance closely in the first 48 hours"
-    ],
-    icon: "optimize"
-  }
+const toolsetData = [
+  // Writing & Editing Tools
+  { id: "microsoft-365", name: "Microsoft 365", category: "Writing & Editing", icon: "microsoft_365.webp" },
+  { id: "google-docs", name: "Google Docs", category: "Writing & Editing", icon: "google_docs.webp" },
+  { id: "grammarly", name: "Grammarly", category: "Writing & Editing", icon: "grammarly.webp" },
+  
+  // SEO & Analytics Tools
+  { id: "google-analytics", name: "Google Analytics", category: "SEO & Analytics", icon: "google_analytics.webp" },
+  { id: "semrush", name: "SEMrush", category: "SEO & Analytics", icon: "semrush.webp" },
+  { id: "ahrefs", name: "Ahrefs", category: "SEO & Analytics", icon: "ahrefs.webp" },
+  { id: "moz", name: "Moz", category: "SEO & Analytics", icon: "moz.webp" },
+  { id: "rank-math", name: "Rank Math", category: "SEO & Analytics", icon: "rank_math.webp" },
+  { id: "yoast", name: "Yoast", category: "SEO & Analytics", icon: "yoast.webp" },
+  { id: "surfer-seo", name: "Surfer SEO", category: "SEO & Analytics", icon: "surfer_seo.webp" },
+  
+  // Content Management Systems
+  { id: "wordpress", name: "WordPress", category: "Content Management", icon: "wordpress.webp" },
+  { id: "hubspot", name: "HubSpot", category: "Content Management", icon: "hubspot.webp" },
+  { id: "joomla", name: "Joomla", category: "Content Management", icon: "joomla.webp" },
+  { id: "contentful", name: "Contentful", category: "Content Management", icon: "contentful.webp" },
+  
+  // Social Media & Marketing
+  { id: "hootsuite", name: "Hootsuite", category: "Social Media & Marketing", icon: "hootsuite.webp" },
+  { id: "buffer", name: "Buffer", category: "Social Media & Marketing", icon: "buffer.webp" },
+  { id: "zapier", name: "Zapier", category: "Social Media & Marketing", icon: "zapier.webp" },
+  { id: "mailchimp", name: "Mailchimp", category: "Social Media & Marketing", icon: "mailchimp.webp" },
+  { id: "activecampaign", name: "ActiveCampaign", category: "Social Media & Marketing", icon: "active_campaign.webp" },
+  
+  // Project Management
+  { id: "asana", name: "Asana", category: "Project Management", icon: "asana.webp" },
+  
+  // AI Writing and Research Tools
+  { id: "jasper-ai", name: "Jasper AI", category: "AI Writing and Research Tools", icon: "jasper.webp" },
+  { id: "chatgpt", name: "ChatGPT", category: "AI Writing and Research Tools", icon: "chatgpt.webp" },
+  { id: "claude", name: "Claude", category: "AI Writing and Research Tools", icon: "claude.webp" },
+  { id: "perplexity", name: "Perplexity", category: "AI Writing and Research Tools", icon: "perplexity.webp" },
+  { id: "gemini", name: "Gemini", category: "AI Writing and Research Tools", icon: "gemini.webp" },
+  { id: "deepseek", name: "Deepseek", category: "AI Writing and Research Tools", icon: "deepseek.webp" }
 ];
 ---
 
@@ -198,112 +161,267 @@ const writingProcessSteps = [
   title="Bryan Jacinto - Copy & SEO"
   description="Copywriting, editing, B2B content, and SEO-focused writing."
 >
-  <section class="min-h-[70vh] grid place-items-center py-16 text-[var(--color-text)]">
-    <div class="mx-auto max-w-3xl px-5 text-center">
-      <!-- Name -->
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight text-[var(--color-text)]">
-        Bryan Jacinto
-      </h1>
+  <section class="flex items-center justify-center text-[var(--color-text)] w-full" style="min-height: calc(100vh - 88px); background-color: var(--section-bg);">
+    <div class="w-full max-w-7xl mx-auto px-5">
+      <div class="flex flex-col lg:flex-row justify-center items-center gap-10 lg:gap-16 w-full">
+        <!-- Left Column: Hero Content -->
+        <div class="flex flex-col space-y-6 text-center lg:text-left max-w-2xl lg:max-w-xl">
+          <!-- Name -->
+          <h1 class="hero">
+            Bryan Jacinto
+          </h1>
 
-      <!-- Roles as refined chips -->
-      <ul class="mt-4 flex flex-wrap items-center justify-center gap-2.5">
-        {roles.map((r) => (
-          <li
-            class="inline-flex items-center gap-2 rounded-md
-                   px-3.5 py-1.5
-                   text-[12.5px] sm:text-[13px] font-medium tracking-tight
-                   text-[var(--color-text)]
-                   bg-[var(--surface-glass)]
-                   border border-[var(--color-border)]
-                   ring-1 ring-[#0E335733] dark:ring-[#86B7FF2D]
-                   shadow-sm hover:shadow transition
-                   hover:-translate-y-0.5"
-          >
-            <span class="h-1.5 w-1.5 rounded-full bg-current/50"></span>
-            {r}
-          </li>
-        ))}
-      </ul>
+          <!-- Roles as refined chips -->
+          <ul class="flex flex-wrap items-center justify-center lg:justify-start gap-2.5">
+            {roles.map((r) => (
+              <li
+                class="role-badge inline-flex items-center gap-2 rounded-md
+                       px-3.5 py-1.5
+                       text-[12.5px] sm:text-[13px] font-medium tracking-tight
+                       text-[var(--color-text)]
+                       bg-[var(--surface-glass)]
+                       border border-[var(--color-border)]
+                       ring-1 ring-[#0E335733] dark:ring-[#86B7FF2D]
+                       shadow-sm
+                       transition-all duration-300 ease-out
+                       cursor-default"
+              >
+                <span class="role-badge-dot h-1.5 w-1.5 rounded-full bg-current/50 transition-all duration-300"></span>
+                {r}
+              </li>
+            ))}
+          </ul>
 
-      <!-- Compact blurb -->
-      <p class="mt-5 text-[15px] sm:text-base md:text-[17px] leading-relaxed text-[var(--color-muted)] mx-auto max-w-2xl">
-        I'm a copywriter with 7 years of experience serving global clients. I focus on clarity and search-SEO articles, blog posts, landing pages, and B2B/B2C marketing content. Flexible voice, quick to adapt. Currently freelancing and open to full-time roles.
-      </p>
+          <!-- Compact blurb -->
+          <p class="text-[15px] sm:text-base md:text-[17px] leading-relaxed text-[var(--color-muted)] max-w-2xl mx-auto lg:mx-0">
+            I'm a copywriter with 7 years of experience serving global clients. I focus on clarity and search-SEO articles, blog posts, landing pages, and B2B/B2C marketing content. Flexible voice, quick to adapt. Currently freelancing and open to full-time roles.
+          </p>
 
-      <!-- CTAs -->
-      <div class="mt-7 flex items-center justify-center gap-3">
-        <a
-          href="/work"
-          class="btn-primary inline-flex h-11 items-center justify-center rounded-full px-5 text-sm font-semibold transition-all duration-200"
-        >
-          See my work
-        </a>
-        <a
-          href="/contact"
-          class="inline-flex h-11 items-center justify-center rounded-full px-5 text-sm font-semibold border border-[var(--color-border)] hover:bg-[var(--surface-glass)] transition"
-        >
-          Contact
-        </a>
+          <!-- CTAs -->
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
+            <a
+              href="/work"
+              class="btn-primary inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-semibold transition-all duration-200 w-full sm:w-auto"
+            >
+              See my work
+            </a>
+            <a
+              href="#my-experiences"
+              class="snake-border-button group inline-flex h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold focus:outline-none w-full sm:w-auto"
+              aria-label="View my experience"
+            >
+              <span>View my experience</span>
+              <svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column: Profile Image (Desktop Only) -->
+        <div class="hidden lg:flex justify-center items-center flex-shrink-0">
+          <div class="relative w-72 h-72 xl:w-80 xl:h-80 aspect-square">
+            <!-- Profile Image -->
+            <div class="absolute inset-0 rounded-2xl overflow-hidden border border-[var(--color-border)] shadow-xl">
+              <img 
+                src="/Bryan_hero_image.webp" 
+                alt="Bryan Jacinto"
+                class="w-full h-full object-cover"
+                loading="eager"
+              />
+            </div>
+            <!-- Decorative element -->
+            <div class="absolute -inset-4 rounded-2xl border border-[var(--color-border)] opacity-20 -z-10"></div>
+          </div>
+        </div>
       </div>
-
-      <!-- Experience button with enhanced styling -->
-      <div class="mt-9 flex justify-center">
-        <a
-          href="#my-experiences"
-          class="group inline-flex h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold border border-[var(--color-border)] hover:bg-[var(--surface-glass)] hover:border-[var(--color-link)] hover:text-[var(--color-link)] transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-link)]/10 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[var(--color-link)] focus:ring-offset-2 focus:ring-offset-[var(--bg-start)]"
-          aria-label="View my experience"
-        >
-          <span>View my experience</span>
-          <svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
-          </svg>
-        </a>
-      </div>
-      <!-- Make sure your experiences section elsewhere on the page has: id="my-experiences" -->
     </div>
   </section>
 
   <!-- Experience section with Card Stack -->
-  <section id="my-experiences" class="scroll-mt-[80px] min-h-screen flex items-center justify-center py-4 text-[var(--color-text)]">
-    <div class="mx-auto max-w-6xl px-5">
+  <section id="my-experiences" class="scroll-mt-[80px] min-h-screen flex items-start justify-center pt-20 md:pt-16 pb-12 md:pb-16 text-[var(--color-text)] w-full" style="background-color: var(--section-bg);">
+    <div class="mx-auto max-w-6xl px-3 md:px-5 w-full">
+      <!-- Section Header -->
+      <div class="scroll-reveal scroll-reveal-item text-center mb-4 md:mb-6" style="margin-bottom: 20px;">
+        <h2 class="mb-0 text-2xl md:text-3xl lg:text-4xl">My Experience</h2>
+      </div>
+      
       <!-- Card Stack Component -->
-      <CardStack 
-        cards={experienceCards}
-        cardWidth="784px"
-        cardHeight="343px"
-        stackShift={60}
-        stackScale={0.05}
-        enterRotation={6}
-        enterOpacity={0.7}
-        transitionDuration={400}
-      />
+      <div class="scroll-reveal scroll-reveal-item scroll-reveal-delay-1">
+        <CardStack 
+          cards={experienceCards}
+          cardWidth="650px"
+          cardHeight="300px"
+          stackShift={60}
+          stackScale={0.05}
+          enterRotation={6}
+          enterOpacity={0.7}
+          transitionDuration={400}
+        />
+      </div>
     </div>
   </section>
 
   <!-- Client Testimonials Section -->
-  <section class="py-16 bg-[var(--surface-glass)]">
+  <section class="py-16 w-full" style="background-color: var(--section-bg);">
     <div class="mx-auto max-w-6xl px-5">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-[var(--color-heading)] mb-4">What Clients Say</h2>
-        <p class="text-lg text-[var(--color-muted)] max-w-2xl mx-auto">
-          Don't just take my word for it. Here's what clients have to say about working with me 
-          and the results we've achieved together.
-        </p>
+      <div class="scroll-reveal scroll-reveal-item text-center mb-12">
+        <h2 class="mb-4">What Clients Say</h2>
       </div>
-      <ClientTestimonialCarousel testimonials={clientTestimonials} />
+      <div class="scroll-reveal scroll-reveal-item scroll-reveal-delay-1">
+        <ClientTestimonialCarousel testimonials={clientTestimonials} autoplayInterval={7000} />
+      </div>
     </div>
   </section>
 
-  <!-- Writing Process Section -->
-  <section class="py-16">
+  <!-- My Toolset Section -->
+  <section class="py-16 w-full" style="background-color: var(--section-bg);">
     <div class="mx-auto max-w-6xl px-5">
-      <WritingProcessTimeline processSteps={writingProcessSteps} />
+      <div class="scroll-reveal scroll-reveal-item text-center" style="margin-bottom: 29px;">
+        <h2 class="mb-4">My Toolset</h2>
+      </div>
+      <ToolsetGrid tools={toolsetData} />
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 w-full" style="background-color: var(--section-bg);">
+    <div class="mx-auto max-w-4xl px-5 text-center">
+      <div class="scroll-reveal scroll-reveal-item">
+        <h2 class="mb-6">Ready to Work Together?</h2>
+        <p class="text-[var(--color-muted)] mb-8 text-lg max-w-2xl mx-auto">
+          I'm always excited to collaborate on new projects. Whether you need copywriting, content strategy, SEO-focused writing, or full stack development, let's discuss how I can help bring your ideas to life.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a
+            href="/contact"
+            class="btn-primary inline-flex h-12 items-center justify-center rounded-full px-8 text-base font-semibold transition-all duration-200"
+          >
+            Get in touch
+          </a>
+          <a
+            href="/work"
+            class="snake-border-button group inline-flex h-12 items-center justify-center rounded-full px-8 text-base font-semibold focus:outline-none"
+            aria-label="View my work"
+          >
+            <span>View my work</span>
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Smooth scroll (no visual style changes) -->
   <style is:global>
     html { scroll-behavior: smooth; }
+
+    /* Scroll reveal animations */
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .scroll-reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Individual items within sections */
+    .scroll-reveal-item {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .scroll-reveal.is-visible .scroll-reveal-item {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Staggered delays for multiple items */
+    .scroll-reveal.is-visible .scroll-reveal-delay-1 {
+      transition-delay: 0.15s;
+    }
+
+    .scroll-reveal.is-visible .scroll-reveal-delay-2 {
+      transition-delay: 0.3s;
+    }
+
+    .scroll-reveal.is-visible .scroll-reveal-delay-3 {
+      transition-delay: 0.45s;
+    }
   </style>
+
+  <style>
+    /* Role badge micro-interactions */
+    .role-badge {
+      position: relative;
+    }
+
+    .role-badge:hover {
+      transform: translateY(-2px) scale(1.05);
+      border-color: var(--color-muted);
+      box-shadow: 
+        0 4px 12px color-mix(in srgb, var(--color-text) 10%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--color-muted) 20%, transparent);
+    }
+
+    /* Light mode glow */
+    :root:not(.dark) .role-badge:hover {
+      box-shadow: 
+        0 4px 16px color-mix(in srgb, var(--color-text) 12%, transparent),
+        0 2px 8px color-mix(in srgb, var(--color-text) 8%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--color-muted) 25%, transparent);
+    }
+
+    /* Dark mode glow */
+    .dark .role-badge:hover {
+      box-shadow: 
+        0 4px 16px color-mix(in srgb, var(--color-text) 15%, transparent),
+        0 2px 8px color-mix(in srgb, var(--color-text) 10%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--color-muted) 30%, transparent);
+    }
+
+    /* Dot pulse animation on hover */
+    .role-badge:hover .role-badge-dot {
+      transform: scale(1.3);
+      opacity: 1;
+      box-shadow: 0 0 8px currentColor;
+    }
+
+    /* Active/press state */
+    .role-badge:active {
+      transform: translateY(-1px) scale(1.02);
+    }
+  </style>
+
+  <!-- Scroll reveal script -->
+  <script>
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -100px 0px', // Trigger slightly before element is fully in view
+      threshold: 0.15 // Trigger when 15% of element is visible
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        } else {
+          // Remove is-visible class when element leaves viewport
+          // This ensures animations can trigger again when scrolling back
+          entry.target.classList.remove('is-visible');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all scroll-reveal elements
+    document.addEventListener('DOMContentLoaded', () => {
+      const revealElements = document.querySelectorAll('.scroll-reveal');
+      revealElements.forEach(el => observer.observe(el));
+    });
+  </script>
 </BaseLayout>
 

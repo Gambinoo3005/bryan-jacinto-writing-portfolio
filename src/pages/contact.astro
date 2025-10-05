@@ -2,14 +2,15 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 <BaseLayout title="Contact - Bryan Jacinto" description="Work inquiries and collaborations.">
-  <section class="mx-auto max-w-3xl py-12 text-[var(--color-text)]">
-    <h1 class="text-3xl font-bold mb-6">Contact</h1>
-    <p class="mb-4 text-[var(--color-muted)]">Get in touch for work inquiries and collaborations.</p>
+  <section class="w-full" style="background-color: var(--section-bg-primary);">
+    <div class="mx-auto max-w-3xl px-5 sm:px-6 py-16 scroll-reveal">
+      <h1 class="mb-4 text-center">Contact</h1>
+      <p class="text-[var(--color-muted)] mb-10 text-center">Get in touch for work inquiries and collaborations.</p>
     
     <div class="mt-8">
       <form id="contact-form" class="space-y-6">
         <div>
-          <label for="name" class="block text-sm font-medium mb-2">Name *</label>
+          <label for="name" class="block text-sm font-medium mb-2 text-[var(--color-text)]">Name *</label>
           <input
             type="text"
             id="name"
@@ -21,7 +22,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
         
         <div>
-          <label for="email" class="block text-sm font-medium mb-2">Email *</label>
+          <label for="email" class="block text-sm font-medium mb-2 text-[var(--color-text)]">Email *</label>
           <input
             type="email"
             id="email"
@@ -33,7 +34,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
         
         <div>
-          <label for="phone" class="block text-sm font-medium mb-2">Contact Number</label>
+          <label for="phone" class="block text-sm font-medium mb-2 text-[var(--color-text)]">Contact Number</label>
           <input
             type="tel"
             id="phone"
@@ -44,7 +45,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
         
         <div>
-          <label for="message" class="block text-sm font-medium mb-2">Message *</label>
+          <label for="message" class="block text-sm font-medium mb-2 text-[var(--color-text)]">Message *</label>
           <textarea
             id="message"
             name="message"
@@ -67,11 +68,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <div id="form-message" class="mt-4 hidden"></div>
     </div>
     
-    <div class="mt-12 pt-8 border-t border-[var(--color-border)]">
-      <h2 class="text-xl font-semibold mb-4">Direct Contact</h2>
-      <p class="text-[var(--color-muted)]">
-        You can also reach me directly at <a class="underline hover:text-[var(--color-primary)] transition-colors" href="mailto:bryan@advdms.com">bryan@advdms.com</a>
-      </p>
+      <div class="mt-12 pt-8 border-t border-[var(--color-border)]">
+        <h2 class="mb-4">Direct Contact</h2>
+        <p class="text-[var(--color-muted)]">
+          You can also reach me directly at <a class="underline hover:text-[var(--color-link)] transition-colors" href="mailto:jacintobryan3@gmail.com">jacintobryan3@gmail.com</a>
+        </p>
+      </div>
     </div>
   </section>
 </BaseLayout>
@@ -145,7 +147,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           from_email: data.email,
           phone: data.phone || 'Not provided',
           message: data.message,
-          to_email: 'bryan@advdms.com'
+          to_email: 'jacintobryan3@gmail.com'
         };
         
         await window.emailjs.send(
@@ -155,13 +157,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         );
         
         formMessage.textContent = 'Thank you! Your message has been sent successfully.';
-        formMessage.className = 'mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg';
+        formMessage.className = 'mt-4 p-4 rounded-lg border';
+        formMessage.style.backgroundColor = 'var(--color-surface)';
+        formMessage.style.borderColor = 'var(--color-border)';
+        formMessage.style.color = 'var(--color-text)';
         form.reset();
         
       } catch (error) {
         console.error('Contact form error:', error);
-        formMessage.textContent = 'Sorry, there was an error sending your message. Please try again or contact me directly at bryan@advdms.com';
-        formMessage.className = 'mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg';
+        formMessage.textContent = 'Sorry, there was an error sending your message. Please try again or contact me directly at jacintobryan3@gmail.com';
+        formMessage.className = 'mt-4 p-4 rounded-lg border';
+        formMessage.style.backgroundColor = 'var(--color-surface)';
+        formMessage.style.borderColor = 'var(--color-border)';
+        formMessage.style.color = 'var(--color-text)';
       } finally {
         // Reset button state
         submitButton.disabled = false;

@@ -12,7 +12,7 @@ interface Props {
 const {
   title = "Bryan Jacinto - Copywriter & SEO",
   description = "UX & SEO writing portfolio.",
-  ogImage = "/og/default.png",
+  ogImage,
 } = Astro.props;
 const url = Astro.url?.href ?? "";
 ---
@@ -29,32 +29,41 @@ const url = Astro.url?.href ?? "";
     <!-- Open Graph / Twitter -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- Fonts: Inter (variable) + Source Serif 4 (variable) -->
+    <!-- Fonts: Inter (variable) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=Source+Serif+4:opsz,wght@8..60,300..800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Early theme apply to avoid FOUC -->
+    <!-- Early theme apply to avoid FOUC (no transitions on load) -->
     <script>
       (() => {
+        // Temporarily disable transitions
+        const style = document.createElement('style');
+        style.textContent = '* { transition: none !important; }';
+        document.head.appendChild(style);
+        
+        // Apply theme
         const ls = localStorage.getItem("theme");
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
         document.documentElement.classList.toggle(
           "dark",
           ls === "dark" || (!ls && prefersDark)
         );
+        
+        // Re-enable transitions after a brief moment
+        setTimeout(() => style.remove(), 0);
       })();
     </script>
   </head>
 
   <!-- Normal document flow; viewport scroll bar stays as-is -->
-  <body class="antialiased min-h-svh flex flex-col theme-xfade">
+  <body class="antialiased min-h-svh flex flex-col">
     <!-- Site-wide layered background (z-0) -->
     <Background />
 
@@ -64,7 +73,7 @@ const url = Astro.url?.href ?? "";
     </div>
 
     <!-- Page content scrolls with the viewport -->
-    <main id="content" class="relative z-10 flex-1 px-5 sm:px-6">
+    <main id="content" class="relative z-10 flex-1 px-4 sm:px-5 md:px-6">
       <slot />
     </main>
 

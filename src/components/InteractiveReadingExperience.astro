@@ -33,7 +33,7 @@ const {
       <div class="sidebar-content">
         {showTableOfContents && (
           <div class="table-of-contents">
-            <h3 class="toc-title">Table of Contents</h3>
+            <h3>Table of Contents</h3>
             <nav class="toc-nav" id="toc-nav">
               <!-- Populated by JavaScript -->
             </nav>
@@ -67,7 +67,7 @@ const {
         )}
 
         <div class="reading-tags">
-          <h4 class="tags-title">Tags</h4>
+          <h4>Tags</h4>
           <div class="tags-list">
             {article.tags.map((tag) => (
               <span class="tag">{tag}</span>
@@ -80,7 +80,7 @@ const {
     <main class="reading-main">
       <article class="article-content" id="article-content">
         <header class="article-header">
-          <h1 class="article-title">{article.title}</h1>
+          <h1>{article.title}</h1>
           <div class="article-meta">
             <time class="publish-date" datetime={article.publishedDate}>
               {new Date(article.publishedDate).toLocaleDateString('en-US', { 
@@ -404,7 +404,7 @@ const {
     position: sticky;
     top: 2rem;
     height: fit-content;
-    background-color: var(--color-surface);
+    background-color: var(--card-bg);
     border: 1px solid var(--color-border);
     border-radius: 1rem;
     padding: 1.5rem;
@@ -558,7 +558,7 @@ const {
   }
 
   .article-content {
-    background-color: var(--color-surface);
+    background-color: var(--card-bg);
     border: 1px solid var(--color-border);
     border-radius: 1rem;
     padding: 2rem;
@@ -731,7 +731,7 @@ const {
     bottom: 2rem;
     left: 50%;
     transform: translateX(-50%) translateY(100px);
-    background-color: var(--color-surface);
+    background-color: var(--card-bg);
     color: var(--color-text);
     padding: 1rem 1.5rem;
     border-radius: 0.5rem;
