@@ -212,9 +212,17 @@ h6 {
 }
 
 
-html, body {
-  overflow-x: hidden; /* Prevent horizontal scrolling at root level */
+html {
   max-width: 100%;
+}
+
+body {
+  max-width: 100%;
+}
+
+/* Prevent horizontal overflow on main content without breaking sticky */
+main {
+  overflow-x: clip;
 }
 
 /* Ensure sections extend full width without causing overflow */

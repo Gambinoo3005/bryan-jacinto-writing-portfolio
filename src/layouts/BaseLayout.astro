@@ -80,13 +80,11 @@ const url = Astro.url?.href ?? "";
     <!-- Site-wide layered background (z-0) -->
     <Background />
 
-    <!-- Only the header is sticky -->
-    <div class="sticky top-0 z-50 backdrop-blur bg-[var(--surface-glass-strong)]">
-      <Header />
-    </div>
+    <!-- Header is sticky (defined in Header.astro) -->
+    <Header />
 
     <!-- Page content scrolls with the viewport -->
-    <main id="content" class="relative z-10 flex-1 px-4 sm:px-5 md:px-6">
+    <main id="content" class="relative z-10 flex-1">
       <slot />
     </main>
 
