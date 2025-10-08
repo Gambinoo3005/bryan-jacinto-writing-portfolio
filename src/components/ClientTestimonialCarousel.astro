@@ -70,12 +70,6 @@ const {
         </svg>
       </button>
       
-      <div class="carousel-indicator">
-        <span class="current-position">1</span>
-        <span class="nav-separator">/</span>
-        <span class="total-testimonials">{testimonials.length}</span>
-      </div>
-      
       <button class="carousel-arrow carousel-next" id="carousel-next" aria-label="Next testimonial">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="9 18 15 12 9 6"></polyline>
@@ -231,12 +225,6 @@ const {
       this.dots.forEach((dot, index) => {
         dot.classList.toggle('active', index === this.currentIndex);
       });
-
-      // Update position indicator
-      const currentPositionElement = document.querySelector('.current-position');
-      if (currentPositionElement) {
-        currentPositionElement.textContent = (this.currentIndex + 1).toString();
-      }
 
       // Update arrow states
       if (this.prevButton && this.nextButton) {
