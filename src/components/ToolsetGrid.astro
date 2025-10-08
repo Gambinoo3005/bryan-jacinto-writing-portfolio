@@ -56,7 +56,7 @@ const categories = Object.keys(toolsByCategory);
   .toolset-grid {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1rem 2rem 1rem;
+    padding: 0;
   }
 
 
@@ -68,10 +68,60 @@ const categories = Object.keys(toolsByCategory);
 
   .toolset-category {
     background-color: var(--card-bg);
+    background-image: 
+      linear-gradient(to bottom, 
+        rgba(255, 255, 255, 0.02) 0%, 
+        transparent 50%
+      );
     border: 1px solid var(--color-border);
     border-radius: 16px;
     padding: 2rem;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    z-index: 0;
+    box-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.05),
+      0 0 0 1px rgba(0, 0, 0, 0.02) inset;
+  }
+  
+  .dark .toolset-category {
+    background-image: 
+      linear-gradient(to bottom, 
+        rgba(255, 255, 255, 0.03) 0%, 
+        transparent 50%
+      );
+    box-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  }
+  
+  /* Subtle gradient border effect */
+  .toolset-category::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 16px;
+    padding: 1px;
+    background: linear-gradient(135deg, 
+      var(--color-border) 0%, 
+      transparent 50%,
+      var(--color-border) 100%
+    );
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  
+  .toolset-category:hover::before {
+    opacity: 1;
   }
 
   /* Scroll reveal animations for category cards */
@@ -94,8 +144,18 @@ const categories = Object.keys(toolsByCategory);
   }
 
   .toolset-category:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px) scale(1.005);
+    box-shadow: 
+      0 8px 30px rgba(0, 0, 0, 0.12),
+      0 2px 8px rgba(0, 0, 0, 0.08),
+      0 0 0 1px rgba(0, 0, 0, 0.03) inset;
+  }
+  
+  .dark .toolset-category:hover {
+    box-shadow: 
+      0 8px 30px rgba(0, 0, 0, 0.5),
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   }
 
   .category-title {
@@ -104,6 +164,8 @@ const categories = Object.keys(toolsByCategory);
     color: var(--color-heading);
     margin-bottom: 1.5rem;
     text-align: center;
+    position: relative;
+    z-index: 1;
   }
 
 
@@ -112,6 +174,7 @@ const categories = Object.keys(toolsByCategory);
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 1.5rem;
     justify-items: center;
+    margin-top: 0.5rem;
   }
 
   .tool-item {
@@ -121,14 +184,30 @@ const categories = Object.keys(toolsByCategory);
     gap: 0.75rem;
     padding: 1rem;
     border-radius: 12px;
-    transition: all 0.3s ease;
-    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     min-width: 100px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    border: 1px solid transparent;
   }
 
   .tool-item:hover {
     background-color: var(--surface-glass);
-    transform: translateY(-2px);
+    border-color: var(--color-border);
+    box-shadow: 
+      0 6px 20px rgba(0, 0, 0, 0.1),
+      0 2px 6px rgba(0, 0, 0, 0.06),
+      0 0 0 1px rgba(0, 0, 0, 0.02) inset;
+    transform: translateY(-4px) scale(1.05);
+    z-index: 2;
+  }
+  
+  .dark .tool-item:hover {
+    box-shadow: 
+      0 6px 20px rgba(0, 0, 0, 0.4),
+      0 2px 6px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.04) inset;
   }
 
   .tool-icon {
@@ -137,17 +216,49 @@ const categories = Object.keys(toolsByCategory);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
-    background-color: transparent;
-    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, 
+      rgba(0, 0, 0, 0.02) 0%, 
+      transparent 100%
+    );
+    border: 1px solid rgba(0, 0, 0, 0.04);
     overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
+  }
+  
+  .dark .tool-icon {
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.03) 0%, 
+      transparent 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .tool-item:hover .tool-icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 
+      0 4px 12px rgba(0, 0, 0, 0.08),
+      0 0 0 1px rgba(0, 0, 0, 0.02) inset;
+  }
+  
+  .dark .tool-item:hover .tool-icon {
+    box-shadow: 
+      0 4px 12px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.03) inset;
   }
 
   .tool-icon img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    padding: 4px;
+    padding: 8px;
+    transition: transform 0.3s ease;
+  }
+  
+  .tool-item:hover .tool-icon img {
+    transform: scale(1.05);
   }
 
 
@@ -170,6 +281,13 @@ const categories = Object.keys(toolsByCategory);
     color: var(--color-text);
     text-align: center;
     line-height: 1.3;
+    transition: all 0.3s ease;
+  }
+  
+  .tool-item:hover .tool-name {
+    color: var(--color-heading);
+    font-weight: 600;
+    transform: translateY(-2px);
   }
 
   /* Responsive design */
@@ -208,36 +326,88 @@ const categories = Object.keys(toolsByCategory);
       font-size: 0.75rem;
     }
   }
+
 </style>
 
 <script>
-  // Intersection Observer for category card animations
+  // Enhanced Intersection Observer for reliable category animations
   const categoryObserverOptions = {
     root: null,
-    rootMargin: '-5% 0px -5% 0px', // Trigger when element is in center 90% of viewport
-    threshold: 0.2 // Trigger when 20% of element is visible
+    rootMargin: '0px 0px -10% 0px', // Trigger when element is 10% from bottom of viewport
+    threshold: [0.1, 0.3] // Multiple thresholds for better reliability
   };
+
+  // Track active timeouts to prevent stacking
+  const activeTimeouts = new WeakMap();
 
   const categoryObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        // Always animate when entering viewport (works for both scroll directions)
-        const delayAttr = entry.target.getAttribute('data-delay');
-        const delay = delayAttr !== null ? parseFloat(delayAttr) : 0;
-        setTimeout(() => {
-          entry.target.classList.add('is-visible');
-        }, delay * 1000);
-      } else {
-        // Remove is-visible class when element leaves viewport
-        // This allows re-animation when scrolling back up
-        entry.target.classList.remove('is-visible');
+      const target = entry.target;
+      
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.1) {
+        // Clear any existing timeout for this element
+        if (activeTimeouts.has(target)) {
+          clearTimeout(activeTimeouts.get(target));
+          activeTimeouts.delete(target);
+        }
+
+        // Only animate if not already visible
+        if (!target.classList.contains('is-visible')) {
+          const delayAttr = target.getAttribute('data-delay');
+          const delay = delayAttr !== null ? parseFloat(delayAttr) : 0;
+          
+          const timeoutId = setTimeout(() => {
+            target.classList.add('is-visible');
+            activeTimeouts.delete(target);
+          }, delay * 1000);
+          
+          activeTimeouts.set(target, timeoutId);
+        }
+      } else if (!entry.isIntersecting) {
+        // Clear timeout and reset animation when out of view
+        if (activeTimeouts.has(target)) {
+          clearTimeout(activeTimeouts.get(target));
+          activeTimeouts.delete(target);
+        }
+        target.classList.remove('is-visible');
       }
     });
   }, categoryObserverOptions);
 
-  // Observe all category cards when DOM is loaded
-  document.addEventListener('DOMContentLoaded', () => {
+  // Initialize animations with better reliability
+  const initToolsetAnimations = () => {
     const categoryCards = document.querySelectorAll('.scroll-reveal-category');
-    categoryCards.forEach(card => categoryObserver.observe(card));
-  });
+    console.log('🔍 Initializing toolset animations for', categoryCards.length, 'categories');
+    
+    categoryCards.forEach((card, index) => {
+      const cardElement = card;
+      const categoryName = cardElement.querySelector('h3')?.textContent || `Category ${index}`;
+      
+      // Check if element is already in viewport on page load
+      const rect = cardElement.getBoundingClientRect();
+      const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+      
+      if (isInViewport) {
+        // Element is already visible, animate it immediately
+        const delayAttr = cardElement.getAttribute('data-delay');
+        const delay = delayAttr !== null ? parseFloat(delayAttr) : 0;
+        
+        setTimeout(() => {
+          cardElement.classList.add('is-visible');
+          console.log(`✅ Immediate animation for: ${categoryName}`);
+        }, delay * 1000);
+      } else {
+        // Element is not visible, observe it
+        categoryObserver.observe(cardElement);
+        console.log(`👀 Observing: ${categoryName}`);
+      }
+    });
+  };
+
+  // Start when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initToolsetAnimations);
+  } else {
+    initToolsetAnimations();
+  }
 </script>

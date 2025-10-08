@@ -15,8 +15,8 @@ const LINKS = {
 
 const current = Astro.url.pathname;
 ---
-<header class="sticky top-0 z-50 bg-[var(--header-bg)] dark:bg-gradient-to-br dark:from-[var(--header-bg)] dark:via-[var(--header-bg)] dark:to-[color-mix(in_srgb,var(--header-bg)_95%,var(--color-accent)_5%)] py-3 text-[var(--color-text)] relative">
-  <div class="mx-auto max-w-6xl px-4">
+<header class="sticky top-0 z-50 bg-[var(--header-bg)] dark:bg-gradient-to-br dark:from-[var(--header-bg)] dark:via-[var(--header-bg)] dark:to-[color-mix(in_srgb,var(--header-bg)_95%,var(--color-accent)_5%)] py-3 text-[var(--color-text)]">
+  <div class="mx-auto max-w-6xl px-4 relative">
     <!-- grid: 1fr (left) | auto (center nav) | 1fr (right) for desktop; flex justify-between for mobile -->
     <div
       class="h-16 flex md:grid md:grid-cols-[1fr_auto_1fr] items-center justify-between
@@ -113,8 +113,8 @@ const current = Astro.url.pathname;
       </div>
     </div>
 
-    <!-- Mobile panel -->
-    <nav id="mobile-menu" class="md:hidden mt-2 hidden rounded-2xl bg-[var(--surface-glass-strong)] border border-[var(--color-border)] shadow-xl ring-1 ring-black/5 px-4 py-3">
+    <!-- Mobile panel - Popup overlay -->
+    <nav id="mobile-menu" class="md:hidden hidden absolute top-full right-4 left-4 mt-2 max-w-md mx-auto rounded-2xl bg-[var(--card-bg)] backdrop-blur-xl border border-[var(--color-border)] shadow-2xl ring-1 ring-black/5 px-4 py-3 z-50 transition-all duration-200 ease-out opacity-0 scale-95 origin-top">
       <ul class="flex flex-col gap-1">
         {nav.map((n) => {
           const isActive = current === n.href || (n.href !== "/" && current.startsWith(n.href));
@@ -180,9 +180,27 @@ const current = Astro.url.pathname;
   if (btn && panel) {
     btn.addEventListener("click", () => {
       const isHidden = panel.classList.contains("hidden");
-      panel.classList.toggle("hidden");
-      btn.setAttribute("aria-expanded", String(!isHidden));
-      btn.setAttribute("aria-label", isHidden ? "Close navigation menu" : "Open navigation menu");
+      
+      if (isHidden) {
+        // Show menu with animation
+        panel.classList.remove("hidden");
+        // Force reflow to trigger animation
+        panel.offsetHeight;
+        panel.classList.remove("opacity-0", "scale-95");
+        panel.classList.add("opacity-100", "scale-100");
+        btn.setAttribute("aria-expanded", "true");
+        btn.setAttribute("aria-label", "Close navigation menu");
+      } else {
+        // Hide menu with animation
+        panel.classList.remove("opacity-100", "scale-100");
+        panel.classList.add("opacity-0", "scale-95");
+        btn.setAttribute("aria-expanded", "false");
+        btn.setAttribute("aria-label", "Open navigation menu");
+        // Wait for animation to finish before hiding
+        setTimeout(() => {
+          panel.classList.add("hidden");
+        }, 200);
+      }
     });
   }
 
@@ -200,10 +218,7 @@ const current = Astro.url.pathname;
   function setTheme(isDark: boolean) {
     const root = document.documentElement;
     
-    // Add transitioning class for dramatic effect
-    root.classList.add("theme-transitioning");
-    
-    // Toggle theme
+    // Toggle theme instantly for better performance
     root.classList.toggle("dark", isDark);
     
     // Save preference
@@ -211,11 +226,6 @@ const current = Astro.url.pathname;
     
     // Update buttons
     syncButtons(isDark);
-    
-    // Remove transitioning class after animation completes
-    setTimeout(() => {
-      root.classList.remove("theme-transitioning");
-    }, 800);
   }
 
   function toggleTheme() {

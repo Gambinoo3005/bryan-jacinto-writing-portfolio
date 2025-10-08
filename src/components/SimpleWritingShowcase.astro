@@ -30,15 +30,18 @@ const { writingSamples } = Astro.props;
 
   <!-- Writing Samples Grid -->
   <div class="writing-grid" id="writing-grid">
-    {writingSamples.map((sample) => (
-      <a 
-        href={sample.link}
-        class={`writing-card ${sample.featured ? 'featured' : ''}`}
-        data-type={sample.type}
-        data-title={sample.title.toLowerCase()}
-        data-excerpt={sample.excerpt.toLowerCase()}
-        data-tags={sample.tags.join(' ').toLowerCase()}
-      >
+    {writingSamples.map((sample) => {
+      const isExternalLink = sample.link.startsWith('http');
+      return (
+        <a 
+          href={sample.link}
+          class={`writing-card ${sample.featured ? 'featured' : ''}`}
+          data-type={sample.type}
+          data-title={sample.title.toLowerCase()}
+          data-excerpt={sample.excerpt.toLowerCase()}
+          data-tags={sample.tags.join(' ').toLowerCase()}
+          {...(isExternalLink && { target: '_blank', rel: 'noopener noreferrer' })}
+        >
         <div class="card-header">
           <div class="card-meta">
             <span class="card-type">{sample.type.replace('-', ' ')}</span>
@@ -63,7 +66,8 @@ const { writingSamples } = Astro.props;
           </div>
         </div>
       </a>
-    ))}
+      );
+    })}
   </div>
 </div>
 

@@ -181,14 +181,32 @@ if (!cards || cards.length === 0) {
         }
       });
 
-      // Touch/swipe support for mobile
+      // Touch/swipe support for mobile - improved
       let startX = 0;
       let startY = 0;
+      let isSwiping = false;
       
       this.container.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
-      });
+        isSwiping = false;
+      }, { passive: true });
+      
+      this.container.addEventListener('touchmove', (e) => {
+        if (!startX || !startY) return;
+        
+        const currentX = e.touches[0].clientX;
+        const currentY = e.touches[0].clientY;
+        
+        const diffX = Math.abs(startX - currentX);
+        const diffY = Math.abs(startY - currentY);
+        
+        // If horizontal movement is greater than vertical, prevent scroll
+        if (diffX > diffY && diffX > 10) {
+          isSwiping = true;
+          e.preventDefault();
+        }
+      }, { passive: false });
       
       this.container.addEventListener('touchend', (e) => {
         if (!startX || !startY) return;
@@ -200,7 +218,7 @@ if (!cards || cards.length === 0) {
         const diffY = startY - endY;
         
         // Only trigger if horizontal swipe is more significant than vertical
-        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+        if (isSwiping && Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
           if (diffX > 0) {
             // Swipe left - next card
             this.nextCard();
@@ -212,7 +230,8 @@ if (!cards || cards.length === 0) {
         
         startX = 0;
         startY = 0;
-      });
+        isSwiping = false;
+      }, { passive: true });
 
       // Hover effect for stacked cards - pull upward like pulling from a deck
       this.cards.forEach((card: HTMLElement, index: number) => {
@@ -380,9 +399,6 @@ if (!cards || cards.length === 0) {
         const cardElement = card;
         const distance = index - this.currentIndex;
         
-        // Remove all classes first
-        cardElement.classList.remove('card-active', 'card-stacked', 'card-hidden', 'card-hidden-text');
-        
         // Clear any inline styles from hover effects to prevent text color bugs
         const cardContent = card.querySelector('.card-content') as HTMLElement;
         const cardBody = card.querySelector('.card-body') as HTMLElement;
@@ -393,14 +409,13 @@ if (!cards || cards.length === 0) {
           cardBody.style.opacity = '';
         }
         
-        // Cascading animation - each card animates based on its index position
-        // This creates a consistent wave effect for EVERY navigation (nav buttons or click)
-        const delay = index * 80; // Each card in the stack animates 80ms after the previous one
+        // Apply classes immediately without delay for instant visibility
+        cardElement.classList.remove('card-active', 'card-stacked', 'card-hidden', 'card-hidden-text');
         
         if (distance === 0) {
-          // Active card (centered)
+          // Active card (centered) - show immediately
           cardElement.classList.add('card-active');
-          cardElement.style.transitionDelay = `${delay}ms`;
+          cardElement.style.transitionDelay = '0ms';
           cardElement.style.transform = 'translateX(-50%) scale(1) rotate(0deg)';
           cardElement.style.opacity = '1';
           cardElement.style.zIndex = '100';
@@ -408,42 +423,35 @@ if (!cards || cards.length === 0) {
           // Future cards (right side, tilted) - hide text content
           cardElement.classList.add('card-stacked', 'card-hidden-text');
           const offset = distance * this.getStackShift();
-          const scale = Math.max(0.92, 1 - (distance * this.getStackScale())); // Less aggressive scaling
-          const rotation = this.getEnterRotation() * (1 - distance * 0.08); // Smoother rotation
+          const scale = Math.max(0.92, 1 - (distance * this.getStackScale()));
+          const rotation = this.getEnterRotation() * (1 - distance * 0.08);
           
           // Add random offsets for organic appearance
           const randomOffset = this.cardRandomOffsets[index];
           const totalXOffset = offset + randomOffset.x;
           const totalRotation = rotation + randomOffset.rotation;
           
-          cardElement.style.transitionDelay = `${delay}ms`;
+          cardElement.style.transitionDelay = '0ms';
           cardElement.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${randomOffset.y}px) scale(${scale}) rotate(${totalRotation}deg)`;
-          cardElement.style.opacity = '1'; // Fully opaque to prevent text bleeding
+          cardElement.style.opacity = '1';
           cardElement.style.zIndex = (50 - distance).toString();
         } else {
           // Past cards (left side, stacked) - hide text content
           cardElement.classList.add('card-stacked', 'card-hidden-text');
           const offset = distance * this.getStackShift();
-          const scale = Math.max(0.92, 1 - (Math.abs(distance) * this.getStackScale())); // Less aggressive scaling
+          const scale = Math.max(0.92, 1 - (Math.abs(distance) * this.getStackScale()));
           
           // Add random offsets for organic appearance
           const randomOffset = this.cardRandomOffsets[index];
           const totalXOffset = offset + randomOffset.x;
           const totalRotation = randomOffset.rotation;
           
-          cardElement.style.transitionDelay = `${delay}ms`;
+          cardElement.style.transitionDelay = '0ms';
           cardElement.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${randomOffset.y}px) scale(${scale}) rotate(${totalRotation}deg)`;
-          cardElement.style.opacity = '1'; // Fully opaque to prevent text bleeding
+          cardElement.style.opacity = '1';
           cardElement.style.zIndex = (50 + distance).toString();
         }
       });
-
-      // Reset transition delays after animation completes
-      setTimeout(() => {
-        this.cards.forEach((card: HTMLElement) => {
-          card.style.transitionDelay = '0ms';
-        });
-      }, 600 + (this.cards.length * 80)); // Adjusted timing to match cascade effect
     }
 
     updateButtonStates() {
@@ -497,6 +505,10 @@ if (!cards || cards.length === 0) {
     --card-height: 343px;
     --shadow-active: none;
     --shadow-stacked: none;
+    /* Ensure proper touch handling */
+    touch-action: pan-y pinch-zoom;
+    -webkit-user-select: none;
+    user-select: none;
   }
 
   /* Mobile-first responsive card dimensions */
@@ -526,7 +538,7 @@ if (!cards || cards.length === 0) {
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    padding: 1rem;
+    padding: 0;
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
@@ -672,7 +684,7 @@ if (!cards || cards.length === 0) {
     height: var(--card-height);
     min-height: 320px;
     perspective: 1000px;
-    touch-action: pan-y; /* Allow vertical scrolling but handle horizontal swipes */
+    touch-action: pan-y pinch-zoom; /* Allow vertical scrolling and pinch zoom, handle horizontal swipes in JS */
     margin: 0 auto;
     max-width: calc(100vw - 2rem);
     overflow: visible; /* Allow cards to extend beyond deck for stacking effect */
@@ -682,6 +694,8 @@ if (!cards || cards.length === 0) {
     transform-style: preserve-3d;
     /* Ensure proper rendering of child elements */
     contain: none;
+    /* Prevent momentum scrolling interference */
+    -webkit-overflow-scrolling: auto;
   }
 
   /* Mobile responsive adjustments */
@@ -743,26 +757,53 @@ if (!cards || cards.length === 0) {
     border: 1px solid var(--color-border);
     border-radius: 16px;
     overflow: hidden; /* Keep hidden to maintain card boundaries */
-    box-shadow: var(--shadow-stacked);
-    transition: box-shadow 800ms cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.05),
+      0 0 0 1px rgba(0, 0, 0, 0.02) inset;
+    transition: all 600ms cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     flex-direction: column;
-    will-change: box-shadow;
+    will-change: box-shadow, transform;
     isolation: isolate;
     position: relative;
     z-index: 1;
-    /* Ensure proper border rendering */
     box-sizing: border-box;
-    /* Add subtle outline to ensure edges are visible */
-    outline: 1px solid transparent;
-    outline-offset: -1px;
+    /* Polished glass effect with inner highlight */
+    background-image: 
+      linear-gradient(to bottom, 
+        rgba(255, 255, 255, 0.02) 0%, 
+        transparent 50%
+      );
+  }
+  
+  /* Dark mode card adjustments */
+  .dark .card-content {
+    box-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+    background-image: 
+      linear-gradient(to bottom, 
+        rgba(255, 255, 255, 0.03) 0%, 
+        transparent 50%
+      );
   }
 
   .card-active .card-content {
-    box-shadow: var(--shadow-active);
+    box-shadow: 
+      0 8px 30px rgba(0, 0, 0, 0.12),
+      0 2px 8px rgba(0, 0, 0, 0.08),
+      0 0 0 1px rgba(0, 0, 0, 0.03) inset;
+    transform: scale(1.01);
+  }
+  
+  .dark .card-active .card-content {
+    box-shadow: 
+      0 8px 30px rgba(0, 0, 0, 0.5),
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   }
 
-  /* Ensure card borders are always visible with pseudo-element */
+  /* Ensure card borders are always visible with subtle glow */
   .card-content::before {
     content: '';
     position: absolute;
@@ -774,17 +815,29 @@ if (!cards || cards.length === 0) {
     border-radius: 16px;
     pointer-events: none;
     z-index: 1;
+    opacity: 0.8;
+  }
+  
+  .card-active .card-content::before {
+    opacity: 1;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+  }
+  
+  .dark .card-active .card-content::before {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
   }
 
   /* Hide all text content on stacked cards while keeping card structure visible */
   .card-hidden-text .card-body {
     opacity: 0;
-    transition: opacity 400ms ease;
+    transition: opacity 150ms ease;
+    pointer-events: none;
   }
 
   .card-active .card-body {
     opacity: 1;
-    transition: opacity 400ms ease;
+    transition: opacity 250ms ease 100ms;
+    pointer-events: auto;
   }
 
   /* Ensure card structure remains visible even when text is hidden */
@@ -792,17 +845,37 @@ if (!cards || cards.length === 0) {
     background-color: var(--card-bg);
     border: 1px solid var(--color-border);
     /* Add subtle visual depth for stacked cards */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.08),
+      0 1px 3px rgba(0, 0, 0, 0.06),
+      0 0 0 1px rgba(0, 0, 0, 0.02) inset;
+  }
+  
+  .dark .card-hidden-text .card-content {
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      0 1px 3px rgba(0, 0, 0, 0.2),
+      0 0 0 1px rgba(255, 255, 255, 0.02) inset;
   }
 
-  /* Active card hover - simple lift */
+  /* Active card hover - enhanced lift with shadow */
   .card-active:hover {
-    transform: translateX(-50%) translateY(-3px) scale(1) rotate(0deg) !important;
-    transition: transform 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 200ms ease !important;
+    transform: translateX(-50%) translateY(-5px) scale(1.005) rotate(0deg) !important;
+    transition: transform 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   }
 
   .card-active:hover .card-content {
-    box-shadow: none !important;
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.15),
+      0 4px 12px rgba(0, 0, 0, 0.1),
+      0 0 0 1px rgba(0, 0, 0, 0.04) inset !important;
+  }
+  
+  .dark .card-active:hover .card-content {
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.6),
+      0 4px 12px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.06) inset !important;
   }
 
   /* Stacked cards - smooth transitions (hover effects handled by JavaScript) */
@@ -915,10 +988,27 @@ if (!cards || cards.length === 0) {
     font-size: 1.125rem;
     font-weight: 600;
     color: var(--color-link);
-    background-color: var(--surface-glass);
+    background: linear-gradient(135deg, 
+      var(--surface-glass) 0%, 
+      var(--surface-glass-strong) 100%
+    );
     padding: 0.5rem 1rem;
-    border-radius: 0.375rem;
+    border-radius: 0.5rem;
     border: 1px solid var(--color-border);
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.04),
+      0 0 0 1px rgba(0, 0, 0, 0.02) inset;
+    transition: all 250ms ease;
+  }
+  
+  .card-active .card-company {
+    transform: translateY(0);
+  }
+  
+  .dark .card-company {
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.2),
+      0 0 0 1px rgba(255, 255, 255, 0.03) inset;
   }
 
   .card-period {
@@ -995,16 +1085,10 @@ if (!cards || cards.length === 0) {
   }
 
   /* Responsive adjustments */
-  @media (max-width: 1200px) {
-    .card-stack-wrapper {
-      padding: 1.5rem;
-    }
-  }
-
   @media (max-width: 768px) {
     .card-stack-wrapper {
-      padding: 0.5rem;
-      gap: 2rem;
+      padding: 0;
+      gap: 1.5rem;
     }
 
     .card-company {
@@ -1035,8 +1119,8 @@ if (!cards || cards.length === 0) {
 
   @media (max-width: 480px) {
     .card-stack-wrapper {
-      padding: 0.25rem;
-      gap: 1.75rem;
+      padding: 0;
+      gap: 1.5rem;
     }
 
     .card-company {

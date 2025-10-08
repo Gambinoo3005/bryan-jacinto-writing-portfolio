@@ -6,9 +6,9 @@ import ToolsetGrid from "../components/ToolsetGrid.astro";
 
 const roles = [
   "Copywriter",
-  "Copyeditor",
-  "B2B Content Writer",
-  "SEO Content Writer",
+  "SEO",
+  "UI / UX",
+  "Web Dev",
 ];
 
 const experienceCards = [
@@ -146,6 +146,9 @@ const toolsetData = [
   
   // Project Management
   { id: "asana", name: "Asana", category: "Project Management", icon: "asana.webp" },
+  { id: "zoho-projects", name: "Zoho Projects", category: "Project Management", icon: "zoho_projects.webp" },
+  { id: "trello", name: "Trello", category: "Project Management", icon: "trello.webp" },
+  { id: "monday", name: "Monday", category: "Project Management", icon: "monday.webp" },
   
   // AI Writing and Research Tools
   { id: "jasper-ai", name: "Jasper AI", category: "AI Writing and Research Tools", icon: "jasper.webp" },
@@ -153,7 +156,20 @@ const toolsetData = [
   { id: "claude", name: "Claude", category: "AI Writing and Research Tools", icon: "claude.webp" },
   { id: "perplexity", name: "Perplexity", category: "AI Writing and Research Tools", icon: "perplexity.webp" },
   { id: "gemini", name: "Gemini", category: "AI Writing and Research Tools", icon: "gemini.webp" },
-  { id: "deepseek", name: "Deepseek", category: "AI Writing and Research Tools", icon: "deepseek.webp" }
+  { id: "deepseek", name: "Deepseek", category: "AI Writing and Research Tools", icon: "deepseek.webp" },
+  
+  // Design & Visual Tools
+  { id: "figma", name: "Figma", category: "Design & Visual Tools", icon: "figma.webp" },
+  { id: "framer", name: "Framer", category: "Design & Visual Tools", icon: "framer.webp" },
+  { id: "photoshop", name: "Adobe Photoshop", category: "Design & Visual Tools", icon: "adobe_photoshop.webp" },
+  { id: "after-effects", name: "Adobe After Effects", category: "Design & Visual Tools", icon: "adobe_after_effects.webp" },
+  { id: "premiere", name: "Adobe Premiere", category: "Design & Visual Tools", icon: "adobe_premiere.webp" },
+  { id: "indesign", name: "Adobe InDesign", category: "Design & Visual Tools", icon: "adobe_indesign.webp" },
+  { id: "canva", name: "Canva", category: "Design & Visual Tools", icon: "canva.webp" },
+  
+  // Presentation Tools
+  { id: "google-slides", name: "Google Slides", category: "Presentation Tools", icon: "google_slides.webp" },
+  { id: "visme", name: "Visme", category: "Presentation Tools", icon: "visme.webp" }
 ];
 ---
 
@@ -161,7 +177,7 @@ const toolsetData = [
   title="Bryan Jacinto - Copy & SEO"
   description="Copywriting, editing, B2B content, and SEO-focused writing."
 >
-  <section class="flex items-center justify-center text-[var(--color-text)] w-full" style="min-height: calc(100vh - 88px); background-color: var(--section-bg);">
+  <section class="hero-section flex items-center justify-center text-[var(--color-text)]">
     <div class="w-full max-w-7xl mx-auto px-5">
       <div class="flex flex-col lg:flex-row justify-center items-center gap-10 lg:gap-16 w-full">
         <!-- Left Column: Hero Content -->
@@ -194,7 +210,7 @@ const toolsetData = [
 
           <!-- Compact blurb -->
           <p class="text-[15px] sm:text-base md:text-[17px] leading-relaxed text-[var(--color-muted)] max-w-2xl mx-auto lg:mx-0">
-            Copywriter with seven years of experience creating SEO-optimized content, blog posts, landing pages, and marketing copy for global clients. Versatile, fast, and adaptable across styles and tones. Currently looking for more opportunities.
+            Copywriter with seven years of experience creating SEO-optimized content, blog posts, landing pages, and marketing copy for global clients. Skilled in design, web development, and SEO strategy. Versatile, fast, and adaptable across styles and tones. Currently looking for more opportunities.
           </p>
 
           <!-- CTAs -->
@@ -239,11 +255,11 @@ const toolsetData = [
   </section>
 
   <!-- Experience section with Card Stack -->
-  <section id="my-experiences" class="scroll-mt-[80px] min-h-screen flex items-start justify-center pt-20 md:pt-16 pb-12 md:pb-16 text-[var(--color-text)] w-full" style="background-color: var(--section-bg);">
-    <div class="mx-auto max-w-6xl px-3 md:px-5 w-full">
+  <section id="my-experiences" class="page-section scroll-mt-[23.5px] flex items-start justify-center text-[var(--color-text)]">
+    <div class="mx-auto max-w-6xl px-4 sm:px-5 md:px-6 w-full">
       <!-- Section Header -->
-      <div class="scroll-reveal scroll-reveal-item text-center mb-4 md:mb-6" style="margin-bottom: 20px;">
-        <h2 class="mb-0 text-2xl md:text-3xl lg:text-4xl">My Experience</h2>
+      <div class="scroll-reveal scroll-reveal-item text-center mb-8">
+        <h2 class="mb-0">My Experience</h2>
       </div>
       
       <!-- Card Stack Component -->
@@ -263,10 +279,10 @@ const toolsetData = [
   </section>
 
   <!-- Client Testimonials Section -->
-  <section class="py-16 w-full" style="background-color: var(--section-bg);">
-    <div class="mx-auto max-w-6xl px-5">
-      <div class="scroll-reveal scroll-reveal-item text-center mb-12">
-        <h2 class="mb-4">What Clients Say</h2>
+  <section class="page-section flex items-center">
+    <div class="mx-auto max-w-6xl px-4 sm:px-5 md:px-6 w-full">
+      <div class="scroll-reveal scroll-reveal-item text-center mb-8">
+        <h2 class="mb-0">What Clients Say</h2>
       </div>
       <div class="scroll-reveal scroll-reveal-item scroll-reveal-delay-1">
         <ClientTestimonialCarousel testimonials={clientTestimonials} autoplayInterval={7000} />
@@ -275,33 +291,33 @@ const toolsetData = [
   </section>
 
   <!-- My Toolset Section -->
-  <section class="py-16 w-full" style="background-color: var(--section-bg);">
-    <div class="mx-auto max-w-6xl px-5">
-      <div class="scroll-reveal scroll-reveal-item text-center" style="margin-bottom: 29px;">
-        <h2 class="mb-4">My Toolset</h2>
+  <section class="page-section flex items-center">
+    <div class="mx-auto max-w-6xl px-4 sm:px-5 md:px-6 w-full">
+      <div class="scroll-reveal scroll-reveal-item text-center mb-8">
+        <h2 class="mb-0">My Toolset</h2>
       </div>
       <ToolsetGrid tools={toolsetData} />
     </div>
   </section>
 
   <!-- CTA Section -->
-  <section class="py-20 w-full" style="background-color: var(--section-bg);">
-    <div class="mx-auto max-w-4xl px-5 text-center">
-      <div class="scroll-reveal scroll-reveal-item">
+  <section class="cta-section">
+    <div class="mx-auto max-w-4xl px-4 sm:px-5 md:px-6 text-center">
+      <div class="scroll-reveal scroll-reveal-item mb-8">
         <h2 class="mb-6">Ready to Work Together?</h2>
-        <p class="text-[var(--color-muted)] mb-8 text-lg max-w-2xl mx-auto">
+        <p class="text-[var(--color-muted)] mb-6 text-base sm:text-lg max-w-2xl mx-auto">
           I'm always excited to collaborate on new projects. Whether you need copywriting, content strategy, SEO-focused writing, or full stack development, let's discuss how I can help bring your ideas to life.
         </p>
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
           <a
             href="/contact"
-            class="btn-primary inline-flex h-12 items-center justify-center rounded-full px-8 text-base font-semibold transition-all duration-200"
+            class="btn-primary inline-flex h-11 sm:h-12 items-center justify-center rounded-full px-6 sm:px-8 text-sm sm:text-base font-semibold transition-all duration-200 w-full sm:w-auto"
           >
             Get in touch
           </a>
           <a
             href="/work"
-            class="snake-border-button group inline-flex h-12 items-center justify-center rounded-full px-8 text-base font-semibold focus:outline-none"
+            class="snake-border-button group inline-flex h-11 sm:h-12 items-center justify-center rounded-full px-6 sm:px-8 text-sm sm:text-base font-semibold focus:outline-none w-full sm:w-auto"
             aria-label="View my work"
           >
             <span>View my work</span>
@@ -354,6 +370,44 @@ const toolsetData = [
   </style>
 
   <style>
+    /* Hero section with mathematically perfect positioning */
+    .hero-section {
+      height: 525px !important; /* Total space from header bottom to end of viewport */
+      min-height: 525px !important;
+      padding: 75px 0 0 0 !important; /* Adjusted to achieve 87.5px positioning */
+      margin: 0 !important;
+      background-color: var(--section-bg);
+      display: flex !important;
+      align-items: flex-start !important;
+      justify-content: center !important;
+    }
+    
+    /* Mobile hero section adjustments */
+    @media (max-width: 768px) {
+      .hero-section {
+        height: auto !important;
+        min-height: calc(100vh - 88px) !important; /* Take full viewport to push experience below fold */
+        padding: 0 0 8rem 0 !important; /* Large bottom padding to push experience completely out of view */
+        display: flex !important;
+        align-items: flex-start !important;
+      }
+      
+      .hero-section > div {
+        margin-top: 6.5rem !important; /* More blank space above hero content */
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero-section {
+        min-height: calc(100vh - 88px) !important;
+        padding: 0 0 6rem 0 !important; /* Large bottom padding to hide experience section */
+      }
+      
+      .hero-section > div {
+        margin-top: 5.5rem !important; /* More blank space above hero content */
+      }
+    }
+
     /* Role badge micro-interactions */
     .role-badge {
       position: relative;
@@ -394,6 +448,32 @@ const toolsetData = [
     .role-badge:active {
       transform: translateY(-1px) scale(1.02);
     }
+
+    /* Compact CTA section - connected to footer */
+    .cta-section {
+      padding: 4rem 0 0 0; /* Remove bottom padding to connect to footer */
+      background-color: var(--section-bg);
+      min-height: auto; /* No forced height */
+      border: none !important; /* Remove any borders */
+      border-top: none !important;
+      border-bottom: none !important;
+      box-shadow: none !important;
+      margin-top: -30px; /* Move section 30px up */
+    }
+
+    /* Responsive CTA spacing - uniform with other sections */
+    @media (max-width: 768px) {
+      .cta-section {
+        padding: 4rem 0 0 0; /* Match page-section padding */
+        margin-top: 0; /* Remove negative margin on mobile */
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .cta-section {
+        padding: 3rem 0 0 0; /* Match page-section padding on small screens */
+      }
+    }
   </style>
 
   <!-- Scroll reveal script -->
@@ -417,11 +497,10 @@ const toolsetData = [
       });
     }, observerOptions);
 
-    // Observe all scroll-reveal elements
+    // Observe all scroll-reveal elements (excluding toolset categories which have their own system)
     document.addEventListener('DOMContentLoaded', () => {
-      const revealElements = document.querySelectorAll('.scroll-reveal');
+      const revealElements = document.querySelectorAll('.scroll-reveal:not(.scroll-reveal-category)');
       revealElements.forEach(el => observer.observe(el));
     });
   </script>
 </BaseLayout>
-
