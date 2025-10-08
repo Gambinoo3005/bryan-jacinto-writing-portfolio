@@ -79,10 +79,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 </BaseLayout>
 
 <script>
-  // EmailJS configuration
-  const EMAILJS_SERVICE_ID = 'service_cqw060t';
-  const EMAILJS_TEMPLATE_ID = 'template_njckoni';
-  const EMAILJS_PUBLIC_KEY = 'F5U2wUTubr4DDX6Ei';
+  // EmailJS configuration - using environment variables
+  const EMAILJS_SERVICE_ID = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID;
+  const EMAILJS_TEMPLATE_ID = import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID;
+  const EMAILJS_PUBLIC_KEY = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
 
   // Initialize EmailJS
   (function() {
@@ -111,7 +111,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       const formMessage = document.getElementById('form-message');
       
       if (!submitButton || !submitText || !submitLoading || !formMessage) {
-        console.error('Form elements not found');
         return;
       }
       

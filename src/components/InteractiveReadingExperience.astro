@@ -283,7 +283,7 @@ const {
         range.insertNode(highlight);
         selection.removeAllRanges();
       } catch (error) {
-        console.warn('Could not highlight text:', error);
+        // Silently fail if highlighting is not supported
       }
     }
 
@@ -301,7 +301,7 @@ const {
           try {
             await navigator.share(shareData);
           } catch (error) {
-            console.log('Share cancelled');
+            // Share was cancelled by user
           }
         } else {
           // Fallback: copy to clipboard

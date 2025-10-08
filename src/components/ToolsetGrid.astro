@@ -377,11 +377,9 @@ const categories = Object.keys(toolsByCategory);
   // Initialize animations with better reliability
   const initToolsetAnimations = () => {
     const categoryCards = document.querySelectorAll('.scroll-reveal-category');
-    console.log('🔍 Initializing toolset animations for', categoryCards.length, 'categories');
     
-    categoryCards.forEach((card, index) => {
+    categoryCards.forEach((card) => {
       const cardElement = card;
-      const categoryName = cardElement.querySelector('h3')?.textContent || `Category ${index}`;
       
       // Check if element is already in viewport on page load
       const rect = cardElement.getBoundingClientRect();
@@ -394,12 +392,10 @@ const categories = Object.keys(toolsByCategory);
         
         setTimeout(() => {
           cardElement.classList.add('is-visible');
-          console.log(`✅ Immediate animation for: ${categoryName}`);
         }, delay * 1000);
       } else {
         // Element is not visible, observe it
         categoryObserver.observe(cardElement);
-        console.log(`👀 Observing: ${categoryName}`);
       }
     });
   };
