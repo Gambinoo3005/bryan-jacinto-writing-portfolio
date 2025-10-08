@@ -70,23 +70,23 @@ const {
         </svg>
       </button>
       
+      {showDots && (
+        <div class="carousel-dots" id="carousel-dots">
+          {testimonials.map((_, index) => (
+            <button 
+              class={`carousel-dot ${index === 0 ? 'active' : ''}`}
+              data-index={index}
+              aria-label={`Go to testimonial ${index + 1}`}
+            ></button>
+          ))}
+        </div>
+      )}
+      
       <button class="carousel-arrow carousel-next" id="carousel-next" aria-label="Next testimonial">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
       </button>
-    </div>
-  )}
-
-  {showDots && (
-    <div class="carousel-dots" id="carousel-dots">
-      {testimonials.map((_, index) => (
-        <button 
-          class={`carousel-dot ${index === 0 ? 'active' : ''}`}
-          data-index={index}
-          aria-label={`Go to testimonial ${index + 1}`}
-        ></button>
-      ))}
     </div>
   )}
 
@@ -567,7 +567,6 @@ const {
     background-color: var(--surface-glass);
     border: 1px solid var(--color-border);
     border-radius: 2rem;
-    margin-top: 2rem;
     user-select: none;
   }
 
