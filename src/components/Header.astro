@@ -182,12 +182,13 @@ const current = Astro.url.pathname;
       const isHidden = panel.classList.contains("hidden");
       
       if (isHidden) {
-        // Show menu with animation
+        // Show menu with animation - use requestAnimationFrame to avoid forced reflow
         panel.classList.remove("hidden");
-        // Force reflow to trigger animation
-        panel.offsetHeight;
-        panel.classList.remove("opacity-0", "scale-95");
-        panel.classList.add("opacity-100", "scale-100");
+        // Use RAF to ensure DOM update before animation
+        requestAnimationFrame(() => {
+          panel.classList.remove("opacity-0", "scale-95");
+          panel.classList.add("opacity-100", "scale-100");
+        });
         btn.setAttribute("aria-expanded", "true");
         btn.setAttribute("aria-label", "Close navigation menu");
       } else {

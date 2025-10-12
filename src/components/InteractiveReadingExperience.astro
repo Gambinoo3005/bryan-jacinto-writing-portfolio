@@ -155,15 +155,34 @@ const {
     setupProgressTracking() {
       if (!this.progressBar) return;
 
+      let ticking = false;
+      let articleHeight = 0;
+
+      const calculateHeight = () => {
+        articleHeight = this.articleContent.scrollHeight - window.innerHeight;
+      };
+
       const updateProgress = () => {
-        const articleHeight = this.articleContent.scrollHeight - window.innerHeight;
         const scrolled = window.scrollY;
         const progress = Math.min((scrolled / articleHeight) * 100, 100);
         this.progressBar.style.width = `${progress}%`;
+        ticking = false;
       };
 
-      window.addEventListener('scroll', updateProgress);
-      window.addEventListener('resize', updateProgress);
+      const requestUpdate = () => {
+        if (!ticking) {
+          requestAnimationFrame(updateProgress);
+          ticking = true;
+        }
+      };
+
+      // Calculate height once initially and on resize
+      calculateHeight();
+      window.addEventListener('scroll', requestUpdate, { passive: true });
+      window.addEventListener('resize', () => {
+        calculateHeight();
+        requestUpdate();
+      }, { passive: true });
     }
 
     setupTableOfContents() {
@@ -201,9 +220,20 @@ const {
         }
       });
 
-      // Highlight current section
+      // Highlight current section with throttling
+      let highlightTicking = false;
+      const requestHighlight = () => {
+        if (!highlightTicking) {
+          requestAnimationFrame(() => {
+            this.highlightCurrentSection();
+            highlightTicking = false;
+          });
+          highlightTicking = true;
+        }
+      };
+      
       this.highlightCurrentSection();
-      window.addEventListener('scroll', () => this.highlightCurrentSection());
+      window.addEventListener('scroll', requestHighlight, { passive: true });
     }
 
     highlightCurrentSection() {
@@ -212,13 +242,20 @@ const {
       
       let currentHeading = '';
       
-      headings.forEach((heading) => {
-        const rect = heading.getBoundingClientRect();
-        if (rect.top <= 100) {
-          currentHeading = heading.id;
+      // Batch all geometric reads together to avoid layout thrashing
+      const headingPositions = Array.from(headings).map(heading => ({
+        id: heading.id,
+        top: heading.getBoundingClientRect().top
+      }));
+      
+      // Find current heading from batched data
+      for (const { id, top } of headingPositions) {
+        if (top <= 100) {
+          currentHeading = id;
         }
-      });
+      }
 
+      // Batch all DOM writes together
       tocLinks.forEach((link) => {
         link.classList.remove('active');
         if (link.getAttribute('data-heading') === currentHeading) {

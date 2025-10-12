@@ -26,6 +26,9 @@ const url = Astro.url?.href ?? "";
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={url} />
+    
+    <!-- Preload LCP image for faster loading -->
+    <link rel="preload" as="image" href="/Bryan_hero_image.webp" fetchpriority="high" />
 
     <!-- SEO Meta Tags -->
     <meta name="author" content="Bryan Jacinto" />
@@ -45,13 +48,46 @@ const url = Astro.url?.href ?? "";
     <meta name="twitter:description" content={description} />
     {ogImage && <meta name="twitter:image" content={ogImage} />}
 
-    <!-- Fonts: Inter (variable) -->
+    <!-- Fonts: Inter (variable) - Optimized loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&display=swap"
       rel="stylesheet"
+      media="print" onload="this.media='all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+
+    <!-- Inline critical CSS for immediate render -->
+    <style>
+      /* Critical above-the-fold styles */
+      :root {
+        --color-bg: #ffffff;
+        --color-text: #212529;
+        --color-heading: #000000;
+        --header-bg: #212529;
+      }
+      .dark {
+        --color-bg: #000000;
+        --color-text: #ffffff;
+        --color-heading: #ffffff;
+      }
+      html { font-family: Inter, ui-sans-serif, system-ui, Arial, sans-serif; }
+      body { 
+        min-height: 100svh;
+        background-color: var(--color-bg);
+        color: var(--color-text);
+        margin: 0;
+      }
+      * { transition: none !important; }
+    </style>
 
     <!-- Early theme apply to avoid FOUC (no transitions on load) -->
     <script>

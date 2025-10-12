@@ -374,28 +374,30 @@ const categories = Object.keys(toolsByCategory);
     });
   }, categoryObserverOptions);
 
-  // Initialize animations with better reliability
+  // Initialize animations with better reliability - optimized to avoid forced reflows
   const initToolsetAnimations = () => {
     const categoryCards = document.querySelectorAll('.scroll-reveal-category');
     
-    categoryCards.forEach((card) => {
-      const cardElement = card;
-      
-      // Check if element is already in viewport on page load
-      const rect = cardElement.getBoundingClientRect();
+    // Batch all geometric reads together to avoid layout thrashing
+    const cardData = Array.from(categoryCards).map((card) => {
+      const rect = card.getBoundingClientRect();
       const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+      const delayAttr = card.getAttribute('data-delay');
+      const delay = delayAttr !== null ? parseFloat(delayAttr) : 0;
       
+      return { card, isInViewport, delay };
+    });
+    
+    // Now process all cards based on batched data
+    cardData.forEach(({ card, isInViewport, delay }) => {
       if (isInViewport) {
         // Element is already visible, animate it immediately
-        const delayAttr = cardElement.getAttribute('data-delay');
-        const delay = delayAttr !== null ? parseFloat(delayAttr) : 0;
-        
         setTimeout(() => {
-          cardElement.classList.add('is-visible');
+          card.classList.add('is-visible');
         }, delay * 1000);
       } else {
         // Element is not visible, observe it
-        categoryObserver.observe(cardElement);
+        categoryObserver.observe(card);
       }
     });
   };
