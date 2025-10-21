@@ -92,7 +92,7 @@ const clientTestimonials = [
     name: "Adam Sam",
     role: "CEO",
     company: "Monok",
-    content: "Bryan's editorial work on our news articles has been exceptional. His tonality perfectly captures our brand voice while maintaining journalistic integrity. His attention to detail makes him invaluable to our team.",
+    content: "Bryan is one of our strongest writers—meticulous in fact-checking, sharp in photo selection, and fluent across tones from news to blogs to thought leadership. He adapts quickly to briefs, collaborates seamlessly, meets deadlines, and consistently elevates the quality and credibility of every piece he works on.",
     project: "News Article Editing",
     results: "Enhanced brand voice consistency"
   },
@@ -258,7 +258,7 @@ const toolsetData = [
   </section>
 
   <!-- Experience section with Card Stack -->
-  <section id="my-experiences" class="page-section scroll-mt-[23.5px] flex items-start justify-center text-[var(--color-text)]">
+  <section id="my-experiences" class="page-section scroll-mt-[70px] md:scroll-mt-[23.5px] flex items-start justify-center text-[var(--color-text)]">
     <div class="mx-auto max-w-6xl px-4 sm:px-5 md:px-6 w-full">
       <!-- Section Header -->
       <div class="scroll-reveal scroll-reveal-item text-center mb-8">
@@ -504,6 +504,22 @@ const toolsetData = [
     document.addEventListener('DOMContentLoaded', () => {
       const revealElements = document.querySelectorAll('.scroll-reveal:not(.scroll-reveal-category)');
       revealElements.forEach(el => observer.observe(el));
+
+      const experienceTrigger = document.querySelector('a[aria-label="View my experience"]');
+      const experienceSection = document.querySelector('#my-experiences');
+
+      if (experienceTrigger && experienceSection) {
+        experienceTrigger.addEventListener('click', (event) => {
+          const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+          if (!isMobile) {
+            return;
+          }
+
+          event.preventDefault();
+          experienceSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      }
     });
   </script>
 </BaseLayout>
