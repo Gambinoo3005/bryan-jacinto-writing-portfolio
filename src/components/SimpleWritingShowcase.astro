@@ -13,6 +13,7 @@ export interface Props {
     publishedDate: string;
     link: string;
     featured?: boolean;
+    wip?: boolean;
   }>;
 }
 
@@ -32,22 +33,24 @@ const { writingSamples } = Astro.props;
   <div class="writing-grid" id="writing-grid">
     {writingSamples.map((sample) => {
       const isExternalLink = sample.link.startsWith('http');
+      const buttonText = sample.type === 'copy' ? 'Visit Site' : 'Read More';
       return (
-        <a 
-          href={sample.link}
+        <div 
           class={`writing-card ${sample.featured ? 'featured' : ''}`}
           data-type={sample.type}
           data-title={sample.title.toLowerCase()}
           data-excerpt={sample.excerpt.toLowerCase()}
           data-tags={sample.tags.join(' ').toLowerCase()}
-          {...(isExternalLink && { target: '_blank', rel: 'noopener noreferrer' })}
         >
         <div class="card-header">
           <div class="card-meta">
             <span class="card-type">{sample.type.replace('-', ' ')}</span>
             {sample.client && <span class="card-client">{sample.client}</span>}
           </div>
-          {sample.featured && <span class="featured-badge">Featured</span>}
+          <div class="badge-group">
+            {sample.featured && <span class="featured-badge">Featured</span>}
+            {sample.wip && <span class="wip-badge">WIP</span>}
+          </div>
         </div>
 
         <h3 class="card-title">{sample.title}</h3>
@@ -61,11 +64,21 @@ const { writingSamples } = Astro.props;
 
         <div class="card-footer">
           <div class="card-meta-info">
-            {sample.type !== 'copy' && <span>{sample.readTime}</span>}
             <span>{sample.type === 'copy' ? new Date(sample.publishedDate).getFullYear() : new Date(sample.publishedDate).toLocaleDateString()}</span>
           </div>
+          <a 
+            href={sample.link}
+            class="card-button"
+            {...(isExternalLink && { target: '_blank', rel: 'noopener noreferrer' })}
+          >
+            {buttonText}
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/>
+              <path d="m12 5 7 7-7 7"/>
+            </svg>
+          </a>
         </div>
-      </a>
+      </div>
       );
     })}
   </div>
@@ -102,17 +115,6 @@ const { writingSamples } = Astro.props;
           this.updateResults();
         });
       });
-
-      // Card hover effects
-      this.cards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-          card.style.transform = 'translateY(-4px)';
-        });
-        
-        card.addEventListener('mouseleave', () => {
-          card.style.transform = 'translateY(0)';
-        });
-      });
     }
 
     updateResults() {
@@ -121,7 +123,7 @@ const { writingSamples } = Astro.props;
                              card.dataset.type === this.currentFilter;
         
         if (matchesFilter) {
-          card.style.display = 'block';
+          card.style.display = 'flex';
           card.style.animation = 'fadeInUp 0.3s ease forwards';
         } else {
           card.style.display = 'none';
@@ -197,16 +199,16 @@ const { writingSamples } = Astro.props;
     border-radius: 1rem;
     padding: 1.5rem;
     transition: all 0.3s ease;
-    cursor: pointer;
     position: relative;
     overflow: hidden;
-    text-decoration: none;
     color: inherit;
-    display: block;
+    display: flex;
+    flex-direction: column;
   }
 
   .writing-card:hover {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
   }
 
   .writing-card.featured {
@@ -243,8 +245,23 @@ const { writingSamples } = Astro.props;
     font-weight: 500;
   }
 
+  .badge-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
   .featured-badge {
     background-color: var(--color-link);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .wip-badge {
+    background-color: #f59e0b;
     color: white;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
@@ -256,6 +273,13 @@ const { writingSamples } = Astro.props;
   html.dark .featured-badge,
   .dark .featured-badge {
     background-color: white !important;
+    color: black !important;
+  }
+
+  /* Dark mode adjustments for WIP badge */
+  html.dark .wip-badge,
+  .dark .wip-badge {
+    background-color: #fbbf24 !important;
     color: black !important;
   }
 
@@ -326,6 +350,49 @@ const { writingSamples } = Astro.props;
     gap: 1rem;
     font-size: 0.75rem;
     color: var(--color-muted);
+  }
+
+  .card-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--color-link);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .card-button:hover {
+    background-color: var(--color-link);
+    transform: translateX(2px);
+    opacity: 0.9;
+  }
+
+  .card-button svg {
+    transition: transform 0.2s ease;
+  }
+
+  .card-button:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* Dark mode adjustments for button */
+  html.dark .card-button,
+  .dark .card-button {
+    background-color: white !important;
+    color: black !important;
+  }
+
+  html.dark .card-button:hover,
+  .dark .card-button:hover {
+    background-color: white !important;
+    opacity: 0.9;
   }
 
 

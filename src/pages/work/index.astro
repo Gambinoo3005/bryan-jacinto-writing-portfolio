@@ -22,7 +22,8 @@ const writingSamples = [
     readTime: '5 min read',
     publishedDate: item.data.pubDate.toISOString(),
     link: `/work/${item.slug}`,
-    featured: (item.data as any).featured || false
+    featured: (item.data as any).featured || false,
+    wip: false
   })),
   ...posts.map((post) => ({
     id: `post-${post.slug}`,
@@ -34,7 +35,8 @@ const writingSamples = [
     readTime: '3 min read',
     publishedDate: post.data.pubDate.toISOString(),
     link: `/articles/${post.slug}`,
-    featured: false
+    featured: false,
+    wip: false
   })),
   // Website projects
   {
@@ -44,24 +46,26 @@ const writingSamples = [
     category: 'Website Development',
     client: 'Uragon Transport Services',
     excerpt: 'Complete full-stack web development project including frontend design, backend development, SEO optimization, and copywriting for a car rental service in Bicol Region, Philippines.',
-    tags: ['full-stack development', 'SEO', 'copywriting', 'web design'],
+    tags: ['Next.js', 'Tailwind CSS', 'full-stack development', 'SEO', 'copywriting'],
     readTime: '5 min read',
     publishedDate: new Date('2025').toISOString(),
     link: 'https://uragon-transport-services.vercel.app/',
-    featured: true
+    featured: true,
+    wip: false
   },
   {
     id: 'website-2',
-    title: 'Portfolio CMS',
+    title: 'Go Leap Digital | Take the Leap. Go Digital.',
     type: 'copy' as const,
     category: 'Website Development',
-    client: 'Portfolio CMS Agency',
-    excerpt: 'Full-stack web development for a portfolio agency offering custom CMS solutions. Complete build including Next.js frontend, custom CMS implementation, database design, SEO optimization, and comprehensive design system.',
-    tags: ['full-stack development', 'CMS development', 'Next.js', 'database design', 'SEO'],
+    client: 'Go Leap Digital',
+    excerpt: 'Full-stack development for a digital marketing agency specializing in modern web solutions. Comprehensive project including Next.js frontend architecture, responsive design system, SEO optimization, and strategic copywriting to drive client conversions.',
+    tags: ['Next.js', 'Tailwind CSS', 'full-stack development', 'SEO', 'copywriting'],
     readTime: '6 min read',
     publishedDate: new Date('2025').toISOString(),
-    link: 'https://folio-marketing.vercel.app/',
-    featured: false
+    link: 'https://go-leap-digital.vercel.app/',
+    featured: false,
+    wip: true
   }
 ].sort((a, b) => {
   // Featured items first
