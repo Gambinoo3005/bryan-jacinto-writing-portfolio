@@ -20,6 +20,10 @@ const { Content } = await entry.render();
   pubDate={entry.data.pubDate}
   tags={entry.data.tags}
   ogImage={entry.data.ogImage}
+  heroImage={entry.data.heroImage || entry.data.hero}
+  client={entry.data.client}
+  industry={entry.data.industry}
+  results={entry.data.results}
 >
   <Content />
 </CaseStudyLayout>

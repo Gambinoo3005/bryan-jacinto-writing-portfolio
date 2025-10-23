@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import SimpleWritingShowcase from "../../components/SimpleWritingShowcase.astro";
 import { getCollection } from "astro:content";
 
 const workItems = (await getCollection("work", ({ data }) => !data.draft))
@@ -9,85 +8,335 @@ const workItems = (await getCollection("work", ({ data }) => !data.draft))
 const posts = (await getCollection("posts", ({ data }) => !data.draft))
   .sort((a, b) => +b.data.pubDate - +a.data.pubDate);
 
-// Combine work items and posts into writing samples
-const writingSamples = [
-  ...workItems.map((item) => ({
-    id: `work-${item.slug}`,
-    title: item.data.title,
-    type: 'case-study' as const,
-    category: 'Case Study',
-    client: item.data.client || 'Aptean',
-    excerpt: item.data.summary || 'A comprehensive case study documenting successful ERP implementation and business transformation.',
-    tags: item.data.tags || [],
-    readTime: '5 min read',
-    publishedDate: item.data.pubDate.toISOString(),
-    link: `/work/${item.slug}`,
-    featured: (item.data as any).featured || false,
-    wip: false
-  })),
-  ...posts.map((post) => ({
-    id: `post-${post.slug}`,
-    title: post.data.title,
-    type: 'article' as const,
-    category: 'Thought Leadership',
-    excerpt: post.data.description || 'An insightful article on content strategy, SEO, and writing best practices.',
-    tags: (post.data as any).tags || ['writing', 'content strategy'],
-    readTime: '3 min read',
-    publishedDate: post.data.pubDate.toISOString(),
-    link: `/articles/${post.slug}`,
-    featured: false,
-    wip: false
-  })),
-  // Website projects
+type WorkEntry = {
+  id: string;
+  title: string;
+  summary: string;
+  heroImage?: string;
+  link: string;
+  isExternal: boolean;
+  typeLabel: string;
+  filterType: "case-study" | "article" | "website";
+  client?: string;
+  industry?: string;
+  pubDate: Date;
+  results?: string;
+  ctaText: string;
+};
+
+const additionalProjects: WorkEntry[] = [
   {
-    id: 'website-1',
-    title: 'Uragon Transport Services',
-    type: 'copy' as const,
-    category: 'Website Development',
-    client: 'Uragon Transport Services',
-    excerpt: 'Complete full-stack web development project including frontend design, backend development, SEO optimization, and copywriting for a car rental service in Bicol Region, Philippines.',
-    tags: ['Next.js', 'Tailwind CSS', 'full-stack development', 'SEO', 'copywriting'],
-    readTime: '5 min read',
-    publishedDate: new Date('2025').toISOString(),
-    link: 'https://uragon-transport-services.vercel.app/',
-    featured: true,
-    wip: false
+    id: "website-1",
+    title: "Uragon Transport Services",
+    summary:
+      "Complete full-stack web development project including frontend design, backend development, SEO optimization, and copywriting for a car rental service in Bicol Region, Philippines.",
+    heroImage: "/hero-images/uragon-website.webp",
+    link: "https://uragon-transport-services.vercel.app/",
+    isExternal: true,
+    typeLabel: "Website",
+    filterType: "website",
+    client: "Uragon Transport Services",
+    industry: "Automotive",
+    pubDate: new Date("2025-01-01"),
+    ctaText: "Visit site",
   },
   {
-    id: 'website-2',
-    title: 'Go Leap Digital | Take the Leap. Go Digital.',
-    type: 'copy' as const,
-    category: 'Website Development',
-    client: 'Go Leap Digital',
-    excerpt: 'Full-stack development for a digital marketing agency specializing in modern web solutions. Comprehensive project including Next.js frontend architecture, responsive design system, SEO optimization, and strategic copywriting to drive client conversions.',
-    tags: ['Next.js', 'Tailwind CSS', 'full-stack development', 'SEO', 'copywriting'],
-    readTime: '6 min read',
-    publishedDate: new Date('2025').toISOString(),
-    link: 'https://go-leap-digital.vercel.app/',
-    featured: false,
-    wip: true
-  }
-].sort((a, b) => {
-  // Featured items first
-  if (a.featured && !b.featured) return -1;
-  if (!a.featured && b.featured) return 1;
-  
-  // Then sort by date (newest first)
-  return new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime();
-});
+    id: "website-2",
+    title: "Go Leap Digital | Take the Leap. Go Digital.",
+    summary:
+      "Full-stack development for a digital marketing agency specializing in modern web solutions. Comprehensive project including Next.js frontend architecture, responsive design system, SEO optimization, and strategic copywriting to drive client conversions.",
+    heroImage: "/hero-images/go-leap-website.webp",
+    link: "https://go-leap-digital.vercel.app/",
+    isExternal: true,
+    typeLabel: "Website",
+    filterType: "website",
+    client: "Go Leap Digital",
+    industry: "Digital Marketing",
+    pubDate: new Date("2025-01-01"),
+    ctaText: "Visit site",
+  },
+];
+
+const workEntries: WorkEntry[] = [
+  ...workItems.map<WorkEntry>((item) => ({
+    id: `case-study-${item.slug}`,
+    title: item.data.title,
+    summary: item.data.summary,
+    heroImage: item.data.heroImage || item.data.hero,
+    link: `/work/${item.slug}`,
+    isExternal: false,
+    typeLabel: "Case Study",
+    filterType: "case-study",
+    client: item.data.client,
+    industry: item.data.industry,
+    pubDate: item.data.pubDate,
+    results: item.slug === "aptean-erp-case-study" ? undefined : item.data.results,
+    ctaText: "View case study",
+  })),
+  ...posts.map<WorkEntry>((post) => ({
+    id: `article-${post.slug}`,
+    title: post.data.title,
+    summary: post.data.description,
+    heroImage: post.data.heroImage,
+    link: `/articles/${post.slug}`,
+    isExternal: false,
+    typeLabel: "Article",
+    filterType: "article",
+    client: undefined,
+    industry: undefined,
+    pubDate: post.data.pubDate,
+    ctaText: "Read article",
+  })),
+  ...additionalProjects,
+].sort((a, b) => +b.pubDate - +a.pubDate);
 ---
-<BaseLayout title="Work - Case Studies" description="Selected client projects and outcomes.">
-  <section class="w-full" style="background-color: var(--section-bg-primary);">
-    <div class="mx-auto max-w-6xl px-5 sm:px-6 py-16 scroll-reveal">
-      <div class="text-center" style="margin-bottom: 50px;">
-        <h1 class="mb-4">My Writing Portfolio</h1>
-        <p class="text-lg text-[var(--color-muted)] max-w-2xl mx-auto">
-          Explore my case studies, articles, and writing samples.
+
+<BaseLayout 
+  title="Work - Bryan Jacinto" 
+  description="Case studies, writing samples, and client projects showcasing content strategy, SEO, and copywriting expertise."
+>
+  <section class="w-full min-h-screen" style="background-color: var(--section-bg);">
+    <div class="mx-auto max-w-6xl px-5 sm:px-6 py-16">
+      <!-- Header -->
+      <div class="scroll-reveal mb-8 text-center">
+        <h1 class="mb-4">Work</h1>
+        <p class="text-[var(--color-muted)] text-base sm:text-lg max-w-2xl mx-auto">
+          Case studies, writing samples, and client projects showcasing content strategy, SEO, and copywriting expertise.
         </p>
       </div>
-      
-      <SimpleWritingShowcase writingSamples={writingSamples} />
+
+      <!-- Filter Tabs -->
+      <div class="filter-tabs mb-10 scroll-reveal">
+        <button class="filter-tab active" data-filter="all">All Work</button>
+        <button class="filter-tab" data-filter="case-study">Case Studies</button>
+        <button class="filter-tab" data-filter="article">Articles</button>
+        <button class="filter-tab" data-filter="website">Websites</button>
+      </div>
+
+      <!-- Work Cards Grid -->
+      {workEntries.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="work-grid">
+          {workEntries.map((work, index) => (
+            <article
+              class="scroll-reveal scroll-reveal-item work-card group"
+              style={`transition-delay: ${index * 0.1}s;`}
+              data-type={work.filterType}
+            >
+              <a
+                href={work.link}
+                class="block h-full"
+                {...(work.isExternal && {
+                  target: "_blank",
+                  rel: "noopener noreferrer",
+                })}
+              >
+                <div class="h-full flex flex-col rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm transition-all duration-300 hover:shadow-xl hover:border-[var(--color-link)] hover:-translate-y-1 min-h-[32rem]">
+                  {work.heroImage ? (
+                    <div class="relative w-full h-48 overflow-hidden bg-[var(--surface-glass)]">
+                      <img
+                        src={work.heroImage}
+                        alt={work.title}
+                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    </div>
+                  ) : (
+                    <div class="relative w-full h-48 bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-link)] opacity-20"></div>
+                  )}
+
+                  <div class="flex-1 flex flex-col p-5">
+                    <div class="flex flex-wrap items-center gap-2 mb-3 text-xs text-[var(--color-muted)]">
+                      <span class="px-2 py-1 rounded-full bg-[var(--surface-glass)] border border-[var(--color-border)] font-semibold uppercase tracking-wide">
+                        {work.typeLabel}
+                      </span>
+                      {work.pubDate && (
+                        <time datetime={work.pubDate.toISOString()}>
+                          {work.pubDate.toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </time>
+                      )}
+                    </div>
+
+                    <h2 class="card-title mb-2 text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
+                      {work.title}
+                    </h2>
+
+                    <p class="text-sm text-[var(--color-muted)] mb-4 flex-1 line-clamp-3">
+                      {work.summary}
+                    </p>
+
+                    {work.results && (
+                      <div class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#10b981] bg-[color-mix(in_srgb,#10b981_10%,transparent)] border border-[color-mix(in_srgb,#10b981_30%,transparent)] rounded-full mb-4">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                          <path
+                            fill-rule="evenodd"
+                            d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                        <span>{work.results}</span>
+                      </div>
+                    )}
+
+                    <div class="mt-auto">
+                      <div class="flex items-center gap-2 text-sm font-semibold text-[var(--color-link)] group-hover:gap-3 transition-all">
+                        <span>{work.ctaText}</span>
+                        <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
+                          <path
+                            fill-rule="evenodd"
+                            d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-16">
+          <p class="text-[var(--color-muted)] text-lg">No work samples yet. Check back soon!</p>
+        </div>
+      )}
     </div>
   </section>
+
+  <!-- Scroll reveal animations -->
+  <style is:global>
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .scroll-reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .scroll-reveal-item {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .scroll-reveal.is-visible .scroll-reveal-item {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .line-clamp-3 {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
+
+  <style>
+    .work-card {
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+
+  <style>
+    .filter-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      background: var(--card-bg);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      padding: 0.75rem 1.5rem;
+      border-radius: 2rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-tab:hover {
+      background: var(--color-surface);
+      border-color: var(--color-accent);
+      transform: translateY(-1px);
+    }
+
+    .filter-tab.active {
+      background: var(--color-link);
+      color: var(--color-bg);
+      border-color: var(--color-link);
+    }
+
+    .work-card .card-title {
+      font-size: 1.125rem;
+      line-height: 1.5;
+      font-weight: 600;
+    }
+  </style>
+
+  <!-- Scroll reveal script -->
+  <script>
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -100px 0px',
+      threshold: 0.15
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, observerOptions);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const revealElements = document.querySelectorAll('.scroll-reveal');
+      revealElements.forEach(el => observer.observe(el));
+
+      const filterTabs = document.querySelectorAll<HTMLButtonElement>('.filter-tab');
+      const workCards = document.querySelectorAll<HTMLElement>('#work-grid article');
+
+      filterTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const filter = tab.dataset.filter ?? 'all';
+
+          filterTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+
+          workCards.forEach(card => {
+            const cardType = card.getAttribute('data-type');
+            if (filter === 'all' || cardType === filter) {
+              card.style.display = 'block';
+              card.style.animation = 'fadeInUp 0.3s ease forwards';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+    });
+  </script>
 </BaseLayout>
 
