@@ -1,0 +1,41 @@
+---
+projectSlug: "website-scraper"
+title: "Dev Log # 0 - A website scraper for the love of the game"
+summary: "Started ideating a website scraper to automate data collection for future projects while keeping accuracy and quality the top priority."
+pubDate: 2025-10-24
+tags:
+  - scraping
+  - nikke
+  - automation
+draft: false
+---
+
+So recently, I've been indulging myself playing some Nikke: Goddess of Victory, and I've reached that point where I really want to optimize everything. My main gripe right now is team building. With so many Nikke team combinations out there, it's hard to figure out the best setup based on what you've actually pulled so far.
+
+Sure, I can consult ChatGPT, and I have, but it's a hit or miss. Sometimes it gives solid advice, other times it confidently spits out nonsense. That's why I thought, why not build a chatbot exclusively for Nikke?
+
+Now, you might ask, "Why even bother when you're obviously going to use AI for it anyway? lol." And yeah, you're right. But what I have in mind is something different. It's not revolutionary, but it might just work for this use case.
+
+I'm thinking of using AI to query a dedicated database, kind of like a RAG (Retrieval-Augmented Generation) system. The idea is to have a cloud-hosted database filled with only Nikke data such as stats, skills, cooldowns, burst timings, HP, ATK, and basically everything we can get our hands on. That way, the AI doesn't have to crawl the entire web to fact-check every little thing. It can just query a clean, structured dataset and deliver accurate, reliable responses instantly.
+
+Now, you might be thinking I've accidentally mixed up my devlog projects. I can be clumsy, sure, but I didn't mess this one up. So why are we in a website scraper project?
+
+Well, because we need data to populate our database!
+
+There are countless ways to get that data, and plenty of websites are absolute gold mines for Nikke stats and info. But here's the problem, there are over 200+ Nikkes, plus bosses, game modes, and a ton of other details. Manually visiting each page and copying everything one by one is not happening.
+
+And one thing about me: I love automating things without compromising quality. If it gets the job done but the quality is meh, I won't bother doing it.
+
+Technically, I could use LLMs to pull data from various sites and collate everything into a single document. But that's way too boring and risky, since the data could be outdated or just flat-out wrong. That's why scraping directly from the websites with the raw data is the real sauce.
+
+What's that? Another question? Go ahead.
+
+"There are already web scrapers out there, and some are even open-source. Why bother building one from scratch?"
+
+Yeah, true. Problem?
+
+In all seriousness, I know there are existing solutions like Firecrawl for example which is genuinely an amazing tool, and an open-source project as well. But here's the thing: I want to learn and build stuff. That's the fun part. I might even publish this project if it turns out well. I don't know the full scope yet, but we'll figure it out along the way.
+
+It's about the love of the game, man, and the thrill of learning something new. It's that simple.
+
+Enough yapping. Let's get this thing started.

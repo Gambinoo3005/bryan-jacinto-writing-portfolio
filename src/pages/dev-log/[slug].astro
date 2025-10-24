@@ -1,0 +1,289 @@
+---
+import BlogLayout from "../../layouts/BlogLayout.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+const statusStyles = {
+  planning: {
+    label: "Planning",
+    text: "text-[#0f172a]",
+    bg: "bg-[#fbbf24]/25",
+    ring: "ring-[#f59e0b]/40",
+  },
+  "in-progress": {
+    label: "In Progress",
+    text: "text-[#065f46]",
+    bg: "bg-[#34d399]/20",
+    ring: "ring-[#10b981]/40",
+  },
+  "on-hold": {
+    label: "On Hold",
+    text: "text-[#7c2d12]",
+    bg: "bg-[#fb923c]/20",
+    ring: "ring-[#f97316]/40",
+  },
+  completed: {
+    label: "Completed",
+    text: "text-[#1f2937]",
+    bg: "bg-[#a5b4fc]/25",
+    ring: "ring-[#6366f1]/40",
+  },
+} as const;
+
+export async function getStaticPaths() {
+  const projects = await getCollection("devlogProjects", ({ data }) => !data.draft);
+  return projects.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const projectRender = await entry.render();
+const ProjectContent = projectRender?.Content;
+
+const devlogItems = (await getCollection(
+  "devlogs",
+  ({ data }) => !data.draft && data.projectSlug === entry.slug
+)) as CollectionEntry<"devlogs">[];
+
+const sortedDevlogs = [...devlogItems].sort(
+  (a, b) => +b.data.pubDate - +a.data.pubDate
+);
+
+const devlogEntries = await Promise.all(
+  sortedDevlogs.map(async (log) => {
+    const rendered = await log.render();
+    return { ...log, Content: rendered.Content };
+  })
+);
+
+const status = statusStyles[entry.data.status] ?? statusStyles["in-progress"];
+const startDate = entry.data.startDate;
+const endDate = entry.data.endDate;
+const projectSlug = entry.slug;
+const timeline = devlogEntries;
+const pageTitle = `${entry.data.title} – Dev Log`;
+const description = entry.data.summary;
+const timeframe = startDate && endDate
+  ? `${startDate.toLocaleDateString("en-US", { month: "short", year: "numeric" })} – ${endDate.toLocaleDateString("en-US", { month: "short", year: "numeric" })}`
+  : startDate
+  ? `Started ${startDate.toLocaleDateString("en-US", { month: "short", year: "numeric" })}`
+  : endDate
+  ? `Shipped ${endDate.toLocaleDateString("en-US", { month: "short", year: "numeric" })}`
+  : null;
+---
+
+<BlogLayout
+  title={pageTitle}
+  description={description}
+  badgeLabel={status.label}
+  roleLabel="Project journal"
+  backHref="/dev-log"
+  backText="Back to Dev Log"
+>
+  <Fragment slot="meta">
+    {timeframe && (
+      <>
+        <div class="meta-divider">•</div>
+        <div class="meta-item">
+          <svg class="meta-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+          </svg>
+          <span>{timeframe}</span>
+        </div>
+      </>
+    )}
+    {entry.data.repoUrl && (
+      <>
+        <div class="meta-divider">•</div>
+        <div class="meta-item">
+          <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 19c-4 1.5-4-2.5-6-3m12 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 18 4.77 5.07 5.07 0 0 0 17.91 1S16.73.65 15 2.48a13.38 13.38 0 0 0-6 0C7.27.65 6.09 1 6.09 1A5.07 5.07 0 0 0 6 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 10 21.13V23"></path>
+          </svg>
+          <a href={entry.data.repoUrl} target="_blank" rel="noopener">
+            Repository
+          </a>
+        </div>
+      </>
+    )}
+    {entry.data.liveUrl && (
+      <>
+        <div class="meta-divider">•</div>
+        <div class="meta-item">
+          <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 10l4.55 1.52A2 2 0 0 1 21 13.43V19a2 2 0 0 1-2 2h-3"></path>
+            <path d="M9 14l-4.55-1.52A2 2 0 0 1 3 10.57V5a2 2 0 0 1 2-2h3"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <a href={entry.data.liveUrl} target="_blank" rel="noopener">
+            Live build
+          </a>
+        </div>
+      </>
+    )}
+  </Fragment>
+
+  <div class="project-content">
+    <section class="timeline-section">
+      <h2>Dev Log Entries</h2>
+      {timeline.length > 0 ? (
+        <ol class="timeline">
+          {timeline.map((log, index) => {
+            const logHref = `/dev-log/${projectSlug}/${log.slug}`;
+            return (
+              <li>
+                <a href={logHref} class="timeline-link">
+                  {log.data.title}
+                </a>
+                <span class="timeline-date">
+                  {log.data.pubDate.toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </span>
+              </li>
+            );
+          })}
+        </ol>
+      ) : (
+        <div class="timeline-empty">No dev log entries yet. Updates will appear here once published.</div>
+      )}
+    </section>
+
+    {ProjectContent && (
+      <section class="prose-section">
+        <ProjectContent />
+      </section>
+    )}
+  </div>
+
+  <style>
+    .project-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    :global(.article-hero .hero-content) {
+      padding: 3rem 1.5rem 2.25rem;
+    }
+
+    :global(.article-content) {
+      margin-top: -5rem;
+      padding: 0;
+    }
+
+    :global(.article-content > .article-container) {
+      max-width: 900px !important;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 1.5rem 2.75rem !important;
+    }
+
+    .prose-section {
+      max-width: 760px;
+      margin: 0 auto;
+      color: var(--color-text);
+    }
+
+    .prose-section :global(img) {
+      border-radius: 1rem;
+    }
+
+    .timeline-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+      scroll-margin-top: 7rem;
+    }
+
+    .timeline-section h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--color-heading);
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin: 0 -1.5rem;
+    }
+
+    .timeline li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1.5rem;
+      border: 1px solid var(--color-border);
+      border-radius: 0.5rem;
+      background: var(--surface-glass);
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .timeline li:hover {
+      background: color-mix(in srgb, var(--surface-glass) 120%, transparent);
+      border-color: var(--color-link);
+    }
+
+    .timeline-link {
+      font-weight: 600;
+      color: var(--color-link);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .timeline-link:hover {
+      color: var(--color-link);
+      text-decoration: underline;
+    }
+
+    .timeline-date {
+      font-size: 0.85rem;
+      color: var(--color-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .timeline-empty {
+      border-radius: 1.5rem;
+      border: 1px dashed var(--color-border);
+      padding: 2.5rem;
+      text-align: center;
+      color: var(--color-muted);
+      background: color-mix(in srgb, var(--surface-glass) 70%, transparent);
+    }
+
+    @media (max-width: 768px) {
+      :global(.article-hero .hero-content) {
+        padding: 2.25rem 1.25rem 1.75rem;
+      }
+
+      :global(.article-content) {
+        margin-top: -3.5rem;
+        padding: 0;
+      }
+
+      :global(.article-content > .article-container) {
+        padding: 0 1.25rem 2.25rem !important;
+      }
+
+      .project-content {
+        gap: 1.4rem;
+      }
+
+      .timeline {
+        margin: 0 -1.25rem;
+      }
+
+      .timeline li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 0.75rem 1.25rem;
+      }
+    }
+  </style>
+</BlogLayout>

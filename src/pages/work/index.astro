@@ -5,9 +5,6 @@ import { getCollection } from "astro:content";
 const workItems = (await getCollection("work", ({ data }) => !data.draft))
   .sort((a, b) => +b.data.pubDate - +a.data.pubDate);
 
-const posts = (await getCollection("posts", ({ data }) => !data.draft))
-  .sort((a, b) => +b.data.pubDate - +a.data.pubDate);
-
 type WorkEntry = {
   id: string;
   title: string;
@@ -16,7 +13,7 @@ type WorkEntry = {
   link: string;
   isExternal: boolean;
   typeLabel: string;
-  filterType: "case-study" | "article" | "website";
+  filterType: "case-study" | "website";
   client?: string;
   industry?: string;
   pubDate: Date;
@@ -42,7 +39,7 @@ const additionalProjects: WorkEntry[] = [
   },
   {
     id: "website-2",
-    title: "Go Leap Digital | Take the Leap. Go Digital.",
+    title: "Go Leap Digital",
     summary:
       "Full-stack development for a digital marketing agency specializing in modern web solutions. Comprehensive project including Next.js frontend architecture, responsive design system, SEO optimization, and strategic copywriting to drive client conversions.",
     heroImage: "/hero-images/go-leap-website.webp",
@@ -73,20 +70,6 @@ const workEntries: WorkEntry[] = [
     results: item.slug === "aptean-erp-case-study" ? undefined : item.data.results,
     ctaText: "View case study",
   })),
-  ...posts.map<WorkEntry>((post) => ({
-    id: `article-${post.slug}`,
-    title: post.data.title,
-    summary: post.data.description,
-    heroImage: post.data.heroImage,
-    link: `/articles/${post.slug}`,
-    isExternal: false,
-    typeLabel: "Article",
-    filterType: "article",
-    client: undefined,
-    industry: undefined,
-    pubDate: post.data.pubDate,
-    ctaText: "Read article",
-  })),
   ...additionalProjects,
 ].sort((a, b) => +b.pubDate - +a.pubDate);
 ---
@@ -109,7 +92,6 @@ const workEntries: WorkEntry[] = [
       <div class="filter-tabs mb-10 scroll-reveal">
         <button class="filter-tab active" data-filter="all">All Work</button>
         <button class="filter-tab" data-filter="case-study">Case Studies</button>
-        <button class="filter-tab" data-filter="article">Articles</button>
         <button class="filter-tab" data-filter="website">Websites</button>
       </div>
 
@@ -164,7 +146,7 @@ const workEntries: WorkEntry[] = [
                       {work.title}
                     </h2>
 
-                    <p class="text-sm text-[var(--color-muted)] mb-4 flex-1 line-clamp-3">
+                    <p class="text-sm text-[var(--color-muted)] mb-4 flex-1">
                       {work.summary}
                     </p>
 

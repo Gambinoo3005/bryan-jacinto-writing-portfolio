@@ -19,19 +19,6 @@ const work = defineCollection({
   }),
 });
 
-const posts = defineCollection({
-  type: "content",
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    tags: z.array(z.string()).default([]),
-    pubDate: z.coerce.date(),
-    heroImage: z.string().optional(),
-    ogImage: z.string().optional(),
-    draft: z.boolean().default(false),
-  }),
-});
-
 const blogs = defineCollection({
   type: "content",
   schema: z.object({
@@ -47,4 +34,32 @@ const blogs = defineCollection({
   }),
 });
 
-export const collections = { work, posts, blogs };
+const devlogProjects = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    summary: z.string(),
+    status: z.enum(["planning", "in-progress", "on-hold", "completed"]).default("in-progress"),
+    tags: z.array(z.string()).default([]),
+    heroImage: z.string().optional(),
+    repoUrl: z.string().url().optional(),
+    liveUrl: z.string().url().optional(),
+    startDate: z.coerce.date().optional(),
+    endDate: z.coerce.date().optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+const devlogs = defineCollection({
+  type: "content",
+  schema: z.object({
+    projectSlug: z.string(),
+    title: z.string(),
+    summary: z.string().optional(),
+    tags: z.array(z.string()).default([]),
+    pubDate: z.coerce.date(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { work, blogs, devlogProjects, devlogs };
