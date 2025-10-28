@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CardStack from "../components/CardStack.astro";
-import ClientTestimonialCarousel from "../components/ClientTestimonialCarousel.astro";
+import TestimonialsBento from "../components/TestimonialsBento.astro";
 import ToolsetGrid from "../components/ToolsetGrid.astro";
 
 const roles = [
@@ -177,18 +177,18 @@ const toolsetData = [
   title="Bryan Jacinto - Copy & SEO"
   description="Copywriting, editing, B2B content, and SEO-focused writing."
 >
-  <section class="hero-section flex items-center justify-center text-[var(--color-text)]">
+  <section class="hero-section flex items-center justify-center text-[var(--color-text)]" data-hero>
     <div class="w-full max-w-7xl mx-auto px-5">
       <div class="flex flex-col lg:flex-row justify-center items-center gap-10 lg:gap-16 w-full">
         <!-- Left Column: Hero Content -->
         <div class="flex flex-col space-y-6 text-center lg:text-left max-w-2xl lg:max-w-xl">
           <!-- Name -->
-          <h1 class="hero">
+          <h1 class="hero" data-hero-title data-hero-animate>
             Bryan Jacinto
           </h1>
 
           <!-- Roles as refined chips -->
-          <ul class="flex flex-wrap items-center justify-center lg:justify-start gap-2.5">
+          <ul class="flex flex-wrap items-center justify-center lg:justify-start gap-2.5" data-hero-roles>
             {roles.map((r) => (
               <li
                 class="role-badge inline-flex items-center gap-2 rounded-md
@@ -201,6 +201,7 @@ const toolsetData = [
                        shadow-sm
                        transition-all duration-300 ease-out
                        cursor-default"
+                data-hero-animate
               >
                 <span class="role-badge-dot h-1.5 w-1.5 rounded-full bg-current/50 transition-all duration-300"></span>
                 {r}
@@ -209,7 +210,7 @@ const toolsetData = [
           </ul>
 
           <!-- Compact blurb -->
-          <p class="text-[15px] sm:text-base md:text-[17px] leading-relaxed text-[var(--color-muted)] max-w-2xl mx-auto lg:mx-0">
+          <p class="text-[15px] sm:text-base md:text-[17px] leading-relaxed text-[var(--color-muted)] max-w-2xl mx-auto lg:mx-0" data-hero-text data-hero-animate>
             Copywriter with seven years of experience creating SEO content, blog posts, landing pages, and marketing copy for global clients. Skilled in design, web development, and SEO strategy. Versatile, fast, and adaptable across styles and tones. Currently looking for more opportunities.
           </p>
 
@@ -218,12 +219,19 @@ const toolsetData = [
             <a
               href="/work"
               class="btn-primary inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-semibold transition-all duration-200 w-full sm:w-auto"
+              data-hero-cta
+              data-hero-animate
             >
               See my work
             </a>
             <a
               href="#my-experiences"
+              data-scroll-to="#my-experiences"
+              data-scroll-position="top top"
+              data-scroll-offset="40"
               class="snake-border-button group inline-flex h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold focus:outline-none w-full sm:w-auto"
+              data-hero-cta
+              data-hero-animate
               aria-label="View my experience"
             >
               <span>View my experience</span>
@@ -236,7 +244,7 @@ const toolsetData = [
 
         <!-- Right Column: Profile Image (Desktop Only) -->
         <div class="hidden lg:flex justify-center items-center flex-shrink-0">
-          <div class="relative w-72 h-72 xl:w-80 xl:h-80 aspect-square">
+          <div class="relative w-72 h-72 xl:w-80 xl:h-80 aspect-square" data-hero-image data-hero-animate>
             <!-- Profile Image -->
             <div class="absolute inset-0 rounded-2xl overflow-hidden border border-[var(--color-border)] shadow-xl">
               <img 
@@ -256,6 +264,96 @@ const toolsetData = [
       </div>
     </div>
   </section>
+
+  <script>
+    const initHeroGsap = async () => {
+      const hero = document.querySelector('[data-hero]');
+      if (!hero) return;
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (prefersReducedMotion.matches) {
+        hero.querySelectorAll('[data-hero-animate], [data-hero-roles] li').forEach((el) => {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        });
+        return;
+      }
+
+      try {
+        const [{ gsap }, { ScrollTrigger }] = await Promise.all([
+          import('gsap'),
+          import('gsap/ScrollTrigger'),
+        ]);
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        const heroTitle = hero.querySelector('[data-hero-title]');
+        const roleItems = hero.querySelectorAll('[data-hero-roles] li');
+        const heroText = hero.querySelector('[data-hero-text]');
+        const heroCtas = hero.querySelectorAll('[data-hero-cta]');
+        const heroImage = hero.querySelector('[data-hero-image]');
+        const animatedNodes = hero.querySelectorAll('[data-hero-animate]');
+
+        gsap.set(animatedNodes, { opacity: 0, y: 40 });
+        gsap.set(roleItems, { opacity: 0, y: 24 });
+        if (heroImage) {
+          gsap.set(heroImage, { opacity: 0, y: 60, rotate: -4 });
+        }
+
+        const tl = gsap.timeline({
+          defaults: { ease: 'power3.out' },
+          scrollTrigger: {
+            trigger: hero,
+            start: 'top 80%',
+            once: true,
+          },
+        });
+
+        if (heroTitle) {
+          tl.to(heroTitle, { opacity: 1, y: 0, duration: 0.9 });
+        }
+
+        if (roleItems.length) {
+          tl.to(roleItems, {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.08,
+          }, '-=0.6');
+        }
+
+        if (heroText) {
+          tl.to(heroText, { opacity: 1, y: 0, duration: 0.7 }, roleItems.length ? '-=0.4' : '-=0.5');
+        }
+
+        if (heroCtas.length) {
+          tl.to(heroCtas, {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.12,
+          }, '-=0.45');
+        }
+
+        if (heroImage) {
+          const addAt = heroCtas.length ? '-=0.55' : '-=0.45';
+          tl.to(heroImage, { opacity: 1, y: 0, rotate: 0, duration: 1, ease: 'elastic.out(1, 0.75)' }, addAt);
+        }
+      } catch (error) {
+        console.warn('Hero animation failed to load GSAP', error);
+        hero.querySelectorAll('[data-hero-animate], [data-hero-roles] li').forEach((el) => {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        });
+      }
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initHeroGsap, { once: true });
+    } else {
+      initHeroGsap();
+    }
+  </script>
 
   <!-- Experience section with Card Stack -->
   <section id="my-experiences" class="page-section scroll-mt-[70px] md:scroll-mt-[23.5px] flex items-start justify-center text-[var(--color-text)]">
@@ -282,14 +380,14 @@ const toolsetData = [
   </section>
 
   <!-- Client Testimonials Section -->
-  <section class="page-section flex items-center">
+  <section class="page-section">
     <div class="mx-auto max-w-6xl px-4 sm:px-5 md:px-6 w-full">
-      <div class="scroll-reveal scroll-reveal-item text-center mb-8">
-        <h2 class="mb-0">What Clients Say</h2>
+      <div class="text-center mb-10">
+        <p class="text-sm uppercase tracking-[0.3em] text-[color-mix(in_srgb,var(--color-muted)_75%,transparent)]">Client proof</p>
+        <h2 class="mt-3 mb-3">What Clients Say</h2>
+        <p class="max-w-3xl mx-auto text-[var(--color-muted)]">Snapshots from long-term partnerships and fast-turn projects alike—each one highlighting reliability, craft, and measurable results.</p>
       </div>
-      <div class="scroll-reveal scroll-reveal-item scroll-reveal-delay-1">
-        <ClientTestimonialCarousel testimonials={clientTestimonials} autoplayInterval={7000} />
-      </div>
+      <TestimonialsBento testimonials={clientTestimonials} />
     </div>
   </section>
 

@@ -13,7 +13,7 @@ type WorkEntry = {
   link: string;
   isExternal: boolean;
   typeLabel: string;
-  filterType: "case-study" | "website";
+  filterType: "case-study" | "website" | "article";
   client?: string;
   industry?: string;
   pubDate: Date;
@@ -55,21 +55,24 @@ const additionalProjects: WorkEntry[] = [
 ];
 
 const workEntries: WorkEntry[] = [
-  ...workItems.map<WorkEntry>((item) => ({
-    id: `case-study-${item.slug}`,
-    title: item.data.title,
-    summary: item.data.summary,
-    heroImage: item.data.heroImage || item.data.hero,
-    link: `/work/${item.slug}`,
-    isExternal: false,
-    typeLabel: "Case Study",
-    filterType: "case-study",
-    client: item.data.client,
-    industry: item.data.industry,
-    pubDate: item.data.pubDate,
-    results: item.slug === "aptean-erp-case-study" ? undefined : item.data.results,
-    ctaText: "View case study",
-  })),
+  ...workItems.map<WorkEntry>((item) => {
+    const isArticle = (item.data.tags || []).includes("Article");
+    return {
+      id: `${isArticle ? 'article' : 'case-study'}-${item.slug}`,
+      title: item.data.title,
+      summary: item.data.summary,
+      heroImage: item.data.heroImage || item.data.hero,
+      link: `/work/${item.slug}`,
+      isExternal: false,
+      typeLabel: isArticle ? "Article" : "Case Study",
+      filterType: isArticle ? "article" : "case-study",
+      client: item.data.client,
+      industry: item.data.industry,
+      pubDate: item.data.pubDate,
+      results: isArticle ? undefined : (item.slug === "aptean-erp-case-study" ? undefined : item.data.results),
+      ctaText: isArticle ? "Read article" : "View case study",
+    };
+  }),
   ...additionalProjects,
 ].sort((a, b) => +b.pubDate - +a.pubDate);
 ---
@@ -92,6 +95,7 @@ const workEntries: WorkEntry[] = [
       <div class="filter-tabs mb-10 scroll-reveal">
         <button class="filter-tab active" data-filter="all">All Work</button>
         <button class="filter-tab" data-filter="case-study">Case Studies</button>
+        <button class="filter-tab" data-filter="article">Articles</button>
         <button class="filter-tab" data-filter="website">Websites</button>
       </div>
 

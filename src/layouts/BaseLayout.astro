@@ -5,6 +5,8 @@ import Footer from "../components/Footer.astro";
 import Background from "../components/Background.astro";
 import Analytics from '@vercel/analytics/astro';
 
+const { default: scrollSmootherScript } = await import("../scripts/init-scroll-smoother.ts?url");
+
 interface Props {
   title?: string;
   description?: string;
@@ -113,25 +115,32 @@ const url = Astro.url?.href ?? "";
   </head>
 
   <!-- Normal document flow; viewport scroll bar stays as-is -->
-  <body class="antialiased min-h-svh flex flex-col">
+  <body class="antialiased min-h-svh">
     <!-- Site-wide layered background (z-0) -->
     <Background />
 
     <!-- Header is sticky (defined in Header.astro) -->
     <Header />
 
-    <!-- Page content scrolls with the viewport -->
-    <main id="content" class="relative z-10 flex-1">
-      <slot />
-    </main>
+    <!-- ScrollSmoother wrapper -->
+    <div id="smooth-wrapper">
+      <div id="smooth-content" class="relative z-10 flex min-h-svh flex-col pt-[88px]">
+        <!-- Page content scrolls with the viewport -->
+        <main id="content" class="relative z-10 flex-1">
+          <slot />
+        </main>
 
-    <!-- Footer is NOT sticky -->
-    <div class="relative z-10">
-      <Footer />
+        <!-- Footer is NOT sticky -->
+        <div class="relative z-10">
+          <Footer />
+        </div>
+      </div>
     </div>
     
     <!-- Vercel Analytics -->
     <Analytics />
+
+    <script type="module" src={scrollSmootherScript}></script>
   </body>
 </html>
 
