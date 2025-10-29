@@ -475,11 +475,11 @@ const toolsetData = [
     .hero-section {
       height: 525px !important; /* Total space from header bottom to end of viewport */
       min-height: 525px !important;
-      padding: 75px 0 0 0 !important; /* Adjusted to achieve 87.5px positioning */
+      padding: 0 !important; /* No top padding needed - BaseLayout pt-[88px] handles header offset */
       margin: 0 !important;
       background-color: var(--section-bg);
       display: flex !important;
-      align-items: flex-start !important;
+      align-items: center !important; /* Center vertically within the hero space */
       justify-content: center !important;
     }
     
@@ -488,24 +488,16 @@ const toolsetData = [
       .hero-section {
         height: auto !important;
         min-height: calc(100vh - 88px) !important; /* Take full viewport to push experience below fold */
-        padding: 0 0 8rem 0 !important; /* Large bottom padding to push experience completely out of view */
+        padding: 4rem 0 8rem 0 !important; /* Top padding for breathing room, large bottom padding to push experience out of view */
         display: flex !important;
         align-items: flex-start !important;
-      }
-      
-      .hero-section > div {
-        margin-top: 6.5rem !important; /* More blank space above hero content */
       }
     }
     
     @media (max-width: 480px) {
       .hero-section {
         min-height: calc(100vh - 88px) !important;
-        padding: 0 0 6rem 0 !important; /* Large bottom padding to hide experience section */
-      }
-      
-      .hero-section > div {
-        margin-top: 5.5rem !important; /* More blank space above hero content */
+        padding: 3rem 0 6rem 0 !important; /* Adjusted top padding, large bottom padding to hide experience section */
       }
     }
 
