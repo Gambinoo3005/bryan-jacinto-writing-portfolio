@@ -474,8 +474,8 @@ const toolsetData = [
     /* Hero section with mathematically perfect positioning */
     .hero-section {
       min-height: 450px !important; /* Minimum comfortable height for hero content */
-      padding: 0.5rem 0 3rem 0 !important; /* Minimal top padding to prevent scroll requirement */
-      margin: 0 !important;
+      padding: 2rem 0 3rem 0 !important; /* Comfortable padding for breathing room */
+      margin-top: -88px !important; /* Compensate for BaseLayout's pt-[88px] on smooth-content */
       background-color: var(--section-bg);
       display: flex !important;
       align-items: flex-start !important; /* Align content to top to eliminate gap */
@@ -488,6 +488,7 @@ const toolsetData = [
         height: auto !important;
         min-height: calc(100vh - 88px) !important; /* Take full viewport to push experience below fold */
         padding: 4rem 0 8rem 0 !important; /* Top padding for breathing room, large bottom padding to push experience out of view */
+        margin-top: -88px !important; /* Maintain negative margin on mobile */
         display: flex !important;
         align-items: flex-start !important;
       }
@@ -497,6 +498,7 @@ const toolsetData = [
       .hero-section {
         min-height: calc(100vh - 88px) !important;
         padding: 3rem 0 6rem 0 !important; /* Adjusted top padding, large bottom padding to hide experience section */
+        margin-top: -88px !important; /* Maintain negative margin on mobile */
       }
     }
 
