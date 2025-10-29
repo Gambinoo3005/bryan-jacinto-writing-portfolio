@@ -12,6 +12,13 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+
+const tags = entry.data.tags ?? [];
+const badgeLabel = tags.includes("Article")
+  ? "Article"
+  : tags.includes("Website")
+    ? "Website"
+    : "Case Study";
 ---
 
 <CaseStudyLayout
