@@ -473,8 +473,8 @@ const toolsetData = [
   <style>
     /* Hero section with mathematically perfect positioning */
     .hero-section {
-      min-height: 525px !important; /* Total height including header compensation */
-      padding: 6rem 0 3rem 0 !important; /* Extra top padding for proper vertical centering */
+      min-height: clamp(520px, calc(100vh - 88px), 720px) !important; /* Fill viewport while maintaining comfortable bounds */
+      padding: clamp(4rem, 6vw, 5rem) 0 !important; /* Match section spacing while keeping symmetry */
       margin-top: -88px !important; /* Compensate for BaseLayout's pt-[88px] on smooth-content */
       background-color: var(--section-bg);
       display: flex !important;
