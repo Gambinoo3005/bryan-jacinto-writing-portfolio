@@ -473,13 +473,12 @@ const toolsetData = [
   <style>
     /* Hero section with mathematically perfect positioning */
     .hero-section {
-      height: 525px !important; /* Total space from header bottom to end of viewport */
-      min-height: 525px !important;
-      padding: 0 !important; /* No top padding needed - BaseLayout pt-[88px] handles header offset */
+      min-height: 450px !important; /* Minimum comfortable height for hero content */
+      padding: 0.5rem 0 3rem 0 !important; /* Minimal top padding to prevent scroll requirement */
       margin: 0 !important;
       background-color: var(--section-bg);
       display: flex !important;
-      align-items: center !important; /* Center vertically within the hero space */
+      align-items: flex-start !important; /* Align content to top to eliminate gap */
       justify-content: center !important;
     }
     
