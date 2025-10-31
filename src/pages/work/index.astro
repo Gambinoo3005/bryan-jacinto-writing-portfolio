@@ -54,6 +54,12 @@ const additionalProjects: WorkEntry[] = [
   },
 ];
 
+const priorityOrder: Record<string, number> = {
+  "article-aptean-aps-manufacturing-efficiency": 0,
+  "case-study-aptean-erp-case-study": 1,
+  "website-1": 2,
+};
+
 const workEntries: WorkEntry[] = [
   ...workItems.map<WorkEntry>((item) => {
     const isArticle = (item.data.tags || []).includes("Article");
@@ -74,7 +80,16 @@ const workEntries: WorkEntry[] = [
     };
   }),
   ...additionalProjects,
-].sort((a, b) => +b.pubDate - +a.pubDate);
+].sort((a, b) => {
+  const priorityA = priorityOrder[a.id] ?? Number.MAX_SAFE_INTEGER;
+  const priorityB = priorityOrder[b.id] ?? Number.MAX_SAFE_INTEGER;
+
+  if (priorityA !== priorityB) {
+    return priorityA - priorityB;
+  }
+
+  return +b.pubDate - +a.pubDate;
+});
 ---
 
 <BaseLayout 
