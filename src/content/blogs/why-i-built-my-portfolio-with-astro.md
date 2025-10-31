@@ -9,7 +9,7 @@ heroImage: "/hero-images/astro.webp"
 draft: false
 ---
 
-I rebuilt my portfolio with Astro.js about two months ago, and honestly? It was one of the best decisions I made this year.
+I rebuilt my portfolio with [Astro.js](https://astro.build/) about two months ago, and honestly? It was one of the best decisions I made this year.
 
 For a while, I was using Journo Portfolio. It's fine if you need something quick, but I kept hitting walls. The design felt too cookie-cutter, and I couldn't customize things the way I wanted. Every time I tried to tweak something or add a feature, I'd run into limitations. It felt like trying to express yourself with someone else's words.
 
@@ -264,4 +264,8 @@ I'm still learning and figuring things out, but Astro's been the easiest framewo
 
 ## Takeaway
 
-Astro isn't the answer to everything, but for content-focused sites where performance matters and you don't need a full client-side application, it's worth checking out. It lets you build fast, ship fast, and keep things simple. My portfolio loads in under a second with perfect SEO and strong Lighthouse scores globally. The code's cleaner, the build process is straightforward, and even as someone still learning, it hasn't felt overwhelming. If you're outgrowing a portfolio platform or building something content-heavy from scratch, give Astro a shot.
+Astro isn't the answer to everything, but for content-focused sites where performance matters and you don't need a full client-side application, it's worth checking out. It lets you build fast, ship fast, and keep things simple. My portfolio loads in under a second with perfect SEO and strong Lighthouse scores globally.
+
+The code's cleaner, the build process is straightforward, and even as someone still learning, it hasn't felt overwhelming. If you're outgrowing a portfolio platform or building something content-heavy from scratch, give Astro a shot.
+
+And if you want to get started yourself, head over to the [official Astro docs](https://docs.astro.build/en/getting-started/).
