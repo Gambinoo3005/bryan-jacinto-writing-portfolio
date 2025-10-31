@@ -84,85 +84,88 @@ const years = Array.from(
 
       <!-- Blog Cards Grid -->
       {blogs.length > 0 ? (
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="blog-grid">
-          {blogs.map((blog, index) => (
-            <article 
-              class="scroll-reveal scroll-reveal-item blog-card group"
-              style={`transition-delay: ${index * 0.1}s;`}
-              data-category={blog.data.category?.toLowerCase() ?? ""}
-              data-year={blog.data.pubDate.getFullYear().toString()}
-              data-title={blog.data.title.toLowerCase()}
-              data-description={blog.data.description.toLowerCase()}
-              data-tags={blog.data.tags.join(" ").toLowerCase()}
-            >
-              <a href={`/blogs/${blog.slug}`} class="block h-full">
-                <div class="h-full flex flex-col rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm transition-all duration-300 hover:shadow-xl hover:border-[var(--color-link)] hover:-translate-y-1 min-h-[32rem]">
-                  
-                  <!-- Blog Image -->
-                  {blog.data.heroImage ? (
-                    <div class="relative w-full h-48 overflow-hidden bg-[var(--surface-glass)]">
-                      <img 
-                        src={blog.data.heroImage} 
-                        alt={blog.data.title}
-                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        loading="lazy"
-                      />
-                    </div>
-                  ) : (
-                    <div class="relative w-full h-48 bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-link)] opacity-20"></div>
-                  )}
-
-                  <!-- Blog Content -->
-                  <div class="flex-1 flex flex-col p-5">
-                    <!-- Category & Date -->
-                    <div class="flex items-center gap-2 mb-3 text-xs text-[var(--color-muted)]">
-                      {blog.data.category && (
-                        <span class="px-2 py-1 rounded-full bg-[var(--surface-glass)] border border-[var(--color-border)] font-medium">
-                          {blog.data.category}
-                        </span>
-                      )}
-                      <time datetime={blog.data.pubDate.toISOString()}>
-                        {blog.data.pubDate.toLocaleDateString('en-US', { 
-                          month: 'short', 
-                          day: 'numeric', 
-                          year: 'numeric' 
-                        })}
-                      </time>
-                    </div>
-
-                    <!-- Title -->
-                    <h2 class="text-lg font-semibold mb-2 text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
-                      {blog.data.title}
-                    </h2>
-
-                    <!-- Description -->
-                    <p class="text-sm text-[var(--color-muted)] mb-4 flex-1">
-                      {blog.data.description}
-                    </p>
-
-                    <!-- Read More Button -->
-                    <div class="flex items-center gap-2 text-sm font-semibold text-[var(--color-link)] group-hover:gap-3 transition-all">
-                      <span>Read more</span>
-                      <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"/>
-                      </svg>
-                    </div>
-
-                    <!-- Tags -->
-                    {blog.data.tags.length > 0 && (
-                      <div class="flex flex-wrap gap-1.5 mt-4 pt-4 border-t border-[var(--color-border)]">
-                        {blog.data.tags.slice(0, 3).map((tag) => (
-                          <span class="text-xs px-2 py-0.5 rounded-full bg-[var(--surface-glass)] text-[var(--color-muted)]">
-                            {tag}
-                          </span>
-                        ))}
+        <div class="space-y-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="blog-grid">
+            {blogs.map((blog, index) => (
+              <article 
+                class="scroll-reveal scroll-reveal-item blog-card group"
+                style={`transition-delay: ${index * 0.1}s;`}
+                data-category={blog.data.category?.toLowerCase() ?? ""}
+                data-year={blog.data.pubDate.getFullYear().toString()}
+                data-title={blog.data.title.toLowerCase()}
+                data-description={blog.data.description.toLowerCase()}
+                data-tags={blog.data.tags.join(" ").toLowerCase()}
+              >
+                <a href={`/blogs/${blog.slug}`} class="block h-full">
+                  <div class="h-full flex flex-col rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm transition-all duration-300 hover:shadow-xl hover:border-[var(--color-link)] hover:-translate-y-1 min-h-[32rem]">
+                    
+                    <!-- Blog Image -->
+                    {blog.data.heroImage ? (
+                      <div class="relative w-full h-48 overflow-hidden bg-[var(--surface-glass)]">
+                        <img 
+                          src={blog.data.heroImage} 
+                          alt={blog.data.title}
+                          class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          loading="lazy"
+                        />
                       </div>
+                    ) : (
+                      <div class="relative w-full h-48 bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-link)] opacity-20"></div>
                     )}
+
+                    <!-- Blog Content -->
+                    <div class="flex-1 flex flex-col p-5">
+                      <!-- Category & Date -->
+                      <div class="flex items-center gap-2 mb-3 text-xs text-[var(--color-muted)]">
+                        {blog.data.category && (
+                          <span class="px-2 py-1 rounded-full bg-[var(--surface-glass)] border border-[var(--color-border)] font-medium">
+                            {blog.data.category}
+                          </span>
+                        )}
+                        <time datetime={blog.data.pubDate.toISOString()}>
+                          {blog.data.pubDate.toLocaleDateString('en-US', { 
+                            month: 'short', 
+                            day: 'numeric', 
+                            year: 'numeric' 
+                          })}
+                        </time>
+                      </div>
+
+                      <!-- Title -->
+                      <h2 class="text-lg font-semibold mb-2 text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
+                        {blog.data.title}
+                      </h2>
+
+                      <!-- Description -->
+                      <p class="text-sm text-[var(--color-muted)] mb-4 flex-1">
+                        {blog.data.description}
+                      </p>
+
+                      <!-- Read More Button -->
+                      <div class="flex items-center gap-2 text-sm font-semibold text-[var(--color-link)] group-hover:gap-3 transition-all">
+                        <span>Read more</span>
+                        <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
+                          <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"/>
+                        </svg>
+                      </div>
+
+                      <!-- Tags -->
+                      {blog.data.tags.length > 0 && (
+                        <div class="flex flex-wrap gap-1.5 mt-4 pt-4 border-t border-[var(--color-border)]">
+                          {blog.data.tags.slice(0, 3).map((tag) => (
+                            <span class="text-xs px-2 py-0.5 rounded-full bg-[var(--surface-glass)] text-[var(--color-muted)]">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </a>
-            </article>
-          ))}
+                </a>
+              </article>
+            ))}
+          </div>
+          <nav class="pagination-container scroll-reveal" id="blog-pagination" aria-label="Blog pagination" hidden></nav>
         </div>
       ) : (
         <div class="text-center py-16">
@@ -348,6 +351,60 @@ const years = Array.from(
       color: var(--color-heading);
     }
 
+    .pagination-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .pagination-container[hidden] {
+      display: none;
+    }
+
+    .pagination-meta {
+      font-size: 0.85rem;
+      color: var(--color-muted);
+      text-align: center;
+    }
+
+    .pagination-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .pagination-button {
+      background: var(--card-bg);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      padding: 0.5rem 0.9rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pagination-button:hover:not(:disabled) {
+      background: var(--color-surface);
+      border-color: var(--color-link);
+      transform: translateY(-1px);
+    }
+
+    .pagination-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .pagination-button.active {
+      background: var(--color-link);
+      color: var(--color-bg);
+      border-color: var(--color-link);
+    }
+
     @media (max-width: 768px) {
       .filter-panel {
         padding: 1.25rem;
@@ -389,8 +446,11 @@ const years = Array.from(
       const categoryFilter = document.querySelector<HTMLSelectElement>('#category-filter');
       const yearFilter = document.querySelector<HTMLSelectElement>('#year-filter');
       const sortFilter = document.querySelector<HTMLSelectElement>('#sort-filter');
+      const paginationContainer = document.querySelector<HTMLElement>('#blog-pagination');
       const emptyState = document.querySelector<HTMLElement>('#empty-state');
       const metaContainer = document.querySelector<HTMLElement>('#filter-meta');
+      const pageSize = 6;
+      let currentPage = 1;
 
       const getCardData = (card: HTMLElement) => ({
         category: card.dataset.category ?? '',
@@ -425,6 +485,9 @@ const years = Array.from(
         `;
       };
 
+      const ensureWithinRange = (page: number, totalPages: number) =>
+        Math.min(Math.max(page, 1), totalPages);
+
       const applyFilters = () => {
         const query = (searchInput?.value ?? '').trim().toLowerCase();
         const category = categoryFilter?.value ?? 'all';
@@ -442,12 +505,10 @@ const years = Array.from(
           const matchesCategory = category === 'all' || data.category === category;
           const matchesYear = year === 'all' || data.year === year;
 
-          if (matchesSearch && matchesCategory && matchesYear) {
-            card.hidden = false;
-            card.style.animation = 'fadeInUp 0.3s ease forwards';
+          const matches = matchesSearch && matchesCategory && matchesYear;
+          card.dataset.filtered = matches ? 'true' : 'false';
+          if (matches) {
             visibleCount += 1;
-          } else {
-            card.hidden = true;
           }
         });
 
@@ -456,6 +517,7 @@ const years = Array.from(
         }
 
         updateMeta(visibleCount, blogCards.length);
+        return visibleCount;
       };
 
       const applySort = () => {
@@ -463,19 +525,16 @@ const years = Array.from(
         const grid = document.querySelector('#blog-grid');
         if (!grid) return;
 
-        const cardsToSort = blogCards.filter(card => !card.hidden);
-        const hiddenCards = blogCards.filter(card => card.hidden);
+        const visibleCards = blogCards.filter(card => card.dataset.filtered !== 'false');
+        const hiddenCards = blogCards.filter(card => card.dataset.filtered === 'false');
 
-        const sortedCards = [...cardsToSort].sort((a, b) => {
+        const sortedCards = [...visibleCards].sort((a, b) => {
           const dateA = new Date(a.querySelector('time')?.getAttribute('datetime') ?? '').getTime();
           const dateB = new Date(b.querySelector('time')?.getAttribute('datetime') ?? '').getTime();
           return sortValue === 'newest' ? dateB - dateA : dateA - dateB;
         });
 
-        const finalOrder = sortValue === 'newest'
-          ? [...sortedCards, ...hiddenCards]
-          : [...sortedCards, ...hiddenCards];
-
+        const finalOrder = [...sortedCards, ...hiddenCards];
         finalOrder.forEach(card => grid.appendChild(card));
       };
 
@@ -485,17 +544,108 @@ const years = Array.from(
         originalOrder.forEach(card => grid.appendChild(card));
       };
 
+      const createButton = (label: string, targetPage: number, options: { disabled?: boolean; active?: boolean }) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'pagination-button';
+        button.textContent = label;
+        if (options.active) {
+          button.classList.add('active');
+        }
+        button.disabled = options.disabled ?? false;
+        if (!button.disabled) {
+          button.addEventListener('click', () => {
+            const filteredCards = blogCards.filter(card => card.dataset.filtered !== 'false');
+            const totalPages = Math.max(1, Math.ceil(filteredCards.length / pageSize));
+            currentPage = ensureWithinRange(targetPage, totalPages);
+            renderPagination();
+            paginationContainer?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          });
+        }
+        return button;
+      };
+
+      const renderPagination = () => {
+        if (!paginationContainer) return;
+
+        const filteredCards = blogCards.filter(card => card.dataset.filtered !== 'false');
+        const totalItems = filteredCards.length;
+
+        blogCards.forEach(card => {
+          const isFilteredIn = card.dataset.filtered !== 'false';
+          if (!isFilteredIn) {
+            card.hidden = true;
+            card.style.display = 'none';
+          }
+        });
+
+        if (totalItems === 0) {
+          paginationContainer.hidden = true;
+          paginationContainer.innerHTML = '';
+          return;
+        }
+
+        const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+        currentPage = ensureWithinRange(currentPage, totalPages);
+
+        filteredCards.forEach((card, index) => {
+          const pageForCard = Math.floor(index / pageSize) + 1;
+          const isVisible = pageForCard === currentPage;
+          card.hidden = !isVisible;
+          card.style.display = isVisible ? 'block' : 'none';
+          if (isVisible) {
+            card.style.animation = 'fadeInUp 0.3s ease forwards';
+          }
+        });
+
+        if (totalItems <= pageSize) {
+          paginationContainer.hidden = true;
+          paginationContainer.innerHTML = '';
+          return;
+        }
+
+        paginationContainer.hidden = false;
+        paginationContainer.innerHTML = '';
+
+        const meta = document.createElement('div');
+        meta.className = 'pagination-meta';
+        const rangeStart = (currentPage - 1) * pageSize + 1;
+        const rangeEnd = Math.min(currentPage * pageSize, totalItems);
+        meta.textContent = `Showing ${rangeStart}-${rangeEnd} of ${totalItems} posts`;
+
+        const controls = document.createElement('div');
+        controls.className = 'pagination-controls';
+
+        controls.appendChild(createButton('Prev', currentPage - 1, { disabled: currentPage === 1 }));
+
+        for (let page = 1; page <= totalPages; page += 1) {
+          controls.appendChild(
+            createButton(page.toString(), page, { active: page === currentPage })
+          );
+        }
+
+        controls.appendChild(createButton('Next', currentPage + 1, { disabled: currentPage === totalPages }));
+
+        paginationContainer.append(meta, controls);
+      };
+
       searchInput?.addEventListener('input', () => {
         applyFilters();
         applySort();
+        currentPage = 1;
+        renderPagination();
       });
       categoryFilter?.addEventListener('change', () => {
         applyFilters();
         applySort();
+        currentPage = 1;
+        renderPagination();
       });
       yearFilter?.addEventListener('change', () => {
         applyFilters();
         applySort();
+        currentPage = 1;
+        renderPagination();
       });
       sortFilter?.addEventListener('change', () => {
         if (sortFilter.value === 'newest') {
@@ -503,10 +653,14 @@ const years = Array.from(
         }
         applyFilters();
         applySort();
+        currentPage = 1;
+        renderPagination();
       });
 
       // Initial state
-      updateMeta(blogCards.length, blogCards.length);
+      applyFilters();
+      applySort();
+      renderPagination();
     });
   </script>
 </BaseLayout>

@@ -59,6 +59,26 @@ h1.hero, .h1.hero {
   letter-spacing: -0.025em;
 }
 
+html.js [data-hero]:not([data-hero-ready]) [data-hero-animate],
+html.js [data-hero]:not([data-hero-ready]) [data-hero-roles] li {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+html.js [data-hero]:not([data-hero-ready]) [data-hero-image] {
+  opacity: 0;
+  transform: translateY(45px) rotate(-4deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-hero]:not([data-hero-ready]) [data-hero-animate],
+  html.js [data-hero]:not([data-hero-ready]) [data-hero-roles] li,
+  html.js [data-hero]:not([data-hero-ready]) [data-hero-image] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (min-width: 480px) {
   h1.hero, .h1.hero {
     font-size: 2.5rem; /* 40px */

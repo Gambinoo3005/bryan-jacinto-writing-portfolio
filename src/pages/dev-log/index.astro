@@ -50,74 +50,77 @@ const projects = (await getCollection("devlogProjects", ({ data }) => !data.draf
       </div>
 
       {projects.length > 0 ? (
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="devlog-grid">
-          {projects.map((project, index) => {
-            const statusKey = project.data.status in statusStyles ? project.data.status : "in-progress";
-            const status = statusStyles[statusKey as keyof typeof statusStyles];
-            const startDate = project.data.startDate;
-            const endDate = project.data.endDate;
+        <div class="space-y-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="devlog-grid">
+            {projects.map((project, index) => {
+              const statusKey = project.data.status in statusStyles ? project.data.status : "in-progress";
+              const status = statusStyles[statusKey as keyof typeof statusStyles];
+              const startDate = project.data.startDate;
+              const endDate = project.data.endDate;
 
-            const timeframe = startDate && endDate
-              ? `${startDate.toLocaleDateString("en-US", { month: "short" })} – ${endDate.toLocaleDateString("en-US", { month: "short", year: "numeric" })}`
-              : startDate
-              ? `Since ${startDate.toLocaleDateString("en-US", { month: "short", year: "numeric" })}`
-              : endDate
-              ? `Shipped ${endDate.toLocaleDateString("en-US", { month: "short", year: "numeric" })}`
-              : null;
+              const timeframe = startDate && endDate
+                ? `${startDate.toLocaleDateString("en-US", { month: "short" })} – ${endDate.toLocaleDateString("en-US", { month: "short", year: "numeric" })}`
+                : startDate
+                ? `Since ${startDate.toLocaleDateString("en-US", { month: "short", year: "numeric" })}`
+                : endDate
+                ? `Shipped ${endDate.toLocaleDateString("en-US", { month: "short", year: "numeric" })}`
+                : null;
 
-            return (
-              <article
-                class="scroll-reveal scroll-reveal-item devlog-card group"
-                style={`transition-delay: ${index * 0.1}s;`}
-                data-status={statusKey}
-              >
-                <a href={`/dev-log/${project.slug}`} class="block h-full">
-                  <div class="h-full flex flex-col rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm transition-all duration-300 hover:shadow-xl hover:border-[var(--color-link)] hover:-translate-y-1 min-h-[20rem]">
-                    
-                    <div class="flex-1 flex flex-col p-5">
-                      <!-- Status & Timeframe -->
-                      <div class="flex items-center gap-2 mb-3 text-xs text-[var(--color-muted)]">
-                        <span class={`status-pill status-pill--${statusKey} px-2 py-1 rounded-full bg-[var(--surface-glass)] border border-[var(--color-border)] font-semibold uppercase tracking-wide flex items-center gap-1.5`}>
-                          <span class="status-dot"></span>
-                          {status.label}
-                        </span>
-                        {timeframe && <span>{timeframe}</span>}
-                      </div>
-
-                      <!-- Title -->
-                      <h2 class="text-lg font-semibold mb-2 text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
-                        {project.data.title}
-                      </h2>
-
-                      <!-- Description -->
-                      <p class="text-sm text-[var(--color-muted)] mb-4 flex-1 line-clamp-3">
-                        {project.data.summary}
-                      </p>
-
-                      <!-- View Timeline Button -->
-                      <div class="flex items-center gap-2 text-sm font-semibold text-[var(--color-link)] group-hover:gap-3 transition-all">
-                        <span>View timeline</span>
-                        <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
-                          <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02z" clip-rule="evenodd" />
-                        </svg>
-                      </div>
-
-                      <!-- Tags -->
-                      {project.data.tags.length > 0 && (
-                        <div class="flex flex-wrap gap-1.5 mt-4 pt-4 border-t border-[var(--color-border)]">
-                          {project.data.tags.slice(0, 3).map((tag) => (
-                            <span class="text-xs px-2 py-0.5 rounded-full bg-[var(--surface-glass)] text-[var(--color-muted)]">
-                              {tag.charAt(0).toUpperCase() + tag.slice(1)}
-                            </span>
-                          ))}
+              return (
+                <article
+                  class="scroll-reveal scroll-reveal-item devlog-card group"
+                  style={`transition-delay: ${index * 0.1}s;`}
+                  data-status={statusKey}
+                >
+                  <a href={`/dev-log/${project.slug}`} class="block h-full">
+                    <div class="h-full flex flex-col rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm transition-all duration-300 hover:shadow-xl hover:border-[var(--color-link)] hover:-translate-y-1 min-h-[20rem]">
+                      
+                      <div class="flex-1 flex flex-col p-5">
+                        <!-- Status & Timeframe -->
+                        <div class="flex items-center gap-2 mb-3 text-xs text-[var(--color-muted)]">
+                          <span class={`status-pill status-pill--${statusKey} px-2 py-1 rounded-full bg-[var(--surface-glass)] border border-[var(--color-border)] font-semibold uppercase tracking-wide flex items-center gap-1.5`}>
+                            <span class="status-dot"></span>
+                            {status.label}
+                          </span>
+                          {timeframe && <span>{timeframe}</span>}
                         </div>
-                      )}
+
+                        <!-- Title -->
+                        <h2 class="text-lg font-semibold mb-2 text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
+                          {project.data.title}
+                        </h2>
+
+                        <!-- Description -->
+                        <p class="text-sm text-[var(--color-muted)] mb-4 flex-1 line-clamp-3">
+                          {project.data.summary}
+                        </p>
+
+                        <!-- View Timeline Button -->
+                        <div class="flex items-center gap-2 text-sm font-semibold text-[var(--color-link)] group-hover:gap-3 transition-all">
+                          <span>View timeline</span>
+                          <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02z" clip-rule="evenodd" />
+                          </svg>
+                        </div>
+
+                        <!-- Tags -->
+                        {project.data.tags.length > 0 && (
+                          <div class="flex flex-wrap gap-1.5 mt-4 pt-4 border-t border-[var(--color-border)]">
+                            {project.data.tags.slice(0, 3).map((tag) => (
+                              <span class="text-xs px-2 py-0.5 rounded-full bg-[var(--surface-glass)] text-[var(--color-muted)]">
+                                {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </a>
-              </article>
-            );
-          })}
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+          <nav class="pagination-container scroll-reveal" id="devlog-pagination" aria-label="Dev log pagination" hidden></nav>
         </div>
       ) : (
         <div class="text-center py-16">
@@ -247,6 +250,60 @@ const projects = (await getCollection("devlogProjects", ({ data }) => !data.draf
       0%, 100% { opacity: 1; }
       50% { opacity: 0.5; }
     }
+
+    .pagination-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .pagination-container[hidden] {
+      display: none;
+    }
+
+    .pagination-meta {
+      font-size: 0.85rem;
+      color: var(--color-muted);
+      text-align: center;
+    }
+
+    .pagination-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .pagination-button {
+      background: var(--card-bg);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      padding: 0.5rem 0.9rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pagination-button:hover:not(:disabled) {
+      background: var(--color-surface);
+      border-color: var(--color-link);
+      transform: translateY(-1px);
+    }
+
+    .pagination-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .pagination-button.active {
+      background: var(--color-link);
+      color: var(--color-bg);
+      border-color: var(--color-link);
+    }
   </style>
 
   <script>
@@ -269,7 +326,105 @@ const projects = (await getCollection("devlogProjects", ({ data }) => !data.draf
       revealElements.forEach(el => observer.observe(el));
 
       const filterTabs = document.querySelectorAll<HTMLButtonElement>('.filter-tab');
-      const projectCards = document.querySelectorAll<HTMLElement>('#devlog-grid article');
+      const projectCards = Array.from(document.querySelectorAll<HTMLElement>('#devlog-grid article'));
+      const paginationContainer = document.querySelector<HTMLElement>('#devlog-pagination');
+      const pageSize = 6;
+      let currentPage = 1;
+
+      projectCards.forEach(card => {
+        card.dataset.filtered = 'true';
+      });
+
+      const getFilteredCards = () =>
+        projectCards.filter(card => card.dataset.filtered !== 'false');
+
+      const ensureWithinRange = (page: number, totalPages: number) =>
+        Math.min(Math.max(page, 1), totalPages);
+
+      const createButton = (label: string, targetPage: number, options: { disabled?: boolean; active?: boolean }) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'pagination-button';
+        button.textContent = label;
+        if (options.active) {
+          button.classList.add('active');
+        }
+        button.disabled = options.disabled ?? false;
+        if (!button.disabled) {
+          button.addEventListener('click', () => {
+            const filteredCards = getFilteredCards();
+            const totalPages = Math.max(1, Math.ceil(filteredCards.length / pageSize));
+            currentPage = ensureWithinRange(targetPage, totalPages);
+            renderPagination();
+            paginationContainer?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          });
+        }
+        return button;
+      };
+
+      const renderPagination = () => {
+        if (!paginationContainer) return;
+
+        const filteredCards = getFilteredCards();
+        const totalItems = filteredCards.length;
+
+        projectCards.forEach(card => {
+          const isFilteredIn = card.dataset.filtered !== 'false';
+          if (!isFilteredIn) {
+            card.hidden = true;
+            card.style.display = 'none';
+          }
+        });
+
+        if (totalItems === 0) {
+          paginationContainer.hidden = true;
+          paginationContainer.innerHTML = '';
+          return;
+        }
+
+        const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+        currentPage = ensureWithinRange(currentPage, totalPages);
+
+        filteredCards.forEach((card, index) => {
+          const pageForCard = Math.floor(index / pageSize) + 1;
+          const isVisible = pageForCard === currentPage;
+          card.hidden = !isVisible;
+          card.style.display = isVisible ? 'block' : 'none';
+          if (isVisible) {
+            card.style.animation = 'fadeInUp 0.3s ease forwards';
+          }
+        });
+
+        if (totalItems <= pageSize) {
+          paginationContainer.hidden = true;
+          paginationContainer.innerHTML = '';
+          return;
+        }
+
+        paginationContainer.hidden = false;
+        paginationContainer.innerHTML = '';
+
+        const meta = document.createElement('div');
+        meta.className = 'pagination-meta';
+        const rangeStart = (currentPage - 1) * pageSize + 1;
+        const rangeEnd = Math.min(currentPage * pageSize, totalItems);
+        meta.textContent = `Showing ${rangeStart}-${rangeEnd} of ${totalItems} project updates`;
+
+        const controls = document.createElement('div');
+        controls.className = 'pagination-controls';
+
+        controls.appendChild(createButton('Prev', currentPage - 1, { disabled: currentPage === 1 }));
+
+        for (let page = 1; page <= totalPages; page += 1) {
+          controls.appendChild(
+            createButton(page.toString(), page, { active: page === currentPage })
+          );
+        }
+
+        controls.appendChild(createButton('Next', currentPage + 1, { disabled: currentPage === totalPages }));
+
+        paginationContainer.append(meta, controls);
+      };
 
       filterTabs.forEach(tab => {
         tab.addEventListener('click', () => {
@@ -279,16 +434,16 @@ const projects = (await getCollection("devlogProjects", ({ data }) => !data.draf
           tab.classList.add('active');
 
           projectCards.forEach(card => {
-            const cardStatus = card.getAttribute('data-status');
-            if (filter === 'all' || cardStatus === filter) {
-              card.style.display = 'block';
-              card.style.animation = 'fadeInUp 0.3s ease forwards';
-            } else {
-              card.style.display = 'none';
-            }
+            const matches = filter === 'all' || card.getAttribute('data-status') === filter;
+            card.dataset.filtered = matches ? 'true' : 'false';
           });
+
+          currentPage = 1;
+          renderPagination();
         });
       });
+
+      renderPagination();
     });
   </script>
 </BaseLayout>

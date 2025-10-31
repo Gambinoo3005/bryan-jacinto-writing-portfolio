@@ -116,89 +116,92 @@ const workEntries: WorkEntry[] = [
 
       <!-- Work Cards Grid -->
       {workEntries.length > 0 ? (
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="work-grid">
-          {workEntries.map((work, index) => (
-            <article
-              class="scroll-reveal scroll-reveal-item work-card group"
-              style={`transition-delay: ${index * 0.1}s;`}
-              data-type={work.filterType}
-            >
-              <a
-                href={work.link}
-                class="block h-full"
-                {...(work.isExternal && {
-                  target: "_blank",
-                  rel: "noopener noreferrer",
-                })}
+        <div class="space-y-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="work-grid">
+            {workEntries.map((work, index) => (
+              <article
+                class="scroll-reveal scroll-reveal-item work-card group"
+                style={`transition-delay: ${index * 0.1}s;`}
+                data-type={work.filterType}
               >
-                <div class="h-full flex flex-col rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm transition-all duration-300 hover:shadow-xl hover:border-[var(--color-link)] hover:-translate-y-1 min-h-[32rem]">
-                  {work.heroImage ? (
-                    <div class="relative w-full h-48 overflow-hidden bg-[var(--surface-glass)]">
-                      <img
-                        src={work.heroImage}
-                        alt={work.title}
-                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        loading="lazy"
-                      />
-                    </div>
-                  ) : (
-                    <div class="relative w-full h-48 bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-link)] opacity-20"></div>
-                  )}
-
-                  <div class="flex-1 flex flex-col p-5">
-                    <div class="flex flex-wrap items-center gap-2 mb-3 text-xs text-[var(--color-muted)]">
-                      <span class="px-2 py-1 rounded-full bg-[var(--surface-glass)] border border-[var(--color-border)] font-semibold uppercase tracking-wide">
-                        {work.typeLabel}
-                      </span>
-                      {work.pubDate && (
-                        <time datetime={work.pubDate.toISOString()}>
-                          {work.pubDate.toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          })}
-                        </time>
-                      )}
-                    </div>
-
-                    <h2 class="card-title mb-2 text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
-                      {work.title}
-                    </h2>
-
-                    <p class="text-sm text-[var(--color-muted)] mb-4 flex-1">
-                      {work.summary}
-                    </p>
-
-                    {work.results && (
-                      <div class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#10b981] bg-[color-mix(in_srgb,#10b981_10%,transparent)] border border-[color-mix(in_srgb,#10b981_30%,transparent)] rounded-full mb-4">
-                        <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
-                          <path
-                            fill-rule="evenodd"
-                            d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z"
-                            clip-rule="evenodd"
-                          />
-                        </svg>
-                        <span>{work.results}</span>
+                <a
+                  href={work.link}
+                  class="block h-full"
+                  {...(work.isExternal && {
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                  })}
+                >
+                  <div class="h-full flex flex-col rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm transition-all duration-300 hover:shadow-xl hover:border-[var(--color-link)] hover:-translate-y-1 min-h-[32rem]">
+                    {work.heroImage ? (
+                      <div class="relative w-full h-48 overflow-hidden bg-[var(--surface-glass)]">
+                        <img
+                          src={work.heroImage}
+                          alt={work.title}
+                          class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          loading="lazy"
+                        />
                       </div>
+                    ) : (
+                      <div class="relative w-full h-48 bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-link)] opacity-20"></div>
                     )}
 
-                    <div class="mt-auto">
-                      <div class="flex items-center gap-2 text-sm font-semibold text-[var(--color-link)] group-hover:gap-3 transition-all">
-                        <span>{work.ctaText}</span>
-                        <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
-                          <path
-                            fill-rule="evenodd"
-                            d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                            clip-rule="evenodd"
-                          />
-                        </svg>
+                    <div class="flex-1 flex flex-col p-5">
+                      <div class="flex flex-wrap items-center gap-2 mb-3 text-xs text-[var(--color-muted)]">
+                        <span class="px-2 py-1 rounded-full bg-[var(--surface-glass)] border border-[var(--color-border)] font-semibold uppercase tracking-wide">
+                          {work.typeLabel}
+                        </span>
+                        {work.pubDate && (
+                          <time datetime={work.pubDate.toISOString()}>
+                            {work.pubDate.toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            })}
+                          </time>
+                        )}
+                      </div>
+
+                      <h2 class="card-title mb-2 text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
+                        {work.title}
+                      </h2>
+
+                      <p class="text-sm text-[var(--color-muted)] mb-4 flex-1">
+                        {work.summary}
+                      </p>
+
+                      {work.results && (
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#10b981] bg-[color-mix(in_srgb,#10b981_10%,transparent)] border border-[color-mix(in_srgb,#10b981_30%,transparent)] rounded-full mb-4">
+                          <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                            <path
+                              fill-rule="evenodd"
+                              d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z"
+                              clip-rule="evenodd"
+                            />
+                          </svg>
+                          <span>{work.results}</span>
+                        </div>
+                      )}
+
+                      <div class="mt-auto">
+                        <div class="flex items-center gap-2 text-sm font-semibold text-[var(--color-link)] group-hover:gap-3 transition-all">
+                          <span>{work.ctaText}</span>
+                          <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path
+                              fill-rule="evenodd"
+                              d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                              clip-rule="evenodd"
+                            />
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </a>
-            </article>
-          ))}
+                </a>
+              </article>
+            ))}
+          </div>
+          <nav class="pagination-container scroll-reveal" id="work-pagination" aria-label="Work pagination" hidden></nav>
         </div>
       ) : (
         <div class="text-center py-16">
@@ -294,6 +297,60 @@ const workEntries: WorkEntry[] = [
       line-height: 1.5;
       font-weight: 600;
     }
+
+    .pagination-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .pagination-container[hidden] {
+      display: none;
+    }
+
+    .pagination-meta {
+      font-size: 0.85rem;
+      color: var(--color-muted);
+      text-align: center;
+    }
+
+    .pagination-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .pagination-button {
+      background: var(--card-bg);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      padding: 0.5rem 0.9rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pagination-button:hover:not(:disabled) {
+      background: var(--color-surface);
+      border-color: var(--color-link);
+      transform: translateY(-1px);
+    }
+
+    .pagination-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .pagination-button.active {
+      background: var(--color-link);
+      color: var(--color-bg);
+      border-color: var(--color-link);
+    }
   </style>
 
   <!-- Scroll reveal script -->
@@ -317,7 +374,105 @@ const workEntries: WorkEntry[] = [
       revealElements.forEach(el => observer.observe(el));
 
       const filterTabs = document.querySelectorAll<HTMLButtonElement>('.filter-tab');
-      const workCards = document.querySelectorAll<HTMLElement>('#work-grid article');
+      const workCards = Array.from(document.querySelectorAll<HTMLElement>('#work-grid article'));
+      const paginationContainer = document.querySelector<HTMLElement>('#work-pagination');
+      const pageSize = 6;
+      let currentPage = 1;
+
+      workCards.forEach(card => {
+        card.dataset.filtered = 'true';
+      });
+
+      const getFilteredCards = () =>
+        workCards.filter(card => card.dataset.filtered !== 'false');
+
+      const ensureWithinRange = (page: number, totalPages: number) =>
+        Math.min(Math.max(page, 1), totalPages);
+
+      const createButton = (label: string, targetPage: number, options: { disabled?: boolean; active?: boolean }) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'pagination-button';
+        if (options.active) {
+          button.classList.add('active');
+        }
+        button.textContent = label;
+        button.disabled = options.disabled ?? false;
+        if (!button.disabled) {
+          button.addEventListener('click', () => {
+            const filteredCards = getFilteredCards();
+            const totalPages = Math.max(1, Math.ceil(filteredCards.length / pageSize));
+            currentPage = ensureWithinRange(targetPage, totalPages);
+            renderPagination();
+            paginationContainer?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          });
+        }
+        return button;
+      };
+
+      const renderPagination = () => {
+        if (!paginationContainer) return;
+
+        const filteredCards = getFilteredCards();
+        const totalItems = filteredCards.length;
+
+        workCards.forEach(card => {
+          const isFilteredIn = card.dataset.filtered !== 'false';
+          if (!isFilteredIn) {
+            card.hidden = true;
+            card.style.display = 'none';
+          }
+        });
+
+        if (totalItems === 0) {
+          paginationContainer.hidden = true;
+          paginationContainer.innerHTML = '';
+          return;
+        }
+
+        const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+        currentPage = ensureWithinRange(currentPage, totalPages);
+
+        filteredCards.forEach((card, index) => {
+          const pageForCard = Math.floor(index / pageSize) + 1;
+          const isVisible = pageForCard === currentPage;
+          card.hidden = !isVisible;
+          card.style.display = isVisible ? 'block' : 'none';
+          if (isVisible) {
+            card.style.animation = 'fadeInUp 0.3s ease forwards';
+          }
+        });
+
+        if (totalItems <= pageSize) {
+          paginationContainer.hidden = true;
+          paginationContainer.innerHTML = '';
+          return;
+        }
+
+        paginationContainer.hidden = false;
+        paginationContainer.innerHTML = '';
+
+        const meta = document.createElement('div');
+        meta.className = 'pagination-meta';
+        const rangeStart = (currentPage - 1) * pageSize + 1;
+        const rangeEnd = Math.min(currentPage * pageSize, totalItems);
+        meta.textContent = `Showing ${rangeStart}-${rangeEnd} of ${totalItems} work items`;
+
+        const controls = document.createElement('div');
+        controls.className = 'pagination-controls';
+
+        controls.appendChild(createButton('Prev', currentPage - 1, { disabled: currentPage === 1 }));
+
+        for (let page = 1; page <= totalPages; page += 1) {
+          controls.appendChild(
+            createButton(page.toString(), page, { active: page === currentPage })
+          );
+        }
+
+        controls.appendChild(createButton('Next', currentPage + 1, { disabled: currentPage === totalPages }));
+
+        paginationContainer.append(meta, controls);
+      };
 
       filterTabs.forEach(tab => {
         tab.addEventListener('click', () => {
@@ -327,16 +482,16 @@ const workEntries: WorkEntry[] = [
           tab.classList.add('active');
 
           workCards.forEach(card => {
-            const cardType = card.getAttribute('data-type');
-            if (filter === 'all' || cardType === filter) {
-              card.style.display = 'block';
-              card.style.animation = 'fadeInUp 0.3s ease forwards';
-            } else {
-              card.style.display = 'none';
-            }
+            const matchesFilter = filter === 'all' || card.getAttribute('data-type') === filter;
+            card.dataset.filtered = matchesFilter ? 'true' : 'false';
           });
+
+          currentPage = 1;
+          renderPagination();
         });
       });
+
+      renderPagination();
     });
   </script>
 </BaseLayout>
