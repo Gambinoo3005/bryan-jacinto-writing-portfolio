@@ -129,9 +129,8 @@ const { Content } = await entry.render();
       height: 100%;
       background: linear-gradient(
         to bottom,
-        rgba(0, 0, 0, 0.4) 0%,
-        rgba(0, 0, 0, 0.3) 30%,
-        rgba(0, 0, 0, 0.1) 60%,
+        transparent 0%,
+        transparent 50%,
         var(--section-bg) 90%,
         var(--section-bg) 100%
       );
@@ -141,9 +140,10 @@ const { Content } = await entry.render();
     .dark .hero-overlay {
       background: linear-gradient(
         to bottom,
-        transparent 0%,
-        transparent 50%,
-        var(--section-bg) 90%,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.45) 40%,
+        rgba(0, 0, 0, 0.3) 65%,
+        var(--section-bg) 92%,
         var(--section-bg) 100%
       );
     }
@@ -289,26 +289,109 @@ const { Content } = await entry.render();
 
     .prose :global(code) {
       padding: 0.2rem 0.4rem;
-      background: var(--surface-glass);
-      border: 1px solid var(--color-border);
-      border-radius: 0.25rem;
+      background: color-mix(in srgb, var(--surface-glass) 85%, transparent);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 0.35rem;
       font-size: 0.9em;
-      font-family: 'Courier New', monospace;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
     }
 
     .prose :global(pre) {
+      position: relative;
       margin: 2rem 0;
       padding: 1.5rem;
-      background: var(--surface-glass);
-      border: 1px solid var(--color-border);
-      border-radius: 0.5rem;
+      background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.18), transparent 65%), color-mix(in srgb, var(--surface-glass) 88%, transparent);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 0.9rem;
+      max-height: 420px;
       overflow-x: auto;
+      overflow-y: auto;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
     }
 
     .prose :global(pre code) {
+      display: block;
       padding: 0;
       background: none;
       border: none;
+      font-size: 0.92em;
+      line-height: 1.65;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    }
+
+    .prose :global(pre::-webkit-scrollbar) {
+      width: 10px;
+      height: 10px;
+    }
+
+    .prose :global(pre::-webkit-scrollbar-thumb) {
+      background: rgba(71, 85, 105, 0.35);
+      border-radius: 999px;
+    }
+
+    .prose :global(pre::-webkit-scrollbar-thumb:hover) {
+      background: rgba(30, 64, 175, 0.45);
+    }
+
+    .prose :global(.code-toolbar) {
+      position: absolute;
+      top: 0.85rem;
+      right: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--surface-glass) 90%, transparent);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      backdrop-filter: blur(8px);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-muted);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+      z-index: 2;
+    }
+
+    .prose :global(.code-language) {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .prose :global(.code-actions) {
+      display: inline-flex;
+      gap: 0.35rem;
+    }
+
+    .prose :global(.code-action) {
+      appearance: none;
+      border: none;
+      background: color-mix(in srgb, var(--color-link) 18%, transparent);
+      color: var(--color-link);
+      padding: 0.25rem 0.6rem;
+      border-radius: 0.5rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .prose :global(.code-action:hover) {
+      background: color-mix(in srgb, var(--color-link) 30%, transparent);
+      transform: translateY(-1px);
+    }
+
+    .prose :global(.code-action.is-success) {
+      background: color-mix(in srgb, #34d399 35%, transparent);
+      color: #065f46;
+    }
+
+    @media (max-width: 768px) {
+      .prose :global(.code-toolbar) {
+        position: static;
+        margin-bottom: 0.75rem;
+        width: 100%;
+        justify-content: space-between;
+      }
     }
 
     .prose :global(img) {
@@ -385,4 +468,212 @@ const { Content } = await entry.render();
       }
     }
   </style>
+
+<script>
+  // @ts-nocheck
+  /** @type {{ [key: string]: string }} */
+  const LANGUAGE_EXTENSIONS = {
+    javascript: 'js',
+    js: 'js',
+    typescript: 'ts',
+    ts: 'ts',
+    jsx: 'jsx',
+    tsx: 'tsx',
+    html: 'html',
+    css: 'css',
+    scss: 'scss',
+    json: 'json',
+    yaml: 'yaml',
+    yml: 'yml',
+    python: 'py',
+    py: 'py',
+    ruby: 'rb',
+    go: 'go',
+    rust: 'rs',
+    php: 'php',
+    sql: 'sql',
+    bash: 'sh',
+    sh: 'sh',
+    shell: 'sh',
+    plaintext: 'txt',
+    text: 'txt'
+  };
+
+  /** @type {{ [key: string]: string }} */
+  const LANGUAGE_NAMES = {
+    js: 'JavaScript',
+    ts: 'TypeScript',
+    jsx: 'JSX',
+    tsx: 'TSX',
+    html: 'HTML',
+    css: 'CSS',
+    scss: 'SCSS',
+    json: 'JSON',
+    yaml: 'YAML',
+    yml: 'YAML',
+    py: 'Python',
+    rb: 'Ruby',
+    go: 'Go',
+    rs: 'Rust',
+    php: 'PHP',
+    sql: 'SQL',
+    sh: 'Shell',
+    txt: 'Text'
+  };
+
+  /**
+   * @param {HTMLElement} code
+   */
+  const getLanguageInfo = (code) => {
+    const classList = Array.from(code.classList ?? []);
+    const langClass = classList.find((cls) => typeof cls === 'string' && cls.startsWith('language-'));
+
+    let raw = typeof langClass === 'string' ? langClass.replace('language-', '').toLowerCase() : '';
+
+    if (!raw || raw === 'text') {
+      const dataLanguage = code.getAttribute('data-language') || code.getAttribute('data-lang') || code.dataset.lang;
+      if (typeof dataLanguage === 'string' && dataLanguage.trim().length > 0) {
+        raw = dataLanguage.trim().toLowerCase();
+      }
+    }
+
+    if (!raw || raw === 'text') {
+      const classAttr = code.getAttribute('class') || '';
+      const match = classAttr.match(/language-([\w-]+)/i);
+      if (match && match[1]) {
+        raw = match[1].toLowerCase();
+      }
+    }
+
+    if (!raw || raw.length === 0) {
+      raw = 'text';
+    }
+
+    let extension = raw || 'txt';
+    if (raw && Object.prototype.hasOwnProperty.call(LANGUAGE_EXTENSIONS, raw)) {
+      // @ts-ignore Index signature is satisfied by runtime guard
+      extension = LANGUAGE_EXTENSIONS[raw];
+    }
+
+    let name = extension.toUpperCase();
+    if (extension && Object.prototype.hasOwnProperty.call(LANGUAGE_NAMES, extension)) {
+      // @ts-ignore Index signature is satisfied by runtime guard
+      name = LANGUAGE_NAMES[extension];
+    }
+
+    return { raw, extension, name };
+  };
+
+  const attachToolbar = () => {
+    const codeBlocks = document.querySelectorAll('pre');
+    codeBlocks.forEach((pre, index) => {
+      if (!(pre instanceof HTMLElement) || pre.dataset.toolbar === 'ready') {
+        return;
+      }
+
+      let code = pre.querySelector('code');
+      if (!code) {
+        const firstChild = pre.firstElementChild;
+        if (firstChild && firstChild.tagName === 'DIV') {
+          code = firstChild.querySelector('code');
+        }
+      }
+
+      if (!code || !(code instanceof HTMLElement)) {
+        return;
+      }
+
+      const info = getLanguageInfo(code);
+
+      if ((!info || info.raw === 'text') && pre.dataset) {
+        const preDataLang = pre.dataset.lang || pre.dataset.language;
+        const raw = typeof preDataLang === 'string' ? preDataLang.trim().toLowerCase() : '';
+        if (raw) {
+          info.raw = raw;
+          info.extension = LANGUAGE_EXTENSIONS[raw] || raw || 'txt';
+          info.name = LANGUAGE_NAMES[info.extension] || info.extension.toUpperCase();
+        }
+      }
+
+      if (info.raw === 'text') {
+        const preClassAttr = pre.getAttribute('class') || '';
+        const matchPre = preClassAttr.match(/language-([\w-]+)/i);
+        if (matchPre && matchPre[1]) {
+          const raw = matchPre[1].toLowerCase();
+          info.raw = raw;
+          info.extension = LANGUAGE_EXTENSIONS[raw] || raw || 'txt';
+          info.name = LANGUAGE_NAMES[info.extension] || info.extension.toUpperCase();
+        }
+      }
+
+      const { extension, name } = info;
+
+      const toolbar = document.createElement('div');
+      toolbar.className = 'code-toolbar';
+
+      const languageLabel = document.createElement('span');
+      languageLabel.className = 'code-language';
+      languageLabel.textContent = name;
+      toolbar.appendChild(languageLabel);
+
+      const actions = document.createElement('div');
+      actions.className = 'code-actions';
+
+      const copyButton = document.createElement('button');
+      copyButton.type = 'button';
+      copyButton.className = 'code-action code-action-copy';
+      copyButton.textContent = 'Copy';
+
+      copyButton.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(code.textContent ?? '');
+          copyButton.classList.add('is-success');
+          const original = copyButton.textContent;
+          copyButton.textContent = 'Copied!';
+          setTimeout(() => {
+            copyButton.classList.remove('is-success');
+            copyButton.textContent = original ?? 'Copy';
+          }, 1600);
+        } catch (error) {
+          console.error('Copy failed', error);
+          copyButton.textContent = 'Copy failed';
+          setTimeout(() => {
+            copyButton.textContent = 'Copy';
+          }, 1800);
+        }
+      });
+
+      const downloadButton = document.createElement('button');
+      downloadButton.type = 'button';
+      downloadButton.className = 'code-action code-action-download';
+      downloadButton.textContent = 'Export';
+
+      downloadButton.addEventListener('click', () => {
+        const blob = new Blob([code.textContent ?? ''], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        const filename = `snippet-${index + 1}.${extension}`;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      });
+
+      actions.appendChild(copyButton);
+      actions.appendChild(downloadButton);
+      toolbar.appendChild(actions);
+
+      pre.appendChild(toolbar);
+      pre.dataset.toolbar = 'ready';
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachToolbar);
+  } else {
+    attachToolbar();
+  }
+</script>
 </BaseLayout>

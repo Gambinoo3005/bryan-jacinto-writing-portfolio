@@ -23,10 +23,10 @@ const secondary = first ?? second;
 const [tertiary, quaternary] = others;
 ---
 
-<section class="testimonials-bento" data-testimonials-bento>
-  <div class="bento-grid">
+<section class="testimonials-bento">
+  <div class="bento-grid scroll-reveal">
     {primary && (
-      <article class="bento-card card-primary" data-bento-card>
+      <article class="bento-card card-primary scroll-reveal-item">
         <header class="card-header">
           <div class="client-meta primary">
             <div>
@@ -42,7 +42,7 @@ const [tertiary, quaternary] = others;
     )}
 
     {secondary && (
-      <article class="bento-card card-secondary" data-bento-card>
+      <article class="bento-card card-secondary scroll-reveal-item scroll-reveal-delay-1">
         <header class="card-header compact">
           <div class="client-meta secondary">
             <div>
@@ -58,28 +58,30 @@ const [tertiary, quaternary] = others;
     )}
 
     {tertiary && (
-      <article class="bento-card card-tertiary" data-bento-card>
+      <article class="bento-card card-tertiary scroll-reveal-item scroll-reveal-delay-2">
         <header class="mini-header">
-          <div>
-            <h5>{tertiary.name}</h5>
+          <div class="client-meta tertiary">
+            <div>
+              <h5>{tertiary.name}</h5>
+              <p>{tertiary.company}</p>
+            </div>
           </div>
         </header>
         <p class="quote">“{tertiary.content}”</p>
-        <span class="footer-link">{tertiary.company}</span>
       </article>
     )}
 
     {quaternary && (
-      <article class="bento-card card-quaternary" data-bento-card>
+      <article class="bento-card card-quaternary scroll-reveal-item scroll-reveal-delay-3">
         <header class="mini-header">
-          <div>
-            <h5>{quaternary.name}</h5>
+          <div class="client-meta tertiary">
+            <div>
+              <h5>{quaternary.name}</h5>
+              <p>{quaternary.company}</p>
+            </div>
           </div>
         </header>
         <p class="quote">“{quaternary.content}”</p>
-        <div class="meta-grid">
-          <span class="pill">{quaternary.company}</span>
-        </div>
       </article>
     )}
   </div>
@@ -112,31 +114,15 @@ const [tertiary, quaternary] = others;
     overflow: hidden;
   }
 
-  .bento-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(134, 183, 255, 0.08) 0%, transparent 60%);
-    opacity: 0;
-    transition: opacity 200ms ease;
-    pointer-events: none;
-  }
-
-  .bento-card:hover::before {
-    opacity: 1;
-  }
-
   .card-primary {
     grid-column: 1 / span 7;
     grid-row: 1 / span 1;
-    background: linear-gradient(145deg, rgba(14, 51, 87, 0.12), rgba(134, 183, 255, 0.14));
     min-height: 300px;
   }
 
   .card-secondary {
     grid-column: 8 / span 5;
     grid-row: 1 / span 1;
-    background: linear-gradient(150deg, rgba(0, 0, 0, 0.02), rgba(134, 183, 255, 0.1));
     min-height: 260px;
   }
 
@@ -145,9 +131,19 @@ const [tertiary, quaternary] = others;
     grid-row: 2 / span 1;
   }
 
+  .card-tertiary .quote {
+    font-size: clamp(0.88rem, 0.6vw + 0.72rem, 1rem);
+    line-height: 1.5;
+  }
+
   .card-quaternary {
     grid-column: 5 / span 8;
     grid-row: 2 / span 1;
+  }
+
+  .card-quaternary .quote {
+    font-size: clamp(1.05rem, 0.85vw + 0.85rem, 1.32rem);
+    line-height: 1.62;
   }
 
   .card-header {
@@ -322,15 +318,6 @@ const [tertiary, quaternary] = others;
     gap: 1rem;
   }
 
-  .chip {
-    padding: 0.35rem 0.75rem;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    background: rgba(14, 51, 87, 0.12);
-    color: color-mix(in srgb, var(--color-link) 85%, white 15%);
-  }
-
   .quote {
     margin: 0;
     color: color-mix(in srgb, var(--color-text) 90%, transparent);
@@ -340,36 +327,6 @@ const [tertiary, quaternary] = others;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
-  }
-
-  .footer-link {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: color-mix(in srgb, var(--color-muted) 70%, transparent);
-  }
-
-  .meta-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.35rem 0.75rem;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    background: rgba(0, 0, 0, 0.04);
-    color: color-mix(in srgb, var(--color-muted) 90%, transparent);
-  }
-
-  .pill.success {
-    background: rgba(16, 185, 129, 0.12);
-    color: rgba(16, 185, 129, 0.95);
   }
 
   @media (max-width: 1100px) {
@@ -419,55 +376,3 @@ const [tertiary, quaternary] = others;
   }
 </style>
 
-<script>
-  const initTestimonialsBento = async () => {
-    const grid = document.querySelector('[data-testimonials-bento]');
-    if (!grid) return;
-
-    const cards = grid.querySelectorAll<HTMLElement>('[data-bento-card]');
-    if (!cards.length) return;
-
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (prefersReducedMotion.matches) {
-      cards.forEach((card) => {
-        card.style.opacity = '1';
-        card.style.transform = 'none';
-      });
-      return;
-    }
-
-    try {
-      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
-        import('gsap'),
-        import('gsap/ScrollTrigger'),
-      ]);
-
-      gsap.registerPlugin(ScrollTrigger);
-
-      gsap.fromTo(cards, { opacity: 0, y: 40 }, {
-        opacity: 1,
-        y: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-        stagger: 0.12,
-        scrollTrigger: {
-          trigger: grid,
-          start: 'top 85%',
-          once: true,
-        },
-      });
-    } catch (error) {
-      console.warn('Testimonials bento failed to load GSAP', error);
-      cards.forEach((card) => {
-        card.style.opacity = '1';
-        card.style.transform = 'none';
-      });
-    }
-  };
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTestimonialsBento, { once: true });
-  } else {
-    initTestimonialsBento();
-  }
-</script>

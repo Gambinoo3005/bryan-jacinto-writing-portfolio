@@ -14,7 +14,7 @@ const roles = [
 const experienceCards = [
   {
     id: "web-copywriter-junior-manager",
-    title: "SEO Content Writer / Junior Manager",
+    title: "SEO Content Writer / Manager",
     company: "GrumpyHare",
     period: "March 2025 - Present",
     location: "Connecticut",
@@ -98,21 +98,21 @@ const clientTestimonials = [
   },
   {
     id: "testimonial-3",
+    name: "Zaira",
+    role: "Freelance Client",
+    company: "Independent Professional",
+    content: "Working with Bryan on creative projects has been a pleasure. His short stories are beautifully crafted with rich character development.",
+    project: "Creative Writing & Translation",
+    results: "High-quality creative deliverables"
+  },
+  {
+    id: "testimonial-4",
     name: "Urian Buenconsejo",
     role: "Freelance Client",
     company: "Independent Professional",
     content: "Bryan's news article writing is outstanding. He crafts compelling narratives that inform and engage readers. His research skills are thorough and his writing style is both professional and accessible.",
     project: "News Article Writing",
     results: "Enhanced publication credibility"
-  },
-  {
-    id: "testimonial-4",
-    name: "Zaira",
-    role: "Freelance Client",
-    company: "Independent Professional",
-    content: "Working with Bryan on creative projects has been a pleasure. His short stories are beautifully crafted with rich character development. His translation work maintains emotional depth while ensuring perfect readability.",
-    project: "Creative Writing & Translation",
-    results: "High-quality creative deliverables"
   }
 ];
 
@@ -177,7 +177,10 @@ const toolsetData = [
   title="Bryan Jacinto - Copy & SEO"
   description="Copywriting, editing, B2B content, and SEO-focused writing."
 >
-  <section class="hero-section flex items-center justify-center text-[var(--color-text)]" data-hero>
+  <section
+    class="hero-section flex items-center justify-center text-[var(--color-text)]"
+    data-hero
+  >
     <div class="w-full max-w-7xl mx-auto px-5">
       <div class="flex flex-col lg:flex-row justify-center items-center gap-10 lg:gap-16 w-full">
         <!-- Left Column: Hero Content -->
@@ -263,6 +266,7 @@ const toolsetData = [
         </div>
       </div>
     </div>
+    <div class="hero-fade"></div>
   </section>
 
   <script>
@@ -294,10 +298,10 @@ const toolsetData = [
         const heroImage = hero.querySelector('[data-hero-image]');
         const animatedNodes = hero.querySelectorAll('[data-hero-animate]');
 
-        gsap.set(animatedNodes, { opacity: 0, y: 40 });
-        gsap.set(roleItems, { opacity: 0, y: 24 });
+        gsap.set(animatedNodes, { opacity: 0, y: 30 });
+        gsap.set(roleItems, { opacity: 0, y: 18 });
         if (heroImage) {
-          gsap.set(heroImage, { opacity: 0, y: 60, rotate: -4 });
+          gsap.set(heroImage, { opacity: 0, y: 45, rotate: -4 });
         }
 
         const tl = gsap.timeline({
@@ -310,34 +314,34 @@ const toolsetData = [
         });
 
         if (heroTitle) {
-          tl.to(heroTitle, { opacity: 1, y: 0, duration: 0.9 });
+          tl.to(heroTitle, { opacity: 1, y: 0, duration: 0.55 });
         }
 
         if (roleItems.length) {
           tl.to(roleItems, {
             opacity: 1,
             y: 0,
-            duration: 0.6,
-            stagger: 0.08,
+            duration: 0.45,
+            stagger: 0.06,
           }, '-=0.6');
         }
 
         if (heroText) {
-          tl.to(heroText, { opacity: 1, y: 0, duration: 0.7 }, roleItems.length ? '-=0.4' : '-=0.5');
+          tl.to(heroText, { opacity: 1, y: 0, duration: 0.5 }, roleItems.length ? '-=0.35' : '-=0.45');
         }
 
         if (heroCtas.length) {
           tl.to(heroCtas, {
             opacity: 1,
             y: 0,
-            duration: 0.6,
-            stagger: 0.12,
-          }, '-=0.45');
+            duration: 0.45,
+            stagger: 0.1,
+          }, '-=0.35');
         }
 
         if (heroImage) {
-          const addAt = heroCtas.length ? '-=0.55' : '-=0.45';
-          tl.to(heroImage, { opacity: 1, y: 0, rotate: 0, duration: 1, ease: 'elastic.out(1, 0.75)' }, addAt);
+          const addAt = heroCtas.length ? '-=0.45' : '-=0.35';
+          tl.to(heroImage, { opacity: 1, y: 0, rotate: 0, duration: 0.75, ease: 'power3.out' }, addAt);
         }
       } catch (error) {
         console.warn('Hero animation failed to load GSAP', error);
@@ -382,10 +386,8 @@ const toolsetData = [
   <!-- Client Testimonials Section -->
   <section class="page-section">
     <div class="mx-auto max-w-6xl px-4 sm:px-5 md:px-6 w-full">
-      <div class="text-center mb-10">
-        <p class="text-sm uppercase tracking-[0.3em] text-[color-mix(in_srgb,var(--color-muted)_75%,transparent)]">Client proof</p>
-        <h2 class="mt-3 mb-3">What Clients Say</h2>
-        <p class="max-w-3xl mx-auto text-[var(--color-muted)]">Snapshots from long-term partnerships and fast-turn projects alike—each one highlighting reliability, craft, and measurable results.</p>
+      <div class="scroll-reveal scroll-reveal-item text-center mb-8">
+        <h2 class="mb-0">What Clients Say</h2>
       </div>
       <TestimonialsBento testimonials={clientTestimonials} />
     </div>
@@ -454,6 +456,21 @@ const toolsetData = [
     .scroll-reveal.is-visible .scroll-reveal-item {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    .hero-section {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-fade {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      pointer-events: none;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, var(--section-bg) 85%);
     }
 
     /* Staggered delays for multiple items */

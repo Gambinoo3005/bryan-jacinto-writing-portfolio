@@ -4,6 +4,18 @@ import { getCollection } from "astro:content";
 
 const blogs = (await getCollection("blogs", ({ data }) => !data.draft))
   .sort((a, b) => +b.data.pubDate - +a.data.pubDate);
+
+const categories = Array.from(
+  new Set(
+    blogs
+      .map((blog) => blog.data.category?.trim())
+      .filter((category): category is string => Boolean(category))
+  )
+).sort((a, b) => a.localeCompare(b));
+
+const years = Array.from(
+  new Set(blogs.map((blog) => blog.data.pubDate.getFullYear()))
+).sort((a, b) => b - a);
 ---
 
 <BaseLayout 
@@ -20,13 +32,55 @@ const blogs = (await getCollection("blogs", ({ data }) => !data.draft))
         </p>
       </div>
 
-      <!-- Filter Tabs -->
-      <div class="filter-tabs mb-10 scroll-reveal">
-        <button class="filter-tab active" data-filter="all">All Blogs</button>
-        <button class="filter-tab" data-filter="writing">Writing</button>
-        <button class="filter-tab" data-filter="seo">SEO</button>
-        <button class="filter-tab" data-filter="tech">Tech</button>
+      <!-- Filter Controls -->
+      <div class="filter-panel scroll-reveal">
+        <div class="filter-field search-field">
+          <label for="blog-search" class="filter-label">Search posts</label>
+          <div class="input-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="input-icon">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-4.35-4.35m1.35-4.65a6 6 0 11-12 0 6 6 0 0112 0z" />
+            </svg>
+            <input 
+              id="blog-search"
+              type="search"
+              placeholder="Search by title, description, or tags..."
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-field">
+            <label for="category-filter" class="filter-label">Category</label>
+            <select id="category-filter">
+              <option value="all">All categories</option>
+              {categories.map((category) => (
+                <option value={category.toLowerCase()}>{category}</option>
+              ))}
+            </select>
+          </div>
+
+          <div class="filter-field">
+            <label for="year-filter" class="filter-label">Year</label>
+            <select id="year-filter">
+              <option value="all">All years</option>
+              {years.map((year) => (
+                <option value={year.toString()}>{year}</option>
+              ))}
+            </select>
+          </div>
+
+          <div class="filter-field">
+            <label for="sort-filter" class="filter-label">Sort by</label>
+            <select id="sort-filter">
+              <option value="newest">Newest first</option>
+              <option value="oldest">Oldest first</option>
+            </select>
+          </div>
+        </div>
       </div>
+
+      <div class="filter-meta" id="filter-meta" aria-live="polite"></div>
 
       <!-- Blog Cards Grid -->
       {blogs.length > 0 ? (
@@ -35,7 +89,11 @@ const blogs = (await getCollection("blogs", ({ data }) => !data.draft))
             <article 
               class="scroll-reveal scroll-reveal-item blog-card group"
               style={`transition-delay: ${index * 0.1}s;`}
-              data-type={blog.data.category?.toLowerCase()}
+              data-category={blog.data.category?.toLowerCase() ?? ""}
+              data-year={blog.data.pubDate.getFullYear().toString()}
+              data-title={blog.data.title.toLowerCase()}
+              data-description={blog.data.description.toLowerCase()}
+              data-tags={blog.data.tags.join(" ").toLowerCase()}
             >
               <a href={`/blogs/${blog.slug}`} class="block h-full">
                 <div class="h-full flex flex-col rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm transition-all duration-300 hover:shadow-xl hover:border-[var(--color-link)] hover:-translate-y-1 min-h-[32rem]">
@@ -111,6 +169,14 @@ const blogs = (await getCollection("blogs", ({ data }) => !data.draft))
           <p class="text-[var(--color-muted)] text-lg">No blog posts yet. Check back soon!</p>
         </div>
       )}
+
+      <div class="empty-state" id="empty-state" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 19l-3-3m1-4a6 6 0 11-12 0 6 6 0 0112 0z" />
+        </svg>
+        <h2>No matches found</h2>
+        <p>Try adjusting your filters or search terms.</p>
+      </div>
     </div>
   </section>
 
@@ -148,35 +214,97 @@ const blogs = (await getCollection("blogs", ({ data }) => !data.draft))
   </style>
 
   <style>
-    .filter-tabs {
-      display: flex;
-      justify-content: center;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .filter-tab {
-      background: var(--card-bg);
+    .filter-panel {
+      display: grid;
+      gap: 1rem;
+      padding: 1.5rem;
       border: 1px solid var(--color-border);
-      color: var(--color-text);
-      padding: 0.75rem 1.5rem;
-      border-radius: 2rem;
-      font-size: 0.875rem;
+      border-radius: 1.5rem;
+      background: color-mix(in srgb, var(--surface-glass) 85%, transparent);
+      backdrop-filter: blur(10px);
+      margin-bottom: 2.5rem;
+    }
+
+    .filter-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .filter-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .filter-label {
+      font-size: 0.75rem;
       font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-muted);
     }
 
-    .filter-tab:hover {
+    select,
+    #blog-search {
+      width: 100%;
+      border-radius: 1rem;
+      border: 1px solid var(--color-border);
       background: var(--color-surface);
-      border-color: var(--color-accent);
-      transform: translateY(-1px);
+      color: var(--color-text);
+      padding: 0.85rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .filter-tab.active {
-      background: var(--color-link);
-      color: var(--color-bg);
+    select:focus,
+    #blog-search:focus {
+      outline: none;
       border-color: var(--color-link);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-link) 25%, transparent);
+    }
+
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      padding-right: 2.75rem;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%23838ba0' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.6' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: 1rem;
+      background-position: right 1rem center;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1.1rem;
+      height: 1.1rem;
+      opacity: 0.7;
+      color: var(--color-muted);
+      pointer-events: none;
+    }
+
+    #blog-search {
+      padding-left: 2.75rem;
+    }
+
+    .filter-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--color-muted);
     }
 
     .blog-card {
@@ -198,6 +326,41 @@ const blogs = (await getCollection("blogs", ({ data }) => !data.draft))
       font-size: 1.125rem;
       line-height: 1.5;
       font-weight: 600;
+    }
+
+    .empty-state {
+      margin-top: 3rem;
+      text-align: center;
+      color: var(--color-muted);
+      display: grid;
+      justify-items: center;
+      gap: 0.75rem;
+    }
+
+    .empty-state svg {
+      width: 3rem;
+      height: 3rem;
+    }
+
+    .empty-state h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-heading);
+    }
+
+    @media (max-width: 768px) {
+      .filter-panel {
+        padding: 1.25rem;
+      }
+
+      .filter-label {
+        font-size: 0.7rem;
+      }
+
+      .filter-meta {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
 
@@ -221,27 +384,129 @@ const blogs = (await getCollection("blogs", ({ data }) => !data.draft))
       const revealElements = document.querySelectorAll('.scroll-reveal');
       revealElements.forEach(el => observer.observe(el));
 
-      const filterTabs = document.querySelectorAll<HTMLButtonElement>('.filter-tab');
-      const blogCards = document.querySelectorAll<HTMLElement>('#blog-grid article');
+      const blogCards = Array.from(document.querySelectorAll<HTMLElement>('#blog-grid article'));
+      const searchInput = document.querySelector<HTMLInputElement>('#blog-search');
+      const categoryFilter = document.querySelector<HTMLSelectElement>('#category-filter');
+      const yearFilter = document.querySelector<HTMLSelectElement>('#year-filter');
+      const sortFilter = document.querySelector<HTMLSelectElement>('#sort-filter');
+      const emptyState = document.querySelector<HTMLElement>('#empty-state');
+      const metaContainer = document.querySelector<HTMLElement>('#filter-meta');
 
-      filterTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          const filter = tab.dataset.filter ?? 'all';
-
-          filterTabs.forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-
-          blogCards.forEach(card => {
-            const cardType = card.getAttribute('data-type');
-            if (filter === 'all' || cardType === filter) {
-              card.style.display = 'block';
-              card.style.animation = 'fadeInUp 0.3s ease forwards';
-            } else {
-              card.style.display = 'none';
-            }
-          });
-        });
+      const getCardData = (card: HTMLElement) => ({
+        category: card.dataset.category ?? '',
+        year: card.dataset.year ?? '',
+        title: card.dataset.title ?? '',
+        description: card.dataset.description ?? '',
+        tags: card.dataset.tags ?? ''
       });
+
+      const originalOrder = [...blogCards];
+
+      const updateMeta = (visibleCount: number, total: number) => {
+        if (!metaContainer) return;
+        const activeCategory = categoryFilter?.value ?? 'all';
+        const activeYear = yearFilter?.value ?? 'all';
+
+        const activeFilters: string[] = [];
+        if (activeCategory !== 'all') {
+          activeFilters.push(`Category: ${categoryFilter?.selectedOptions[0]?.text ?? ''}`);
+        }
+        if (activeYear !== 'all') {
+          activeFilters.push(`Year: ${activeYear}`);
+        }
+
+        const filterSummary = activeFilters.length > 0
+          ? `Filters – ${activeFilters.join(' • ')}`
+          : 'Filters – showing all posts';
+
+        metaContainer.innerHTML = `
+          <span><strong>${visibleCount}</strong> of ${total} posts</span>
+          <span>${filterSummary}</span>
+        `;
+      };
+
+      const applyFilters = () => {
+        const query = (searchInput?.value ?? '').trim().toLowerCase();
+        const category = categoryFilter?.value ?? 'all';
+        const year = yearFilter?.value ?? 'all';
+
+        let visibleCount = 0;
+
+        blogCards.forEach(card => {
+          const data = getCardData(card);
+          const matchesSearch = query.length === 0
+            || data.title.includes(query)
+            || data.description.includes(query)
+            || data.tags.includes(query);
+
+          const matchesCategory = category === 'all' || data.category === category;
+          const matchesYear = year === 'all' || data.year === year;
+
+          if (matchesSearch && matchesCategory && matchesYear) {
+            card.hidden = false;
+            card.style.animation = 'fadeInUp 0.3s ease forwards';
+            visibleCount += 1;
+          } else {
+            card.hidden = true;
+          }
+        });
+
+        if (emptyState) {
+          emptyState.hidden = visibleCount !== 0;
+        }
+
+        updateMeta(visibleCount, blogCards.length);
+      };
+
+      const applySort = () => {
+        const sortValue = sortFilter?.value ?? 'newest';
+        const grid = document.querySelector('#blog-grid');
+        if (!grid) return;
+
+        const cardsToSort = blogCards.filter(card => !card.hidden);
+        const hiddenCards = blogCards.filter(card => card.hidden);
+
+        const sortedCards = [...cardsToSort].sort((a, b) => {
+          const dateA = new Date(a.querySelector('time')?.getAttribute('datetime') ?? '').getTime();
+          const dateB = new Date(b.querySelector('time')?.getAttribute('datetime') ?? '').getTime();
+          return sortValue === 'newest' ? dateB - dateA : dateA - dateB;
+        });
+
+        const finalOrder = sortValue === 'newest'
+          ? [...sortedCards, ...hiddenCards]
+          : [...sortedCards, ...hiddenCards];
+
+        finalOrder.forEach(card => grid.appendChild(card));
+      };
+
+      const resetSortOrder = () => {
+        const grid = document.querySelector('#blog-grid');
+        if (!grid) return;
+        originalOrder.forEach(card => grid.appendChild(card));
+      };
+
+      searchInput?.addEventListener('input', () => {
+        applyFilters();
+        applySort();
+      });
+      categoryFilter?.addEventListener('change', () => {
+        applyFilters();
+        applySort();
+      });
+      yearFilter?.addEventListener('change', () => {
+        applyFilters();
+        applySort();
+      });
+      sortFilter?.addEventListener('change', () => {
+        if (sortFilter.value === 'newest') {
+          resetSortOrder();
+        }
+        applyFilters();
+        applySort();
+      });
+
+      // Initial state
+      updateMeta(blogCards.length, blogCards.length);
     });
   </script>
 </BaseLayout>
