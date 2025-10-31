@@ -12,6 +12,33 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+
+const recentPosts = (await getCollection("blogs", ({ data }) => !data.draft))
+  .filter((post) => post.slug !== entry.slug)
+  .sort((a, b) => +b.data.pubDate - +a.data.pubDate)
+  .slice(0, 3);
+
+const currentUrl = Astro.url?.href ?? "";
+const encodedUrl = encodeURIComponent(currentUrl);
+const encodedTitle = encodeURIComponent(entry.data.title);
+
+const shareLinks = [
+  {
+    label: "Share on LinkedIn",
+    icon: "linkedin",
+    href: `https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedTitle}`,
+  },
+  {
+    label: "Share on X",
+    icon: "x",
+    href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
+  },
+  {
+    label: "Share on Facebook",
+    icon: "facebook",
+    href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+  },
+];
 ---
 
 <BaseLayout
@@ -83,6 +110,40 @@ const { Content } = await entry.render();
         <Content />
       </div>
 
+      {shareLinks.length > 0 && (
+        <div class="share-block">
+          <h2 class="share-heading">Loved this read? Share it with your network.</h2>
+          <div class="share-buttons">
+            {shareLinks.map((link) => (
+              <a
+                class="share-button"
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={link.label}
+              >
+                {link.icon === "linkedin" && (
+                  <svg class="share-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20.447 3H3.553A.553.553 0 0 0 3 3.553v16.894C3 20.95 3.05 21 3.553 21h16.894A.553.553 0 0 0 21 20.447V3.553A.553.553 0 0 0 20.447 3Zm-11.5 15.06H6.258V9.747h2.69V18.06Zm-1.344-9.43a1.56 1.56 0 1 1 0-3.12 1.56 1.56 0 0 1 0 3.12Zm11.503 9.43h-2.69v-4.4c0-1.05-.02-2.4-1.462-2.4-1.466 0-1.69 1.146-1.69 2.324v4.476h-2.69V9.747h2.582v1.142h.036c.359-.68 1.236-1.398 2.544-1.398 2.722 0 3.224 1.792 3.224 4.125v4.444Z" />
+                  </svg>
+                )}
+                {link.icon === "x" && (
+                  <svg class="share-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M18.244 3H21l-6.383 7.294L21.5 21h-5.462l-3.9-5.3L7.5 21H4.743l6.783-7.747L3.5 3h5.6l3.51 4.864L18.244 3Zm-.964 16.02h1.471L7.78 4.052H6.222l11.058 14.968Z" />
+                  </svg>
+                )}
+                {link.icon === "facebook" && (
+                  <svg class="share-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M22 12.073C22 6.505 17.523 2 12 2S2 6.505 2 12.073c0 4.99 3.657 9.128 8.438 9.88v-6.988H7.898v-2.892h2.54V9.845c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.196 2.238.196v2.47h-1.26c-1.243 0-1.63.773-1.63 1.562v1.875h2.773l-.443 2.892h-2.33v6.988C18.343 21.2 22 17.062 22 12.073Z" />
+                  </svg>
+                )}
+                <span class="share-sr">{link.label}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
       <!-- Back to Blogs -->
       <div class="article-footer">
         <a href="/blogs" class="back-link">
@@ -94,6 +155,42 @@ const { Content } = await entry.render();
       </div>
     </div>
   </article>
+
+  {recentPosts.length > 0 && (
+    <section class="recent-posts">
+      <div class="recent-inner">
+        <h2 class="recent-heading">Recent Posts</h2>
+        <div class="recent-grid">
+          {recentPosts.map((post) => (
+            <article class="recent-card">
+              <a href={`/blogs/${post.slug}`} class="recent-link">
+                <div class="recent-card-body">
+                  <div class="recent-meta">
+                    <span class="recent-category">{post.data.category ?? "Blog"}</span>
+                    <span class="recent-date">
+                      {post.data.pubDate.toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                      })}
+                    </span>
+                  </div>
+                  <h3 class="recent-title">{post.data.title}</h3>
+                  <p class="recent-summary">{post.data.description}</p>
+                  <div class="recent-cta">
+                    <span>Read article</span>
+                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <style>
     /* Hero Section */
@@ -152,13 +249,13 @@ const { Content } = await entry.render();
       position: relative;
       z-index: 2;
       width: 100%;
-      max-width: 900px;
+      max-width: 1024px;
       margin: 0 auto;
       padding: 3rem 1.5rem;
     }
 
     .hero-inner {
-      text-align: left;
+      text-align: center;
     }
 
     .category-badge {
@@ -187,6 +284,7 @@ const { Content } = await entry.render();
     .hero-meta {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 1rem;
       margin-bottom: 1.5rem;
       font-size: 0.95rem;
@@ -214,6 +312,7 @@ const { Content } = await entry.render();
       line-height: 1.7;
       color: var(--color-muted);
       max-width: 700px;
+      margin: 0 auto;
     }
 
     /* Article Content */
@@ -226,7 +325,7 @@ const { Content } = await entry.render();
     }
 
     .article-container {
-      max-width: 800px;
+      max-width: 880px;
       margin: 0 auto;
     }
 
@@ -235,6 +334,9 @@ const { Content } = await entry.render();
       color: var(--color-text);
       font-size: 1.0625rem;
       line-height: 1.8;
+      max-width: min(80ch, 100%);
+      margin: 0 auto;
+      font-family: var(--font-serif);
     }
 
     .prose :global(h2) {
@@ -385,12 +487,215 @@ const { Content } = await entry.render();
       color: #065f46;
     }
 
+    /* Share Block */
+    .share-block {
+      margin: 3.5rem auto 0 auto;
+      padding: 2.5rem;
+      border: 1px solid var(--color-border);
+      border-radius: 1.5rem;
+      background: var(--surface-glass);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.05);
+      text-align: center;
+    }
+
+    .share-heading {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--color-heading);
+    }
+
+    .share-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .share-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 3.25rem;
+      height: 3.25rem;
+      padding: 0;
+      border-radius: 999px;
+      border: 1px solid var(--color-border);
+      background: var(--color-surface, #ffffff);
+      color: var(--color-link);
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .share-button:hover {
+      transform: translateY(-2px);
+      border-color: var(--color-link);
+      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+    }
+
+    .share-button:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--color-link) 35%, transparent);
+      outline-offset: 2px;
+    }
+
+    .share-icon {
+      width: 1.35rem;
+      height: 1.35rem;
+      fill: currentColor;
+    }
+
+    .share-sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Recent Posts */
+    .recent-posts {
+      padding: 4rem 1rem 6rem 1rem;
+      background: var(--section-bg);
+    }
+
+    .recent-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .recent-heading {
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 2rem;
+      text-align: center;
+      color: var(--color-heading);
+    }
+
+    .recent-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.75rem;
+    }
+
+    .recent-card {
+      background: var(--color-surface, #ffffff);
+      border: 1px solid var(--color-border);
+      border-radius: 1.25rem;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .recent-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 50px rgba(15, 23, 42, 0.12);
+    }
+
+    .recent-link {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+      height: 100%;
+    }
+
+    .recent-card-body {
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      height: 100%;
+    }
+
+    .recent-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.875rem;
+      color: var(--color-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .recent-category {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.75rem;
+      background: var(--surface-glass);
+      border-radius: 999px;
+      border: 1px solid var(--color-border);
+      font-weight: 600;
+    }
+
+    .recent-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-heading);
+      line-height: 1.4;
+    }
+
+    .recent-summary {
+      color: var(--color-muted);
+      font-size: 0.975rem;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .recent-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--color-link);
+      margin-top: auto;
+      transition: gap 0.2s ease, color 0.2s ease;
+    }
+
+    .recent-cta svg {
+      width: 1rem;
+      height: 1rem;
+      transition: transform 0.2s ease;
+    }
+
+    .recent-card:hover .recent-cta {
+      gap: 0.75rem;
+      color: var(--color-heading);
+    }
+
+    .recent-card:hover .recent-cta svg {
+      transform: translateX(4px);
+    }
+
+    @media (max-width: 1024px) {
+      .recent-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
     @media (max-width: 768px) {
       .prose :global(.code-toolbar) {
         position: static;
         margin-bottom: 0.75rem;
         width: 100%;
         justify-content: space-between;
+      }
+
+      .share-block {
+        padding: 2rem 1.5rem;
+      }
+
+      .recent-grid {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+      }
+
+      .recent-card-body {
+        padding: 1.5rem;
       }
     }
 

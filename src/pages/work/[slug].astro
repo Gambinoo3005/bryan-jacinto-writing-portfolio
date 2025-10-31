@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
+import BlogLayout from "../../layouts/BlogLayout.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("work", ({ data }) => !data.draft);
@@ -19,18 +20,36 @@ const badgeLabel = tags.includes("Article")
   : tags.includes("Website")
     ? "Website"
     : "Case Study";
+const isArticle = badgeLabel === "Article";
 ---
 
-<CaseStudyLayout
-  title={entry.data.title}
-  description={entry.data.summary}
-  pubDate={entry.data.pubDate}
-  tags={entry.data.tags}
-  ogImage={entry.data.ogImage}
-  heroImage={entry.data.heroImage || entry.data.hero}
-  client={entry.data.client}
-  industry={entry.data.industry}
-  results={entry.data.results}
->
-  <Content />
-</CaseStudyLayout>
+{isArticle ? (
+  <BlogLayout
+    title={entry.data.title}
+    description={entry.data.summary}
+    pubDate={entry.data.pubDate}
+    tags={entry.data.tags}
+    ogImage={entry.data.ogImage}
+    heroImage={entry.data.heroImage || entry.data.hero}
+    badgeLabel="Article"
+    roleLabel={entry.data.client ?? "Bryan Jacinto"}
+    backHref="/work"
+    backText="Back to Work"
+  >
+    <Content />
+  </BlogLayout>
+) : (
+  <CaseStudyLayout
+    title={entry.data.title}
+    description={entry.data.summary}
+    pubDate={entry.data.pubDate}
+    tags={entry.data.tags}
+    ogImage={entry.data.ogImage}
+    heroImage={entry.data.heroImage || entry.data.hero}
+    client={entry.data.client}
+    industry={entry.data.industry}
+    results={entry.data.results}
+  >
+    <Content />
+  </CaseStudyLayout>
+)}

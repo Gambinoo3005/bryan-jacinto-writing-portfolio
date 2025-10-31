@@ -13,7 +13,7 @@ I've been doing local SEO for small businesses for years now, and honestly? The 
 
 No tricks. No hacks. Just solid, consistent work.
 
-## Your Google Business Profile Is Your Digital Storefront
+## Your Google Business Profile Is your digital storefront
 
 Here's something I tell every client: your Google Business Profile is basically your digital storefront. And just like a physical storefront, if it looks abandoned or half-finished, people notice. They always do.
 
@@ -29,7 +29,7 @@ And please, for the love of everything, add actual photos. Your storefront. Your
 
 Here's a move I learned the hard way: tag your website link with UTM parameters. You'll actually know how many people are clicking through from your GBP and contacting you. Real data you can act on, not just guesses.
 
-## Make Your Website Ridiculously Easy to Understand
+## Make your website ridiculously easy to understand
 
 When someone lands on your website, they should know three things immediately:
 - Who you help
@@ -48,7 +48,7 @@ Link your related pages together so both visitors and Google can navigate easily
 
 And yeah, add that LocalBusiness schema markup. If you've got a helpful FAQ section, throw FAQPage schema on there too. Takes maybe ten minutes and it actually helps.
 
-## Reviews Are Your Secret Weapon
+## Reviews are your secret weapon
 
 Here's what most business owners miss: reviews help you rank and help customers decide. They're doing double duty for you.
 
@@ -62,7 +62,7 @@ Aim for steady, consistent review growth. Not weird bursts of twenty reviews in 
 
 Google's your main priority, obviously, but if your customers actually hang out on Yelp or Facebook, don't ignore those platforms either.
 
-## Clean Up Your Citations (Yes, It's Boring)
+## Clean up your citations (yes, it's boring)
 
 Citations are basically just housekeeping for your business information online. Not exciting. Definitely not glamorous. But necessary.
 
@@ -72,7 +72,7 @@ Now comes the detective work: hunt down old listings with outdated phone numbers
 
 Running multiple locations? A listings management tool can help automate this, but always double-check changes before they go live. Automation is fantastic until it screws something up and you don't catch it.
 
-## Write Content That Actually Helps Your Neighbors
+## Write content that actually helps your neighbors
 
 Write for real people in your community. Not for Google's algorithm. Not to hit some arbitrary keyword density. For actual humans who need help with something you know how to do.
 
@@ -84,7 +84,7 @@ Tie your content to what's happening locally. Seasonal needs, community events, 
 
 Keep paragraphs short. Make headlines clear. Put your calls-to-action where people can actually see them without hunting.
 
-## Technical Stuff That Just Makes Sense
+## Technical stuff that just makes sense
 
 Your site needs to be fast, stable, and work perfectly on phones. This isn't optional anymore, it's just table stakes.
 
@@ -96,7 +96,7 @@ Make buttons easy to tap on mobile. Keep text readable without zooming in. Add a
 
 Do all this for your actual users first. Better rankings usually follow when you focus on making things genuinely usable.
 
-## Build Local Links Through Real Relationships
+## Build local links through real relationships
 
 Here's the truth that nobody wants to hear: Google trusts what your community already trusts.
 
@@ -106,7 +106,7 @@ Look for natural link opportunities on school websites, local associations, cham
 
 Keep it authentic. No weird link schemes or buying your way onto sketchy directories. Just real community involvement that you'd do anyway because you care about where you work.
 
-## Track What Actually Matters
+## Track what actually matters
 
 Measure stuff that helps you make real decisions, not just vanity metrics that look impressive in a report but tell you nothing useful.
 
@@ -118,7 +118,7 @@ Track the whole picture: form submissions, phone calls, messages, direction requ
 
 You only need a handful of KPIs: qualified leads, conversion rate, revenue by channel, maybe a short list of priority keywords. Don't drown yourself in data you'll never act on.
 
-## Myths You Can Stop Believing Right Now
+## Myths you can stop believing right now
 
 "Just stuff city names everywhere!" Nope. Sounds spammy, doesn't work anymore.
 
@@ -130,7 +130,7 @@ You only need a handful of KPIs: qualified leads, conversion rate, revenue by ch
 
 "Set it and forget it works." It doesn't. Consistent upkeep always wins in the long run.
 
-## A Simple Routine You Can Actually Stick To
+## A simple routine you can actually stick to
 
 **Weekly:** Post on your GBP, reply to reviews and messages, quickly check your top pages for any obvious issues. Keep the feedback loop tight.
 
@@ -138,7 +138,7 @@ You only need a handful of KPIs: qualified leads, conversion rate, revenue by ch
 
 **Quarterly:** Refresh your photos and testimonials, double-check your schema markup, revisit your GBP categories and attributes. Stay current without being frantic about every little thing.
 
-## The Bottom Line
+## Takeaway
 
 Local SEO rewards businesses that stay clear, consistent, and put customers first. That's it. That's the whole secret.
 

@@ -165,13 +165,13 @@ const {
       position: relative;
       z-index: 2;
       width: 100%;
-      max-width: 900px;
+      max-width: 1024px;
       margin: 0 auto;
       padding: 3rem 1.5rem;
     }
 
     .hero-inner {
-      text-align: left;
+      text-align: center;
     }
 
     .category-badge {
@@ -200,6 +200,7 @@ const {
     .hero-meta {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 1rem;
       margin-bottom: 1.5rem;
       font-size: 0.95rem;
@@ -254,6 +255,7 @@ const {
       line-height: 1.7;
       color: var(--color-muted);
       max-width: 700px;
+      margin: 0 auto;
     }
 
     /* Article Content */
@@ -266,7 +268,7 @@ const {
     }
 
     .article-container {
-      max-width: 800px;
+      max-width: 880px;
       margin: 0 auto;
     }
 
@@ -275,6 +277,9 @@ const {
       color: var(--color-text);
       font-size: 1.0625rem;
       line-height: 1.8;
+      max-width: min(80ch, 100%);
+      margin: 0 auto;
+      font-family: var(--font-serif);
     }
 
     .prose :global(h2) {

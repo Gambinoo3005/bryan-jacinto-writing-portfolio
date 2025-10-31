@@ -27,7 +27,7 @@ I wasn't lying when I said so. It was pure instinct and imitation from the books
 
 She showed me that even a tiny comma can greatly affect how clear writing is. Well, hopefully, my classmates picked that up as well.
 
-## Back to Basics
+## Back to basics
 
 Let me take you back to the basics real quick. The Oxford comma is a comma used before the last item in a list, like the comma before "and" in "computers, laptops, and cameras." It's called the Oxford comma because it's favored by the Oxford University Press.
 
@@ -45,7 +45,7 @@ The five drivers who are smart enough to analyze the technicalities have receive
 
 It's crazy to think that a single punctuation can bleed a company $5 million. Still, that doesn't reinforce the argument that the Oxford comma is a universal truth that all people should adhere to.
 
-## Not Even Oxford Agrees
+## Not even Oxford agrees
 
 The University of Oxford itself doesn't recognize the usage of punctuation as always necessary, they just favor it. According to their style guide, usage of the comma should only be enforced if the passage has a high chance of confusing the audience. It's a case-to-case basis that writers need to consider but it also gives them more creativity, and leeway without worrying about being grammatically incorrect.
 
