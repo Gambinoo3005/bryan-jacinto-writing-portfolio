@@ -154,6 +154,73 @@ const url = Astro.url?.href ?? "";
     <Analytics />
 
     <script type="module" src={scrollSmootherScript}></script>
+    <script>
+      (() => {
+        const processedAttr = 'data-external-link-handled';
+        const origin = window.location.origin;
+
+        const ensureRel = (anchor) => {
+          const rel = anchor.getAttribute('rel');
+          const tokens = new Set((rel || '').split(/\s+/).filter(Boolean));
+          tokens.add('noopener');
+          tokens.add('noreferrer');
+          anchor.setAttribute('rel', Array.from(tokens).join(' '));
+        };
+
+        const handleAnchor = (anchor) => {
+          if (!(anchor instanceof HTMLAnchorElement)) return;
+          if (anchor.hasAttribute(processedAttr)) return;
+
+          const href = anchor.getAttribute('href');
+          if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) {
+            return;
+          }
+
+          try {
+            const url = new URL(href, window.location.href);
+            if (url.origin === origin) return;
+          } catch {
+            return;
+          }
+
+          if (!anchor.getAttribute('target')) {
+            anchor.setAttribute('target', '_blank');
+          }
+          ensureRel(anchor);
+          anchor.setAttribute(processedAttr, 'true');
+        };
+
+        const processAllAnchors = () => {
+          document.querySelectorAll('a').forEach(handleAnchor);
+        };
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', processAllAnchors, { once: true });
+        } else {
+          processAllAnchors();
+        }
+
+        const observer = new MutationObserver((mutations) => {
+          for (const { addedNodes } of mutations) {
+            addedNodes.forEach((node) => {
+              if (node.nodeType !== Node.ELEMENT_NODE) return;
+              if (node.matches?.('a')) {
+                handleAnchor(node);
+              }
+              node.querySelectorAll?.('a').forEach(handleAnchor);
+            });
+          }
+        });
+
+        if (document.body) {
+          observer.observe(document.body, { childList: true, subtree: true });
+        } else {
+          document.addEventListener('DOMContentLoaded', () => {
+            observer.observe(document.body, { childList: true, subtree: true });
+          }, { once: true });
+        }
+      })();
+    </script>
   </body>
 </html>
 
