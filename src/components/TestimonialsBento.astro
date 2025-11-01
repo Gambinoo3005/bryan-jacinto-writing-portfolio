@@ -30,8 +30,8 @@ const [tertiary, quaternary] = others;
         <header class="card-header">
           <div class="client-meta primary">
             <div>
-              <h3>{primary.name}</h3>
-              <p>{primary.company}</p>
+              <h3 class="client-name">{primary.name}</h3>
+              <p class="client-company">{primary.company}</p>
             </div>
           </div>
         </header>
@@ -46,8 +46,8 @@ const [tertiary, quaternary] = others;
         <header class="card-header compact">
           <div class="client-meta secondary">
             <div>
-              <h4>{secondary.name}</h4>
-              <p>{secondary.company}</p>
+              <h4 class="client-name">{secondary.name}</h4>
+              <p class="client-company">{secondary.company}</p>
             </div>
           </div>
         </header>
@@ -62,8 +62,8 @@ const [tertiary, quaternary] = others;
         <header class="mini-header">
           <div class="client-meta tertiary">
             <div>
-              <h5>{tertiary.name}</h5>
-              <p>{tertiary.company}</p>
+              <h5 class="client-name">{tertiary.name}</h5>
+              <p class="client-company">{tertiary.company}</p>
             </div>
           </div>
         </header>
@@ -76,8 +76,8 @@ const [tertiary, quaternary] = others;
         <header class="mini-header">
           <div class="client-meta tertiary">
             <div>
-              <h5>{quaternary.name}</h5>
-              <p>{quaternary.company}</p>
+              <h5 class="client-name">{quaternary.name}</h5>
+              <p class="client-company">{quaternary.company}</p>
             </div>
           </div>
         </header>
@@ -188,38 +188,19 @@ const [tertiary, quaternary] = others;
     color: var(--color-link);
   }
 
-  .client-meta h3,
-  .card-header h4,
-  .mini-header h5 {
-    font-size: clamp(1.125rem, 1.1vw + 0.82rem, 1.55rem);
+  .client-name {
     margin: 0;
+    font-size: clamp(1.25rem, 0.85vw + 0.98rem, 1.7rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
     color: var(--color-heading);
   }
 
-  .client-meta.primary h3 {
-    font-size: clamp(1.35rem, 1.4vw + 0.9rem, 1.9rem);
-  }
-
-  .client-meta.secondary h4 {
-    font-size: clamp(1.3rem, 1.25vw + 0.88rem, 1.8rem);
-  }
-
-  .client-meta p,
-  .card-header p,
-  .mini-header p {
-    margin: 0.25rem 0 0;
-    color: color-mix(in srgb, var(--color-muted) 80%, transparent);
+  .client-company {
+    margin: 0.35rem 0 0;
+    font-size: clamp(0.95rem, 0.35vw + 0.8rem, 1.1rem);
     font-weight: 500;
-  }
-
-  .client-meta.primary p {
-    font-size: clamp(0.9rem, 0.35vw + 0.75rem, 1.05rem);
-    color: color-mix(in srgb, var(--color-muted) 70%, transparent);
-  }
-
-  .client-meta.secondary p {
-    font-size: clamp(0.88rem, 0.3vw + 0.74rem, 1rem);
-    color: color-mix(in srgb, var(--color-muted) 72%, transparent);
+    color: color-mix(in srgb, var(--color-muted) 74%, transparent);
   }
 
   blockquote {

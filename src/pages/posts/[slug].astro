@@ -361,6 +361,12 @@ const { Content } = await post.render();
       transform: translateX(-4px);
     }
 
+    .dark .back-link:hover {
+      background: color-mix(in srgb, var(--color-link) 32%, var(--color-bg) 68%);
+      color: var(--color-text);
+      border-color: color-mix(in srgb, var(--color-link) 72%, var(--color-bg) 28%);
+    }
+
     .back-icon {
       width: 1.25rem;
       height: 1.25rem;

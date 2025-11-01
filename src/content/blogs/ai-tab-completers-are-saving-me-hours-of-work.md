@@ -1,5 +1,5 @@
 ---
-title: "AI Tab Completers Are Saving Me Hours of Work"
+title: "AI tab completers are saving me hours of work"
 description: "How GitHub Copilot and Cursor changed my coding flow by filling in context-aware code before I even need it."
 author: "Bryan Jacinto"
 category: "Tech"
@@ -14,7 +14,7 @@ I started learning web dev this year, and honestly, I don't know how people did 
 
 I'm talking about tools like GitHub Copilot and Cursor. They suggest code as you type, and you just hit Tab to accept. Sounds simple, but it's genuinely changed how I work.
 
-## How They Actually Work
+## How they actually work
 
 At the core, these tools use transformer-based language models, the same architecture that powers ChatGPT and other LLMs. But instead of predicting text, they're trained on billions of lines of code to predict what code should come next.
 
@@ -32,7 +32,7 @@ Then it runs this through a transformer decoder that computes relationships betw
 
 What makes this powerful is something called beam search. Instead of just picking the single most likely next token, the model considers multiple possible sequences simultaneously and ranks them by probability. That's why you can cycle through alternative suggestions if the first one isn't quite right.
 
-## Where the Time Savings Come From
+## Where the time savings come from
 
 - **It eliminates context switching.** The biggest time sink in coding isn't typing, it's stopping to Google syntax, looking up documentation, or trying to remember how you solved a similar problem last week. The AI handles that by suggesting the right pattern immediately.
 - **It handles boilerplate instantly.** Setting up a new React component with all the imports, prop types, and structure? That used to take me a few minutes. Now it's seconds. The AI knows the patterns and fills them in.
@@ -47,7 +47,7 @@ Cursor is a standalone editor (VS Code fork) with deeper project-wide context aw
 
 The main difference is context scope. Copilot optimizes for speed with limited context. Cursor trades some latency for understanding your whole project. Both get things wrong sometimes, but Cursor's broader view makes its suggestions more aligned with your existing code.
 
-## The Adjustment Period
+## The adjustment period
 
 There's a learning curve. At first, you second-guess every suggestion. "Is this right? Should I trust this?"
 
@@ -55,14 +55,14 @@ After a week or two, you develop intuition for when suggestions are solid and wh
 
 The weirdest part is working without it. I used a computer without Copilot recently and kept waiting for suggestions that never came. It felt like coding with one hand tied behind my back.
 
-## The Real Downsides
+## The real downsides
 
 - **It can make you lazy.** If you're accepting suggestions without understanding them, you're not learning. You're copying code you don't grasp. That's dangerous, especially when you're still learning fundamentals.
 - **It's not always right.** The AI is pattern matching based on training data, not actually understanding your code. Sometimes it confidently suggests something that looks right but breaks in subtle ways.
 - **It costs money.** GitHub Copilot is $10/month, Cursor is $20/month. Not huge, but real money when you're just starting out. Both offer free trials.
 - **It can feel like cheating.** When you're learning, there's this nagging feeling you should write every line yourself. I still wrestle with that. But using a tool that makes you more productive isn't cheating any more than using Stack Overflow is.
 
-## Why I'm Not Going Back
+## Why I'm not going back
 
 The productivity gain is real. I can build things faster now than three months ago, not just because I'm learning, but because the AI handles grunt work while I focus on architecture and logic.
 
