@@ -1,79 +1,156 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const calendlyUrlRaw = import.meta.env.PUBLIC_CALENDLY_URL;
+const calendlyUrl = typeof calendlyUrlRaw === "string" ? calendlyUrlRaw.trim() : "";
+const hasCalendly = calendlyUrl.length > 0;
+
+const calendlyEmbedUrl = (() => {
+  if (!hasCalendly) return "";
+
+  const defaultParams = new URLSearchParams({
+    embed_type: "Inline",
+    hide_event_type_details: "1",
+    primary_color: "0F172A",
+    background_color: "FFFFFF",
+    text_color: "0F172A",
+  });
+
+  try {
+    const url = new URL(calendlyUrl);
+    defaultParams.forEach((value, key) => {
+      if (!url.searchParams.has(key)) {
+        url.searchParams.set(key, value);
+      }
+    });
+    return url.toString();
+  } catch (error) {
+    const separator = calendlyUrl.includes("?") ? "&" : "?";
+    return `${calendlyUrl}${separator}${defaultParams.toString()}`;
+  }
+})();
 ---
 <BaseLayout title="Contact - Bryan Jacinto" description="Work inquiries and collaborations.">
   <section class="w-full" style="background-color: var(--section-bg-primary); margin-top: -88px;">
-    <div class="mx-auto max-w-3xl px-5 sm:px-6 pt-16 pb-16 scroll-reveal">
-      <h1 class="mb-4 text-center">Contact</h1>
-      <p class="text-[var(--color-muted)] mb-10 text-center">Get in touch for work inquiries and collaborations.</p>
-    
-    <div class="mt-8 scroll-reveal-item">
-      <form id="contact-form" class="space-y-6">
-        <div>
-          <label for="name" class="block text-sm font-medium mb-2 text-[var(--color-text)]">Name *</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            required
-            class="w-full px-4 py-3 border border-[var(--color-border)] rounded-lg bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-link)] focus:border-transparent transition-colors"
-            placeholder="Your full name"
-          />
+    <div class="mx-auto max-w-6xl px-5 sm:px-6 pt-16 pb-20 space-y-12">
+      <div class="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] items-stretch scroll-reveal">
+        <div class="contact-column">
+          <div class="contact-header">
+            <h1 class="text-center lg:text-left">Tell me about your next project</h1>
+          </div>
+
+          <div class="calendly-card">
+            <div class="calendly-card-header">
+              <h2>Book a quick call</h2>
+              <p>Grab a 15-minute slot to talk through goals, scope, or timelines.</p>
+            </div>
+
+            {hasCalendly ? (
+              <div
+                class="calendly-embed"
+                data-calendly-container
+                data-calendly-url={calendlyEmbedUrl}
+              >
+                <div class="calendly-placeholder">Loading availability…</div>
+              </div>
+            ) : (
+              <div class="calendly-fallback">
+                <p>
+                  Calendly link unavailable. Email
+                  <a href="mailto:jacintobryan3@gmail.com">jacintobryan3@gmail.com</a>
+                  or call <a href="tel:+639944011975">+63 994 401 1975</a> to schedule time.
+                </p>
+              </div>
+            )}
+          </div>
         </div>
-        
-        <div>
-          <label for="email" class="block text-sm font-medium mb-2 text-[var(--color-text)]">Email *</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            class="w-full px-4 py-3 border border-[var(--color-border)] rounded-lg bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-link)] focus:border-transparent transition-colors"
-            placeholder="your.email@example.com"
-          />
+
+        <div class="contact-form-card scroll-reveal">
+          <div class="contact-form-header">
+            <h2>Send a message</h2>
+            <p>Share project details, timelines, goals, or links to anything I should review ahead of time.</p>
+          </div>
+
+          <form id="contact-form" class="space-y-6" novalidate>
+            <div>
+              <label for="name" class="contact-label">Name *</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                autocomplete="name"
+                class="contact-input"
+                placeholder="Your full name"
+              />
+            </div>
+
+            <div>
+              <label for="email" class="contact-label">Email *</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                autocomplete="email"
+                class="contact-input"
+                placeholder="your.email@example.com"
+              />
+            </div>
+
+            <div>
+              <label for="phone" class="contact-label">Contact number</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                autocomplete="tel"
+                class="contact-input"
+                placeholder="+63 994 401 1975"
+              />
+            </div>
+
+            <div>
+              <label for="message" class="contact-label">How can I help? *</label>
+              <textarea
+                id="message"
+                name="message"
+                required
+                rows="6"
+                class="contact-textarea"
+                placeholder="Tell me about your project, goals, audience, and timeline."
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              class="btn-primary w-full h-12 rounded-full px-6 text-sm font-semibold transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              <span id="submit-text">Send message</span>
+              <span id="submit-loading" class="hidden items-center gap-2">
+                <svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                  <circle cx="12" cy="12" r="10" stroke-opacity="0.2" />
+                  <path d="M12 2a10 10 0 0 1 10 10" />
+                </svg>
+                Sending...
+              </span>
+            </button>
+
+            <div
+              id="form-message"
+              class="form-alert"
+              role="status"
+              aria-live="polite"
+              hidden
+            ></div>
+
+            <p class="contact-disclaimer">
+              By submitting this form you agree to receive a reply from me via email. I keep your details private and never share them.
+            </p>
+          </form>
         </div>
-        
-        <div>
-          <label for="phone" class="block text-sm font-medium mb-2 text-[var(--color-text)]">Contact Number</label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            class="w-full px-4 py-3 border border-[var(--color-border)] rounded-lg bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-link)] focus:border-transparent transition-colors"
-            placeholder="+1 (555) 123-4567"
-          />
-        </div>
-        
-        <div>
-          <label for="message" class="block text-sm font-medium mb-2 text-[var(--color-text)]">Message *</label>
-          <textarea
-            id="message"
-            name="message"
-            required
-            rows="6"
-            class="w-full px-4 py-3 border border-[var(--color-border)] rounded-lg bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-link)] focus:border-transparent transition-colors resize-vertical"
-            placeholder="Tell me about your project, collaboration ideas, or any questions you have..."
-          ></textarea>
-        </div>
-        
-        <button
-          type="submit"
-          class="btn-primary w-full h-11 rounded-full px-6 text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <span id="submit-text">Send Message</span>
-          <span id="submit-loading" class="hidden">Sending...</span>
-        </button>
-      </form>
-      
-      <div id="form-message" class="mt-4 hidden"></div>
-    </div>
-    
-      <div class="mt-12 pt-8 border-t border-[var(--color-border)] scroll-reveal-item">
-        <h2 class="mb-4">Direct Contact</h2>
-        <p class="text-[var(--color-muted)]">
-          You can also reach me directly at <a class="underline hover:text-[var(--color-link)] transition-colors" href="mailto:jacintobryan3@gmail.com">jacintobryan3@gmail.com</a>
-        </p>
       </div>
+
     </div>
   </section>
 </BaseLayout>
@@ -99,6 +176,216 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   .scroll-reveal.is-visible .scroll-reveal-item {
     opacity: 1;
     transform: translateY(0);
+  }
+</style>
+
+<style>
+  .contact-column {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .contact-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .contact-header h1 {
+    margin: 0;
+  }
+
+  .calendly-card {
+    border-radius: 1.5rem;
+    border: 1px solid var(--color-border);
+    background: var(--card-bg);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: auto;
+  }
+
+  .calendly-card-header {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .calendly-card-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+
+  .calendly-card-header p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 0.95rem;
+  }
+
+  .calendly-embed {
+    border-radius: 1rem;
+    border: 1px solid var(--color-border);
+    background: #ffffff;
+    overflow: hidden;
+    min-height: clamp(520px, 65vh, 760px);
+    display: flex;
+    color-scheme: only light;
+  }
+
+  .dark .calendly-embed {
+    background: #ffffff;
+  }
+
+  .calendly-embed iframe {
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    border: 0;
+    display: block;
+  }
+
+  .calendly-placeholder {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 0.95rem;
+  }
+
+  .calendly-fallback {
+    font-size: 0.95rem;
+    color: var(--color-muted);
+  }
+
+  .calendly-fallback a {
+    color: var(--color-link);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .calendly-fallback a:hover {
+    text-decoration: underline;
+  }
+
+  .contact-form-card {
+    border-radius: 1.75rem;
+    border: 1px solid var(--color-border);
+    background: var(--card-bg);
+    padding: 2rem;
+    box-shadow: 0 20px 45px color-mix(in srgb, var(--color-text) 5%, transparent);
+  }
+
+  .contact-form-card h2 {
+    font-size: 1.4rem;
+    margin: 0;
+  }
+
+  .contact-form-card p {
+    margin: 0.75rem 0 0;
+    color: var(--color-muted);
+  }
+
+  .contact-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.4rem;
+  }
+
+  .contact-input,
+  .contact-textarea {
+    width: 100%;
+    border-radius: 0.9rem;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text);
+    padding: 0.85rem 1rem;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .contact-textarea {
+    resize: vertical;
+    min-height: 170px;
+  }
+
+  .contact-input:focus,
+  .contact-textarea:focus {
+    outline: none;
+    border-color: color-mix(in srgb, var(--color-link) 40%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-link) 12%, transparent);
+  }
+
+  .contact-disclaimer {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    text-align: center;
+  }
+
+  .form-alert {
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .form-alert[hidden] {
+    display: none;
+  }
+
+  .form-alert[data-state="success"] {
+    border-color: color-mix(in srgb, #10b981 35%, transparent);
+    background: color-mix(in srgb, #10b981 10%, transparent);
+  }
+
+  .form-alert[data-state="error"] {
+    border-color: color-mix(in srgb, #ef4444 35%, transparent);
+    background: color-mix(in srgb, #ef4444 10%, transparent);
+  }
+
+  .calendly-wrapper {
+    border: 1px solid var(--color-border);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-text) 6%, transparent);
+  }
+
+  .calendly-placeholder {
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 0.95rem;
+  }
+
+  .calendly-wrapper iframe {
+    width: 100%;
+    min-height: clamp(640px, 70vh, 840px);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    background: var(--color-surface);
+  }
+
+  @media (max-width: 1023px) {
+    .contact-form-card {
+      padding: 1.5rem;
+      border-radius: 1.5rem;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .calendly-card,
+    .contact-form-card {
+      border-radius: 1.25rem;
+    }
   }
 </style>
 
@@ -128,6 +415,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   const EMAILJS_SERVICE_ID = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID;
   const EMAILJS_TEMPLATE_ID = import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID;
   const EMAILJS_PUBLIC_KEY = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
+  const CALENDLY_URL = import.meta.env.PUBLIC_CALENDLY_URL;
 
   // Initialize EmailJS
   (function() {
@@ -145,6 +433,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   })();
 
   const contactForm = document.getElementById('contact-form');
+  const formMessage = document.getElementById('form-message');
+
+  function setFormMessage(message: string, state: 'success' | 'error') {
+    if (!formMessage) return;
+    formMessage.textContent = message;
+    formMessage.dataset.state = state;
+    formMessage.hidden = false;
+  }
+
   if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -153,7 +450,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
       const submitText = document.getElementById('submit-text');
       const submitLoading = document.getElementById('submit-loading');
-      const formMessage = document.getElementById('form-message');
       
       if (!submitButton || !submitText || !submitLoading || !formMessage) {
         return;
@@ -163,7 +459,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       submitButton.disabled = true;
       submitText.classList.add('hidden');
       submitLoading.classList.remove('hidden');
-      formMessage.classList.add('hidden');
+      formMessage.hidden = true;
       
       try {
         const formData = new FormData(form);
@@ -200,28 +496,94 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           templateParams
         );
         
-        formMessage.textContent = 'Thank you! Your message has been sent successfully.';
-        formMessage.className = 'mt-4 p-4 rounded-lg border';
-        formMessage.style.backgroundColor = 'var(--color-surface)';
-        formMessage.style.borderColor = 'var(--color-border)';
-        formMessage.style.color = 'var(--color-text)';
+        setFormMessage('Thank you! Your message has been sent successfully. I\'ll get back to you shortly.', 'success');
         form.reset();
         
       } catch (error) {
         console.error('Contact form error:', error);
-        formMessage.textContent = 'Sorry, there was an error sending your message. Please try again or contact me directly at jacintobryan3@gmail.com';
-        formMessage.className = 'mt-4 p-4 rounded-lg border';
-        formMessage.style.backgroundColor = 'var(--color-surface)';
-        formMessage.style.borderColor = 'var(--color-border)';
-        formMessage.style.color = 'var(--color-text)';
+        setFormMessage('Sorry, there was an issue sending your message. Please try again or email me at jacintobryan3@gmail.com.', 'error');
       } finally {
         // Reset button state
         submitButton.disabled = false;
         submitText.classList.remove('hidden');
         submitLoading.classList.add('hidden');
-        formMessage.classList.remove('hidden');
+        formMessage.hidden = false;
       }
     });
   }
+
+  const CALENDLY_WIDGET_SRC = 'https://assets.calendly.com/assets/external/widget.js';
+
+  function loadCalendlyWidgetScript(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (window.Calendly?.initInlineWidget) {
+        resolve();
+        return;
+      }
+
+      const existing = document.querySelector<HTMLScriptElement>(`script[src="${CALENDLY_WIDGET_SRC}"]`);
+      if (existing) {
+        existing.addEventListener('load', () => resolve(), { once: true });
+        existing.addEventListener('error', () => reject(new Error('Calendly widget failed to load.')), { once: true });
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = CALENDLY_WIDGET_SRC;
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error('Calendly widget failed to load.'));
+      document.head.appendChild(script);
+    });
+  }
+
+  function renderCalendlyWidget(container: HTMLElement) {
+    if (!CALENDLY_URL) {
+      return;
+    }
+
+    try {
+      const calendly = new URL(CALENDLY_URL, window.location.href);
+      if (!calendly.searchParams.has('embed_domain')) {
+        calendly.searchParams.set('embed_domain', window.location.hostname || 'localhost');
+      }
+      if (!calendly.searchParams.has('embed_type')) {
+        calendly.searchParams.set('embed_type', 'Inline');
+      }
+      if (!calendly.searchParams.has('hide_event_type_details')) {
+        calendly.searchParams.set('hide_event_type_details', '1');
+      }
+
+      Calendly.initInlineWidget({
+        url: calendly.toString(),
+        parentElement: container,
+        color: '0F172A',
+        textColor: '0F172A',
+        backgroundColor: 'FFFFFF',
+      });
+    } catch (error) {
+      console.warn('Unable to initialize Calendly widget', error);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    if (!CALENDLY_URL) {
+      return;
+    }
+
+    const container = document.querySelector<HTMLElement>('[data-calendly-container]');
+    if (!container) {
+      return;
+    }
+
+    try {
+      await loadCalendlyWidgetScript();
+      container.innerHTML = '';
+      renderCalendlyWidget(container);
+    } catch (error) {
+      console.warn(error);
+      container.innerHTML = '<div class="calendly-fallback">Scheduling widget failed to load. Please email <a href="mailto:jacintobryan3@gmail.com">jacintobryan3@gmail.com</a> to book a call.</div>';
+    }
+  });
 </script>
 

@@ -11,13 +11,13 @@ export interface Props {
 const { tools } = Astro.props;
 
 // Group tools by category
-const toolsByCategory = tools.reduce((acc, tool) => {
+const toolsByCategory = tools.reduce<Record<string, Props['tools'][number][]>>((acc, tool) => {
   if (!acc[tool.category]) {
     acc[tool.category] = [];
   }
   acc[tool.category].push(tool);
   return acc;
-}, {} as Record<string, typeof tools>);
+}, {});
 
 const categories = Object.keys(toolsByCategory);
 ---
@@ -82,6 +82,10 @@ const categories = Object.keys(toolsByCategory);
     box-shadow: 
       0 1px 3px rgba(0, 0, 0, 0.05),
       0 0 0 1px rgba(0, 0, 0, 0.02) inset;
+  }
+
+  .toolset-category.scroll-reveal-category {
+    opacity: 0;
   }
   
   .dark .toolset-category {
@@ -345,7 +349,11 @@ const categories = Object.keys(toolsByCategory);
             scrollTrigger: {
               trigger: card,
               start: 'top 80%',
-              once: false,
+              once: true,
+            },
+            immediateRender: false,
+            onComplete: () => {
+              card.style.opacity = '1';
             },
           });
       });
