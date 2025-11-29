@@ -1,0 +1,104 @@
+---
+---
+<button
+  id="back-to-top"
+  aria-label="Back to top"
+  class="back-to-top"
+  hidden
+>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 15l-6-6-6 6"/>
+  </svg>
+</button>
+
+<style>
+  .back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 40;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+  }
+
+  .back-to-top.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .back-to-top:hover {
+    background: var(--color-link);
+    color: white;
+    border-color: var(--color-link);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(var(--color-link-rgb), 0.3);
+  }
+
+  .back-to-top svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .back-to-top {
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+  }
+</style>
+
+<script>
+  const backToTopBtn = document.getElementById('back-to-top');
+
+  const toggleVisible = () => {
+    if (!backToTopBtn) return;
+    
+    if (window.scrollY > 300) {
+      backToTopBtn.hidden = false;
+      // Small delay to allow display: block to apply before opacity transition
+      requestAnimationFrame(() => {
+        backToTopBtn.classList.add('is-visible');
+      });
+    } else {
+      backToTopBtn.classList.remove('is-visible');
+      // Wait for transition to finish before hiding
+      setTimeout(() => {
+        if (!backToTopBtn.classList.contains('is-visible')) {
+          backToTopBtn.hidden = true;
+        }
+      }, 300);
+    }
+  };
+
+  const scrollToTop = () => {
+    if (window.lenis) {
+      window.lenis.scrollTo(0);
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  if (backToTopBtn) {
+    window.addEventListener('scroll', toggleVisible, { passive: true });
+    backToTopBtn.addEventListener('click', scrollToTop);
+  }
+</script>

@@ -3,22 +3,26 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import Background from "../components/Background.astro";
+import ReadingProgressBar from "../components/ReadingProgressBar.astro";
 import Analytics from '@vercel/analytics/astro';
+import BackToTop from "../components/BackToTop.astro";
 
 interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  showProgressBar?: boolean;
 }
 const {
   title = "Bryan Jacinto - Copywriter & SEO",
   description = "UX & SEO writing portfolio.",
   ogImage,
+  showProgressBar = false,
 } = Astro.props;
 const url = Astro.url?.href ?? "";
 ---
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -139,122 +143,27 @@ const url = Astro.url?.href ?? "";
     <!-- Header is sticky (defined in Header.astro) -->
     <Header />
 
-    <!-- ScrollSmoother wrapper -->
-    <div id="smooth-wrapper">
-      <div id="smooth-content" class="relative z-10 flex min-h-svh flex-col pt-[88px]">
-        <!-- Page content scrolls with the viewport -->
-        <main id="content" class="relative z-10 flex-1">
-          <slot />
-        </main>
+    {showProgressBar && <ReadingProgressBar />}
 
-        <!-- Footer is NOT sticky -->
-        <div class="relative z-10">
-          <Footer />
-        </div>
+
+
+    <!-- Main content wrapper -->
+    <div id="main-content" class="relative z-10 flex min-h-svh flex-col pt-[88px]">
+      <!-- Page content -->
+      <main id="content" class="relative z-10 flex-1">
+        <slot />
+      </main>
+
+      <!-- Footer -->
+      <div class="relative z-10">
+        <Footer />
       </div>
     </div>
     
+    <BackToTop />
+
     <!-- Vercel Analytics -->
     <Analytics />
-
-    <script type="module">
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-      const init = async () => {
-        if (prefersReducedMotion.matches) {
-          const existing = window.__scrollSmoother;
-          if (existing) {
-            existing.kill();
-            window.__scrollSmoother = undefined;
-          }
-          return;
-        }
-
-        try {
-          const [{ gsap }, { ScrollTrigger }, { ScrollSmoother }] = await Promise.all([
-            import('gsap'),
-            import('gsap/ScrollTrigger'),
-            import('gsap/ScrollSmoother'),
-          ]);
-
-          gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-
-          const existing = ScrollSmoother.get();
-          if (existing) existing.kill();
-
-          const smoother = ScrollSmoother.create({
-            wrapper: '#smooth-wrapper',
-            content: '#smooth-content',
-            smooth: 1,
-            smoothTouch: 0.1,
-            effects: true,
-            normalizeScroll: true,
-          });
-
-          window.__scrollSmoother = smoother;
-        } catch (error) {
-          console.warn('ScrollSmoother failed to initialize', error);
-        }
-      };
-
-      const start = () => {
-        if (document.readyState === 'complete' || document.readyState === 'interactive') {
-          init();
-        } else {
-          window.addEventListener('DOMContentLoaded', init, { once: true });
-        }
-      };
-
-      start();
-
-      prefersReducedMotion.addEventListener('change', (event) => {
-        if (event.matches) {
-          const existing = window.__scrollSmoother;
-          if (existing) {
-            existing.kill();
-            window.__scrollSmoother = undefined;
-          }
-        } else {
-          init();
-        }
-      });
-
-      document.addEventListener('click', (event) => {
-        const target = event.target;
-        if (!(target instanceof Element)) return;
-
-        const trigger = target.closest('[data-scroll-to]');
-        if (!trigger) return;
-
-        const selector = trigger.getAttribute('data-scroll-to');
-        if (!selector) return;
-
-        const smoother = window.__scrollSmoother;
-        const element = document.querySelector(selector);
-        if (!element) return;
-
-        event.preventDefault();
-
-        const position = trigger.getAttribute('data-scroll-position') ?? 'top top';
-        const offsetAttr = trigger.getAttribute('data-scroll-offset');
-        const offsetValue = offsetAttr ? parseFloat(offsetAttr) : null;
-
-        if (smoother) {
-          if (Number.isFinite(offsetValue)) {
-            const targetPosition = smoother.offset(element, position) - (offsetValue ?? 0);
-            smoother.scrollTo(targetPosition, true);
-          } else {
-            smoother.scrollTo(element, true, position);
-          }
-        } else if (Number.isFinite(offsetValue)) {
-          const rect = element.getBoundingClientRect();
-          const top = window.scrollY + rect.top - (offsetValue ?? 0);
-          window.scrollTo({ top, behavior: 'smooth' });
-        } else {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-    </script>
     <script>
       (() => {
         const processedAttr = 'data-external-link-handled';
@@ -321,6 +230,27 @@ const url = Astro.url?.href ?? "";
           }, { once: true });
         }
       })();
+    </script>
+    <!-- Lenis Smooth Scroll -->
+    <script>
+      import Lenis from 'lenis';
+      import { gsap } from 'gsap';
+      import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+      // Initialize Lenis
+      const lenis = new Lenis();
+      window.lenis = lenis;
+
+      // Integrate with GSAP ScrollTrigger
+      gsap.registerPlugin(ScrollTrigger);
+      
+      lenis.on('scroll', ScrollTrigger.update);
+
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+
+      gsap.ticker.lagSmoothing(0);
     </script>
   </body>
 </html>

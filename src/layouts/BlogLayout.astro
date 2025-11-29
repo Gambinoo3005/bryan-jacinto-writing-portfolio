@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
+import TableOfContents from "../components/TableOfContents.astro";
+import type { MarkdownHeading } from 'astro';
 
 interface Props {
   title?: string;
@@ -12,6 +14,7 @@ interface Props {
   badgeLabel?: string;
   backHref?: string;
   backText?: string;
+  headings?: MarkdownHeading[];
 }
 
 const {
@@ -25,9 +28,10 @@ const {
   badgeLabel = "Article",
   backHref = "/articles",
   backText = "Back to Articles",
+  headings = [],
 } = Astro.props;
 ---
-<BaseLayout title={title} description={description} ogImage={ogImage}>
+<BaseLayout title={title} description={description} ogImage={ogImage} showProgressBar={true}>
   <!-- Hero Section -->
   <section class="article-hero">
     <div class="hero-overlay"></div>
@@ -90,20 +94,29 @@ const {
 
   <!-- Article Content -->
   <article class="article-content">
-    <div class="article-container">
-      <!-- Content -->
-      <div class="prose">
-        <slot />
-      </div>
+    <div class={`article-container ${headings.length > 0 ? 'with-sidebar' : ''}`}>
+      
+      {headings.length > 0 && (
+        <aside class="sidebar hidden lg:block">
+          <TableOfContents headings={headings} />
+        </aside>
+      )}
 
-      <!-- Back to Articles -->
-      <div class="article-footer">
-        <a href={backHref} class="back-link">
-          <svg class="back-icon" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd"/>
-          </svg>
-          {backText}
-        </a>
+      <div class="content-wrapper">
+        <!-- Content -->
+        <div class="prose">
+          <slot />
+        </div>
+
+        <!-- Back to Articles -->
+        <div class="article-footer">
+          <a href={backHref} class="back-link">
+            <svg class="back-icon" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd"/>
+            </svg>
+            {backText}
+          </a>
+        </div>
       </div>
     </div>
   </article>
@@ -272,12 +285,37 @@ const {
       margin: 0 auto;
     }
 
+    .article-container.with-sidebar {
+      max-width: 1280px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    @media (min-width: 1024px) {
+      .article-container.with-sidebar {
+        grid-template-columns: 240px 1fr;
+        align-items: start;
+      }
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 120px;
+    }
+
+    .content-wrapper {
+      min-width: 0;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
     /* Prose Styles */
     .prose {
       color: var(--color-text);
       font-size: 1.0625rem;
       line-height: 1.8;
-      max-width: min(80ch, 100%);
+      max-width: 100%;
       margin: 0 auto;
       font-family: var(--font-serif);
     }

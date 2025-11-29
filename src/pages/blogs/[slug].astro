@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import TableOfContents from "../../components/TableOfContents.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("blogs", ({ data }) => !data.draft);
@@ -11,7 +12,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content, headings } = await entry.render();
 
 const recentPosts = (await getCollection("blogs", ({ data }) => !data.draft))
   .filter((post) => post.slug !== entry.slug)
@@ -45,6 +46,7 @@ const shareLinks = [
   title={entry.data.title}
   description={entry.data.description}
   ogImage={entry.data.ogImage}
+  showProgressBar={true}
 >
   <!-- Hero Section -->
   <section class="blog-hero">
@@ -104,54 +106,62 @@ const shareLinks = [
 
   <!-- Article Content -->
   <article class="blog-article">
-    <div class="article-container">
-      <!-- Content -->
-      <div class="prose">
-        <Content />
-      </div>
+    <div class="article-container with-sidebar">
+      <!-- Sidebar TOC -->
+      <aside class="sidebar hidden lg:block">
+        <TableOfContents headings={headings} />
+      </aside>
 
-      {shareLinks.length > 0 && (
-        <div class="share-block">
-          <h2 class="share-heading">Loved this read? Share it with your network.</h2>
-          <div class="share-buttons">
-            {shareLinks.map((link) => (
-              <a
-                class="share-button"
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={link.label}
-              >
-                {link.icon === "linkedin" && (
-                  <svg class="share-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M20.447 3H3.553A.553.553 0 0 0 3 3.553v16.894C3 20.95 3.05 21 3.553 21h16.894A.553.553 0 0 0 21 20.447V3.553A.553.553 0 0 0 20.447 3Zm-11.5 15.06H6.258V9.747h2.69V18.06Zm-1.344-9.43a1.56 1.56 0 1 1 0-3.12 1.56 1.56 0 0 1 0 3.12Zm11.503 9.43h-2.69v-4.4c0-1.05-.02-2.4-1.462-2.4-1.466 0-1.69 1.146-1.69 2.324v4.476h-2.69V9.747h2.582v1.142h.036c.359-.68 1.236-1.398 2.544-1.398 2.722 0 3.224 1.792 3.224 4.125v4.444Z" />
-                  </svg>
-                )}
-                {link.icon === "x" && (
-                  <svg class="share-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M18.244 3H21l-6.383 7.294L21.5 21h-5.462l-3.9-5.3L7.5 21H4.743l6.783-7.747L3.5 3h5.6l3.51 4.864L18.244 3Zm-.964 16.02h1.471L7.78 4.052H6.222l11.058 14.968Z" />
-                  </svg>
-                )}
-                {link.icon === "facebook" && (
-                  <svg class="share-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M22 12.073C22 6.505 17.523 2 12 2S2 6.505 2 12.073c0 4.99 3.657 9.128 8.438 9.88v-6.988H7.898v-2.892h2.54V9.845c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.196 2.238.196v2.47h-1.26c-1.243 0-1.63.773-1.63 1.562v1.875h2.773l-.443 2.892h-2.33v6.988C18.343 21.2 22 17.062 22 12.073Z" />
-                  </svg>
-                )}
-                <span class="share-sr">{link.label}</span>
-              </a>
-            ))}
-          </div>
+      <!-- Main Content Wrapper -->
+      <div class="content-wrapper">
+        <!-- Content -->
+        <div class="prose">
+          <Content />
         </div>
-      )}
 
-      <!-- Back to Blogs -->
-      <div class="article-footer">
-        <a href="/blogs" class="back-link">
-          <svg class="back-icon" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd"/>
-          </svg>
-          Back to Blogs
-        </a>
+        {shareLinks.length > 0 && (
+          <div class="share-block">
+            <h2 class="share-heading">Loved this read? Share it with your network.</h2>
+            <div class="share-buttons">
+              {shareLinks.map((link) => (
+                <a
+                  class="share-button"
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={link.label}
+                >
+                  {link.icon === "linkedin" && (
+                    <svg class="share-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M20.447 3H3.553A.553.553 0 0 0 3 3.553v16.894C3 20.95 3.05 21 3.553 21h16.894A.553.553 0 0 0 21 20.447V3.553A.553.553 0 0 0 20.447 3Zm-11.5 15.06H6.258V9.747h2.69V18.06Zm-1.344-9.43a1.56 1.56 0 1 1 0-3.12 1.56 1.56 0 0 1 0 3.12Zm11.503 9.43h-2.69v-4.4c0-1.05-.02-2.4-1.462-2.4-1.466 0-1.69 1.146-1.69 2.324v4.476h-2.69V9.747h2.582v1.142h.036c.359-.68 1.236-1.398 2.544-1.398 2.722 0 3.224 1.792 3.224 4.125v4.444Z" />
+                    </svg>
+                  )}
+                  {link.icon === "x" && (
+                    <svg class="share-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M18.244 3H21l-6.383 7.294L21.5 21h-5.462l-3.9-5.3L7.5 21H4.743l6.783-7.747L3.5 3h5.6l3.51 4.864L18.244 3Zm-.964 16.02h1.471L7.78 4.052H6.222l11.058 14.968Z" />
+                    </svg>
+                  )}
+                  {link.icon === "facebook" && (
+                    <svg class="share-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M22 12.073C22 6.505 17.523 2 12 2S2 6.505 2 12.073c0 4.99 3.657 9.128 8.438 9.88v-6.988H7.898v-2.892h2.54V9.845c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.196 2.238.196v2.47h-1.26c-1.243 0-1.63.773-1.63 1.562v1.875h2.773l-.443 2.892h-2.33v6.988C18.343 21.2 22 17.062 22 12.073Z" />
+                    </svg>
+                  )}
+                  <span class="share-sr">{link.label}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <!-- Back to Blogs -->
+        <div class="article-footer">
+          <a href="/blogs" class="back-link">
+            <svg class="back-icon" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd"/>
+            </svg>
+            Back to Blogs
+          </a>
+        </div>
       </div>
     </div>
   </article>
@@ -329,12 +339,37 @@ const shareLinks = [
       margin: 0 auto;
     }
 
+    .article-container.with-sidebar {
+      max-width: 1280px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    @media (min-width: 1024px) {
+      .article-container.with-sidebar {
+        grid-template-columns: 240px 1fr;
+        align-items: start;
+      }
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 120px;
+    }
+
+    .content-wrapper {
+      min-width: 0; /* Prevent grid blowout */
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
     /* Prose Styles */
     .prose {
       color: var(--color-text);
       font-size: 1.0625rem;
       line-height: 1.8;
-      max-width: min(80ch, 100%);
+      max-width: 100%; /* Let wrapper control width */
       margin: 0 auto;
       font-family: var(--font-serif);
     }

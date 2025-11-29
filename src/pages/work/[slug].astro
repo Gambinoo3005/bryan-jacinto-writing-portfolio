@@ -12,7 +12,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content, headings } = await entry.render();
 
 const tags = entry.data.tags ?? [];
 const badgeLabel = tags.includes("Article")
@@ -35,6 +35,7 @@ const isArticle = badgeLabel === "Article";
     roleLabel={entry.data.client ?? "Bryan Jacinto"}
     backHref="/work"
     backText="Back to Work"
+    headings={headings}
   >
     <Content />
   </BlogLayout>
@@ -49,6 +50,7 @@ const isArticle = badgeLabel === "Article";
     client={entry.data.client}
     industry={entry.data.industry}
     results={entry.data.results}
+    headings={headings}
   >
     <Content />
   </CaseStudyLayout>

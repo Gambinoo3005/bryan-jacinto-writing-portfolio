@@ -34,32 +34,4 @@ const blogs = defineCollection({
   }),
 });
 
-const devlogProjects = defineCollection({
-  type: "content",
-  schema: z.object({
-    title: z.string(),
-    summary: z.string(),
-    status: z.enum(["planning", "in-progress", "on-hold", "completed"]).default("in-progress"),
-    tags: z.array(z.string()).default([]),
-    heroImage: z.string().optional(),
-    repoUrl: z.string().url().optional(),
-    liveUrl: z.string().url().optional(),
-    startDate: z.coerce.date().optional(),
-    endDate: z.coerce.date().optional(),
-    draft: z.boolean().default(false),
-  }),
-});
-
-const devlogs = defineCollection({
-  type: "content",
-  schema: z.object({
-    projectSlug: z.string(),
-    title: z.string(),
-    summary: z.string().optional(),
-    tags: z.array(z.string()).default([]),
-    pubDate: z.coerce.date(),
-    draft: z.boolean().default(false),
-  }),
-});
-
-export const collections = { work, blogs, devlogProjects, devlogs };
+export const collections = { work, blogs };

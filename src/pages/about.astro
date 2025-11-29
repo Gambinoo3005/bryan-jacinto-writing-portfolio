@@ -7,7 +7,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   description="About Bryan Jacinto - copywriter and content strategist with seven years of experience."
 >
   <section class="w-full" style="background-color: var(--section-bg-primary); margin-top: -88px;">
-    <div class="mx-auto max-w-3xl px-5 sm:px-6 pt-16 pb-16 scroll-reveal">
+    <div class="mx-auto max-w-3xl px-5 sm:px-6 pt-16 pb-16 scroll-reveal initial-visible">
       <h1 class="mb-4 text-center">About</h1>
       <p class="text-[var(--color-muted)] mb-10 text-center">
         Hey, I'm Bryan Jacinto. I'm a copywriter and content strategist with seven years of experience turning ideas into words that connect and convert.
@@ -50,8 +50,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 <style is:global>
   .scroll-reveal {
     opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transform: translateY(30px);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
   }
 
   .scroll-reveal.is-visible {
@@ -61,13 +61,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   .scroll-reveal-item {
     opacity: 0;
-    transform: translateY(25px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
   }
 
   .scroll-reveal.is-visible .scroll-reveal-item {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  /* Elements visible on initial load */
+  .initial-visible {
+    opacity: 1 !important;
+    transform: none !important;
   }
 </style>
 
