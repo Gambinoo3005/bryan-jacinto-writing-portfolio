@@ -1,15 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CardStack from "../components/CardStack.astro";
-import TestimonialsBento from "../components/TestimonialsBento.astro";
+import TestimonialGrid from "../components/TestimonialGrid.astro";
 import ToolsetGrid from "../components/ToolsetGrid.astro";
 
-const roles = [
-  "Copywriter",
-  "SEO",
-  "UI / UX",
-  "Web Dev",
-];
+const roles = ["Copywriter", "SEO", "UI / UX", "Web Dev"];
 
 const experienceCards = [
   {
@@ -18,8 +13,9 @@ const experienceCards = [
     company: "GrumpyHare",
     period: "March 2025 - Present",
     location: "Connecticut",
-    description: "Wrote and optimized SEO blog posts, landing pages, and web copy for 70+ real estate clients, boosting organic traffic and engagement across WordPress-hosted sites. Led a team of six writers during management gap, handling task delegation and quality control.",
-    link: "/work/grumpyhare"
+    description:
+      "Wrote and optimized SEO blog posts, landing pages, and web copy for 70+ real estate clients, boosting organic traffic and engagement across WordPress-hosted sites. Led a team of six writers during management gap, handling task delegation and quality control.",
+    link: "/work/grumpyhare",
   },
   {
     id: "content-writer-ai-trainer",
@@ -27,8 +23,9 @@ const experienceCards = [
     company: "Monok",
     period: "February 2025 - Present",
     location: "Sweden",
-    description: "Optimized AI-generated drafts to meet client requirements and maintain quality standards. Trained AI models through iterative writing and editing, enhancing their language understanding and overall performance.",
-    link: "/work/monok"
+    description:
+      "Optimized AI-generated drafts to meet client requirements and maintain quality standards. Trained AI models through iterative writing and editing, enhancing their language understanding and overall performance.",
+    link: "/work/monok",
   },
   {
     id: "seo-copywriter-hipnode",
@@ -36,8 +33,9 @@ const experienceCards = [
     company: "Hipnode",
     period: "August 2023 - February 2025",
     location: "Lisbon",
-    description: "Created SEO-optimized copies using Frase, Jasper, and ChatGPT for research and keyword planning while maintaining consistent brand voice. Managed two content-driven websites and promoted content via Buffer and Hootsuite.",
-    link: "/work/hipnode"
+    description:
+      "Created SEO-optimized copies using Frase, Jasper, and ChatGPT for research and keyword planning while maintaining consistent brand voice. Managed two content-driven websites and promoted content via Buffer and Hootsuite.",
+    link: "/work/hipnode",
   },
   {
     id: "web-copywriter-amplify",
@@ -45,8 +43,9 @@ const experienceCards = [
     company: "Amplify Ventures",
     period: "October 2023 - October 2024",
     location: "United Kingdom",
-    description: "Produced and edited B2B SEO-driven blog posts for crypto, technology, and healthcare clients. Focused on creating engaging content that drives organic traffic and supports client business objectives.",
-    link: "/work/amplify-ventures"
+    description:
+      "Produced and edited B2B SEO-driven blog posts for crypto, technology, and healthcare clients. Focused on creating engaging content that drives organic traffic and supports client business objectives.",
+    link: "/work/amplify-ventures",
   },
   {
     id: "marketing-copywriter-aptean",
@@ -54,8 +53,9 @@ const experienceCards = [
     company: "Aptean",
     period: "November 2022 - August 2023",
     location: "Georgia",
-    description: "Developed hub-and-spoke blog content including in-depth pillar articles and supporting posts to improve SEO structure. Authored customer case studies and contributed to white papers highlighting industry solutions.",
-    link: "/work/aptean"
+    description:
+      "Developed hub-and-spoke blog content including in-depth pillar articles and supporting posts to improve SEO structure. Authored customer case studies and contributed to white papers highlighting industry solutions.",
+    link: "/work/aptean",
   },
   {
     id: "copywriter-editor-bluepen",
@@ -63,8 +63,9 @@ const experienceCards = [
     company: "Bluepen Articles",
     period: "September 2020 - August 2022",
     location: "United States",
-    description: "Produced website content including landing pages, blog posts and product descriptions that improved user experience and increased conversion rates. Assumed editing responsibilities, reviewing team content for consistency.",
-    link: "/work/bluepen"
+    description:
+      "Produced website content including landing pages, blog posts and product descriptions that improved user experience and increased conversion rates. Assumed editing responsibilities, reviewing team content for consistency.",
+    link: "/work/bluepen",
   },
   {
     id: "seo-manager-ipresence",
@@ -72,9 +73,10 @@ const experienceCards = [
     company: "iPresence Digital Marketing",
     period: "July 2017 - June 2020",
     location: "Philippines",
-    description: "Managed SEO campaigns for 32 local brands, developing blog content and integrating target keywords to improve search visibility. Executed both on-page optimization and off-page initiatives including link building.",
-    link: "/work/ipresence"
-  }
+    description:
+      "Managed SEO campaigns for 32 local brands, developing blog content and integrating target keywords to improve search visibility. Executed both on-page optimization and off-page initiatives including link building.",
+    link: "/work/ipresence",
+  },
 ];
 
 const clientTestimonials = [
@@ -83,93 +85,279 @@ const clientTestimonials = [
     name: "Mae Lagac",
     role: "Freelance Client",
     company: "Independent Professional",
-    content: "I've worked with Bryan for 7 years straight, and his professionalism and reliability are unmatched. He's never missed a deadline and always delivers high-quality work on time.",
+    avatar:
+      "https://ui-avatars.com/api/?name=Mae+Lagac&background=0D8ABC&color=fff&rounded=true",
+    content:
+      "I've worked with Bryan for 7 years straight, and his professionalism and reliability are unmatched. He's never missed a deadline and always delivers high-quality work on time.",
     project: "Daily Content Tasks",
-    results: "7 years of consistent partnership"
+    results: "7 years of consistent partnership",
   },
   {
     id: "testimonial-2",
     name: "Adam Sam",
     role: "CEO",
     company: "Monok",
-    content: "Bryan is one of our strongest writers—meticulous in fact-checking, sharp in photo selection, and fluent across tones from news to blogs to thought leadership. He adapts quickly to briefs, collaborates seamlessly, meets deadlines, and consistently elevates the quality and credibility of every piece he works on.",
+    avatar:
+      "https://ui-avatars.com/api/?name=Adam+Sam&background=random&color=fff&rounded=true",
+    content:
+      "Bryan is a strong, meticulous writer who consistently elevates the quality of every piece, adapting quickly to briefs and collaborating seamlessly.",
     project: "News Article Editing",
-    results: "Enhanced brand voice consistency"
+    results: "Enhanced brand voice consistency",
   },
-  {
-    id: "testimonial-3",
-    name: "Zaira",
-    role: "Freelance Client",
-    company: "Independent Professional",
-    content: "Working with Bryan on creative projects has been a pleasure. His short stories are beautifully crafted with rich character development.",
-    project: "Creative Writing & Translation",
-    results: "High-quality creative deliverables"
-  },
+
   {
     id: "testimonial-4",
     name: "Urian Buenconsejo",
     role: "Freelance Client",
     company: "Independent Professional",
-    content: "Bryan's news article writing is outstanding. He crafts compelling narratives that inform and engage readers. His research skills are thorough and his writing style is both professional and accessible.",
+    avatar:
+      "https://ui-avatars.com/api/?name=Urian+Buenconsejo&background=random&color=fff&rounded=true",
+    content:
+      "Bryan's news article writing is outstanding. He crafts compelling narratives that inform and engage readers. His research skills are thorough and his writing style is both professional and accessible.",
     project: "News Article Writing",
-    results: "Enhanced publication credibility"
-  }
+    results: "Enhanced publication credibility",
+  },
 ];
 
 const toolsetData = [
   // Writing & Editing Tools
-  { id: "microsoft-365", name: "Microsoft 365", category: "Writing & Editing", icon: "microsoft_365.webp" },
-  { id: "google-docs", name: "Google Docs", category: "Writing & Editing", icon: "google_docs.webp" },
-  { id: "grammarly", name: "Grammarly", category: "Writing & Editing", icon: "grammarly.webp" },
-  
+  {
+    id: "microsoft-365",
+    name: "Microsoft 365",
+    category: "Writing & Editing",
+    icon: "microsoft_365.webp",
+  },
+  {
+    id: "google-docs",
+    name: "Google Docs",
+    category: "Writing & Editing",
+    icon: "google_docs.webp",
+  },
+  {
+    id: "grammarly",
+    name: "Grammarly",
+    category: "Writing & Editing",
+    icon: "grammarly.webp",
+  },
+
   // SEO & Analytics Tools
-  { id: "google-analytics", name: "Google Analytics", category: "SEO & Analytics", icon: "google_analytics.webp" },
-  { id: "semrush", name: "SEMrush", category: "SEO & Analytics", icon: "semrush.webp" },
-  { id: "ahrefs", name: "Ahrefs", category: "SEO & Analytics", icon: "ahrefs.webp" },
+  {
+    id: "google-analytics",
+    name: "Google Analytics",
+    category: "SEO & Analytics",
+    icon: "google_analytics.webp",
+  },
+  {
+    id: "semrush",
+    name: "SEMrush",
+    category: "SEO & Analytics",
+    icon: "semrush.webp",
+  },
+  {
+    id: "ahrefs",
+    name: "Ahrefs",
+    category: "SEO & Analytics",
+    icon: "ahrefs.webp",
+  },
   { id: "moz", name: "Moz", category: "SEO & Analytics", icon: "moz.webp" },
-  { id: "rank-math", name: "Rank Math", category: "SEO & Analytics", icon: "rank_math.webp" },
-  { id: "yoast", name: "Yoast", category: "SEO & Analytics", icon: "yoast.webp" },
-  { id: "surfer-seo", name: "Surfer SEO", category: "SEO & Analytics", icon: "surfer_seo.webp" },
-  
+  {
+    id: "rank-math",
+    name: "Rank Math",
+    category: "SEO & Analytics",
+    icon: "rank_math.webp",
+  },
+  {
+    id: "yoast",
+    name: "Yoast",
+    category: "SEO & Analytics",
+    icon: "yoast.webp",
+  },
+  {
+    id: "surfer-seo",
+    name: "Surfer SEO",
+    category: "SEO & Analytics",
+    icon: "surfer_seo.webp",
+  },
+
   // Content Management Systems
-  { id: "wordpress", name: "WordPress", category: "Content Management", icon: "wordpress.webp" },
-  { id: "hubspot", name: "HubSpot", category: "Content Management", icon: "hubspot.webp" },
-  { id: "joomla", name: "Joomla", category: "Content Management", icon: "joomla.webp" },
-  { id: "contentful", name: "Contentful", category: "Content Management", icon: "contentful.webp" },
-  
+  {
+    id: "wordpress",
+    name: "WordPress",
+    category: "Content Management",
+    icon: "wordpress.webp",
+  },
+  {
+    id: "hubspot",
+    name: "HubSpot",
+    category: "Content Management",
+    icon: "hubspot.webp",
+  },
+  {
+    id: "joomla",
+    name: "Joomla",
+    category: "Content Management",
+    icon: "joomla.webp",
+  },
+  {
+    id: "contentful",
+    name: "Contentful",
+    category: "Content Management",
+    icon: "contentful.webp",
+  },
+
   // Social Media & Marketing
-  { id: "hootsuite", name: "Hootsuite", category: "Social Media & Marketing", icon: "hootsuite.webp" },
-  { id: "buffer", name: "Buffer", category: "Social Media & Marketing", icon: "buffer.webp" },
-  { id: "zapier", name: "Zapier", category: "Social Media & Marketing", icon: "zapier.webp" },
-  { id: "mailchimp", name: "Mailchimp", category: "Social Media & Marketing", icon: "mailchimp.webp" },
-  { id: "activecampaign", name: "ActiveCampaign", category: "Social Media & Marketing", icon: "active_campaign.webp" },
-  
+  {
+    id: "hootsuite",
+    name: "Hootsuite",
+    category: "Social Media & Marketing",
+    icon: "hootsuite.webp",
+  },
+  {
+    id: "buffer",
+    name: "Buffer",
+    category: "Social Media & Marketing",
+    icon: "buffer.webp",
+  },
+  {
+    id: "zapier",
+    name: "Zapier",
+    category: "Social Media & Marketing",
+    icon: "zapier.webp",
+  },
+  {
+    id: "mailchimp",
+    name: "Mailchimp",
+    category: "Social Media & Marketing",
+    icon: "mailchimp.webp",
+  },
+  {
+    id: "activecampaign",
+    name: "ActiveCampaign",
+    category: "Social Media & Marketing",
+    icon: "active_campaign.webp",
+  },
+
   // Project Management
-  { id: "asana", name: "Asana", category: "Project Management", icon: "asana.webp" },
-  { id: "zoho-projects", name: "Zoho Projects", category: "Project Management", icon: "zoho_projects.webp" },
-  { id: "trello", name: "Trello", category: "Project Management", icon: "trello.webp" },
-  { id: "monday", name: "Monday", category: "Project Management", icon: "monday.webp" },
-  
+  {
+    id: "asana",
+    name: "Asana",
+    category: "Project Management",
+    icon: "asana.webp",
+  },
+  {
+    id: "zoho-projects",
+    name: "Zoho Projects",
+    category: "Project Management",
+    icon: "zoho_projects.webp",
+  },
+  {
+    id: "trello",
+    name: "Trello",
+    category: "Project Management",
+    icon: "trello.webp",
+  },
+  {
+    id: "monday",
+    name: "Monday",
+    category: "Project Management",
+    icon: "monday.webp",
+  },
+
   // AI Writing and Research Tools
-  { id: "jasper-ai", name: "Jasper AI", category: "AI Writing and Research Tools", icon: "jasper.webp" },
-  { id: "chatgpt", name: "ChatGPT", category: "AI Writing and Research Tools", icon: "chatgpt.webp" },
-  { id: "claude", name: "Claude", category: "AI Writing and Research Tools", icon: "claude.webp" },
-  { id: "perplexity", name: "Perplexity", category: "AI Writing and Research Tools", icon: "perplexity.webp" },
-  { id: "gemini", name: "Gemini", category: "AI Writing and Research Tools", icon: "gemini.webp" },
-  { id: "deepseek", name: "Deepseek", category: "AI Writing and Research Tools", icon: "deepseek.webp" },
-  
+  {
+    id: "jasper-ai",
+    name: "Jasper AI",
+    category: "AI Writing and Research Tools",
+    icon: "jasper.webp",
+  },
+  {
+    id: "chatgpt",
+    name: "ChatGPT",
+    category: "AI Writing and Research Tools",
+    icon: "chatgpt.webp",
+  },
+  {
+    id: "claude",
+    name: "Claude",
+    category: "AI Writing and Research Tools",
+    icon: "claude.webp",
+  },
+  {
+    id: "perplexity",
+    name: "Perplexity",
+    category: "AI Writing and Research Tools",
+    icon: "perplexity.webp",
+  },
+  {
+    id: "gemini",
+    name: "Gemini",
+    category: "AI Writing and Research Tools",
+    icon: "gemini.webp",
+  },
+  {
+    id: "deepseek",
+    name: "Deepseek",
+    category: "AI Writing and Research Tools",
+    icon: "deepseek.webp",
+  },
+
   // Design & Visual Tools
-  { id: "figma", name: "Figma", category: "Design & Visual Tools", icon: "figma.webp" },
-  { id: "framer", name: "Framer", category: "Design & Visual Tools", icon: "framer.webp" },
-  { id: "photoshop", name: "Adobe Photoshop", category: "Design & Visual Tools", icon: "adobe_photoshop.webp" },
-  { id: "after-effects", name: "Adobe After Effects", category: "Design & Visual Tools", icon: "adobe_after_effects.webp" },
-  { id: "premiere", name: "Adobe Premiere", category: "Design & Visual Tools", icon: "adobe_premiere.webp" },
-  { id: "indesign", name: "Adobe InDesign", category: "Design & Visual Tools", icon: "adobe_indesign.webp" },
-  { id: "canva", name: "Canva", category: "Design & Visual Tools", icon: "canva.webp" },
-  
+  {
+    id: "figma",
+    name: "Figma",
+    category: "Design & Visual Tools",
+    icon: "figma.webp",
+  },
+  {
+    id: "framer",
+    name: "Framer",
+    category: "Design & Visual Tools",
+    icon: "framer.webp",
+  },
+  {
+    id: "photoshop",
+    name: "Adobe Photoshop",
+    category: "Design & Visual Tools",
+    icon: "adobe_photoshop.webp",
+  },
+  {
+    id: "after-effects",
+    name: "Adobe After Effects",
+    category: "Design & Visual Tools",
+    icon: "adobe_after_effects.webp",
+  },
+  {
+    id: "premiere",
+    name: "Adobe Premiere",
+    category: "Design & Visual Tools",
+    icon: "adobe_premiere.webp",
+  },
+  {
+    id: "indesign",
+    name: "Adobe InDesign",
+    category: "Design & Visual Tools",
+    icon: "adobe_indesign.webp",
+  },
+  {
+    id: "canva",
+    name: "Canva",
+    category: "Design & Visual Tools",
+    icon: "canva.webp",
+  },
+
   // Presentation Tools
-  { id: "google-slides", name: "Google Slides", category: "Presentation Tools", icon: "google_slides.webp" },
-  { id: "visme", name: "Visme", category: "Presentation Tools", icon: "visme.webp" }
+  {
+    id: "google-slides",
+    name: "Google Slides",
+    category: "Presentation Tools",
+    icon: "google_slides.webp",
+  },
+  {
+    id: "visme",
+    name: "Visme",
+    category: "Presentation Tools",
+    icon: "visme.webp",
+  },
 ];
 ---
 
@@ -182,19 +370,25 @@ const toolsetData = [
     data-hero
   >
     <div class="w-full max-w-7xl mx-auto px-5">
-      <div class="flex flex-col lg:flex-row justify-center items-center gap-10 lg:gap-16 w-full">
+      <div
+        class="flex flex-col lg:flex-row justify-center items-center gap-10 lg:gap-16 w-full"
+      >
         <!-- Left Column: Hero Content -->
-        <div class="flex flex-col space-y-6 text-center lg:text-left max-w-2xl lg:max-w-xl">
+        <div
+          class="flex flex-col space-y-6 text-center lg:text-left max-w-2xl lg:max-w-xl"
+        >
           <!-- Name -->
-          <h1 class="hero" data-hero-title data-hero-animate>
-            Bryan Jacinto
-          </h1>
+          <h1 class="hero" data-hero-title data-hero-animate>Bryan Jacinto</h1>
 
           <!-- Roles as refined chips -->
-          <ul class="flex flex-wrap items-center justify-center lg:justify-start gap-2.5" data-hero-roles>
-            {roles.map((r) => (
-              <li
-                class="role-badge inline-flex items-center gap-2 rounded-md
+          <ul
+            class="flex flex-wrap items-center justify-center lg:justify-start gap-2.5"
+            data-hero-roles
+          >
+            {
+              roles.map((r) => (
+                <li
+                  class="role-badge inline-flex items-center gap-2 rounded-md
                        px-3.5 py-1.5
                        text-[12.5px] sm:text-[13px] font-medium tracking-tight
                        text-[var(--color-text)]
@@ -204,21 +398,48 @@ const toolsetData = [
                        shadow-sm
                        transition-all duration-300 ease-out
                        cursor-default"
-                data-hero-animate
-              >
-                <span class="role-badge-dot h-1.5 w-1.5 rounded-full bg-current/50 transition-all duration-300"></span>
-                {r}
-              </li>
-            ))}
+                  data-hero-animate
+                >
+                  <span class="role-badge-dot h-1.5 w-1.5 rounded-full bg-current/50 transition-all duration-300" />
+                  {r}
+                </li>
+              ))
+            }
           </ul>
 
           <!-- Compact blurb -->
-          <p class="text-[15px] sm:text-base md:text-[17px] leading-relaxed text-[var(--color-muted)] max-w-2xl mx-auto lg:mx-0" data-hero-text data-hero-animate>
-            Copywriter with seven years of experience creating SEO content, blog posts, landing pages, and marketing copy for global clients. Skilled in design, web development, and SEO strategy. Versatile, fast, and adaptable across styles and tones. Currently looking for more opportunities.
+          <p
+            class="text-[15px] sm:text-base md:text-[17px] leading-relaxed text-[var(--color-muted)] max-w-2xl mx-auto lg:mx-0"
+            data-hero-text
+            data-hero-animate
+          >
+            Copywriter with seven years of experience creating SEO content, blog
+            posts, landing pages, and marketing copy for global clients.
+            Currently crafting meaningful content for <a
+              href="https://www.mobiloud.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[var(--color-text)] font-medium hover:text-[var(--color-accent)] transition-colors duration-200 underline decoration-1 underline-offset-2"
+              >Mobiloud</a
+            >, <a
+              href="https://www.monok.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[var(--color-text)] font-medium hover:text-[var(--color-accent)] transition-colors duration-200 underline decoration-1 underline-offset-2"
+              >Monok</a
+            >, and <a
+              href="https://thefriendlyskies.net/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[var(--color-text)] font-medium hover:text-[var(--color-accent)] transition-colors duration-200 underline decoration-1 underline-offset-2"
+              >The Friendly Skies</a
+            >.
           </p>
 
           <!-- CTAs -->
-          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
+          <div
+            class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2"
+          >
             <a
               href="/work"
               class="btn-primary inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-semibold transition-all duration-200 w-full sm:w-auto"
@@ -238,8 +459,16 @@ const toolsetData = [
               aria-label="View my experience"
             >
               <span>View my experience</span>
-              <svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
+              <svg
+                class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                  clip-rule="evenodd"></path>
               </svg>
             </a>
           </div>
@@ -247,11 +476,17 @@ const toolsetData = [
 
         <!-- Right Column: Profile Image (Desktop Only) -->
         <div class="hidden lg:flex justify-center items-center flex-shrink-0">
-          <div class="relative w-72 h-72 xl:w-80 xl:h-80 aspect-square" data-hero-image data-hero-animate>
+          <div
+            class="relative w-72 h-72 xl:w-80 xl:h-80 aspect-square"
+            data-hero-image
+            data-hero-animate
+          >
             <!-- Profile Image -->
-            <div class="absolute inset-0 rounded-2xl overflow-hidden border border-[var(--color-border)] shadow-xl">
-              <img 
-                src="/Bryan_hero_image.webp" 
+            <div
+              class="absolute inset-0 rounded-2xl overflow-hidden border border-[var(--color-border)] shadow-xl"
+            >
+              <img
+                src="/Bryan_hero_image.webp"
                 alt="Bryan Jacinto"
                 class="w-full h-full object-cover"
                 loading="eager"
@@ -261,7 +496,10 @@ const toolsetData = [
               />
             </div>
             <!-- Decorative element -->
-            <div class="absolute -inset-4 rounded-2xl border border-[var(--color-border)] opacity-20 -z-10"></div>
+            <div
+              class="absolute -inset-4 rounded-2xl border border-[var(--color-border)] opacity-20 -z-10"
+            >
+            </div>
           </div>
         </div>
       </div>
@@ -270,33 +508,39 @@ const toolsetData = [
 
   <script>
     const initHeroGsap = async () => {
-      const hero = document.querySelector('[data-hero]');
+      const hero = document.querySelector("[data-hero]");
       if (!hero) return;
 
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      );
       if (prefersReducedMotion.matches) {
-        hero.querySelectorAll('[data-hero-animate], [data-hero-roles] li').forEach((el) => {
-          el.style.opacity = '1';
-          el.style.transform = 'none';
-        });
-        hero.setAttribute('data-hero-ready', '');
+        hero
+          .querySelectorAll<HTMLElement>(
+            "[data-hero-animate], [data-hero-roles] li",
+          )
+          .forEach((el) => {
+            el.style.opacity = "1";
+            el.style.transform = "none";
+          });
+        hero.setAttribute("data-hero-ready", "");
         return;
       }
 
       try {
         const [{ gsap }, { ScrollTrigger }] = await Promise.all([
-          import('gsap'),
-          import('gsap/ScrollTrigger'),
+          import("gsap"),
+          import("gsap/ScrollTrigger"),
         ]);
 
         gsap.registerPlugin(ScrollTrigger);
 
-        const heroTitle = hero.querySelector('[data-hero-title]');
-        const roleItems = hero.querySelectorAll('[data-hero-roles] li');
-        const heroText = hero.querySelector('[data-hero-text]');
-        const heroCtas = hero.querySelectorAll('[data-hero-cta]');
-        const heroImage = hero.querySelector('[data-hero-image]');
-        const animatedNodes = hero.querySelectorAll('[data-hero-animate]');
+        const heroTitle = hero.querySelector("[data-hero-title]");
+        const roleItems = hero.querySelectorAll("[data-hero-roles] li");
+        const heroText = hero.querySelector("[data-hero-text]");
+        const heroCtas = hero.querySelectorAll("[data-hero-cta]");
+        const heroImage = hero.querySelector("[data-hero-image]");
+        const animatedNodes = hero.querySelectorAll("[data-hero-animate]");
 
         gsap.set(animatedNodes, { opacity: 0, y: 20 });
         gsap.set(roleItems, { opacity: 0, y: 15 });
@@ -304,10 +548,10 @@ const toolsetData = [
           gsap.set(heroImage, { opacity: 0, y: 30, rotate: -3 });
         }
 
-        hero.setAttribute('data-hero-ready', '');
+        hero.setAttribute("data-hero-ready", "");
 
         const tl = gsap.timeline({
-          defaults: { ease: 'power3.out' },
+          defaults: { ease: "power3.out" },
           // No ScrollTrigger - animations start immediately for initial viewport
         });
 
@@ -316,59 +560,84 @@ const toolsetData = [
         }
 
         if (roleItems.length) {
-          tl.to(roleItems, {
-            opacity: 1,
-            y: 0,
-            duration: 0.3,
-            stagger: 0.04,
-          }, '-=0.35');
+          tl.to(
+            roleItems,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.3,
+              stagger: 0.04,
+            },
+            "-=0.35",
+          );
         }
 
         if (heroText) {
-          tl.to(heroText, { opacity: 1, y: 0, duration: 0.35 }, roleItems.length ? '-=0.25' : '-=0.3');
+          tl.to(
+            heroText,
+            { opacity: 1, y: 0, duration: 0.35 },
+            roleItems.length ? "-=0.25" : "-=0.3",
+          );
         }
 
         if (heroCtas.length) {
-          tl.to(heroCtas, {
-            opacity: 1,
-            y: 0,
-            duration: 0.3,
-            stagger: 0.08,
-          }, '-=0.25');
+          tl.to(
+            heroCtas,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.3,
+              stagger: 0.08,
+            },
+            "-=0.25",
+          );
         }
 
         if (heroImage) {
-          const addAt = heroCtas.length ? '-=0.3' : '-=0.25';
-          tl.to(heroImage, { opacity: 1, y: 0, rotate: 0, duration: 0.5, ease: 'power3.out' }, addAt);
+          const addAt = heroCtas.length ? "-=0.3" : "-=0.25";
+          tl.to(
+            heroImage,
+            { opacity: 1, y: 0, rotate: 0, duration: 0.5, ease: "power3.out" },
+            addAt,
+          );
         }
       } catch (error) {
-        console.warn('Hero animation failed to load GSAP', error);
-        hero.querySelectorAll('[data-hero-animate], [data-hero-roles] li').forEach((el) => {
-          el.style.opacity = '1';
-          el.style.transform = 'none';
-        });
-        hero.setAttribute('data-hero-ready', '');
+        console.warn("Hero animation failed to load GSAP", error);
+        hero
+          .querySelectorAll<HTMLElement>(
+            "[data-hero-animate], [data-hero-roles] li",
+          )
+          .forEach((el) => {
+            el.style.opacity = "1";
+            el.style.transform = "none";
+          });
+        hero.setAttribute("data-hero-ready", "");
       }
     };
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initHeroGsap, { once: true });
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initHeroGsap, {
+        once: true,
+      });
     } else {
       initHeroGsap();
     }
   </script>
 
   <!-- Experience section with Card Stack -->
-  <section id="my-experiences" class="page-section scroll-mt-[70px] md:scroll-mt-[23.5px] flex items-start justify-center text-[var(--color-text)]">
+  <section
+    id="my-experiences"
+    class="page-section scroll-mt-[70px] md:scroll-mt-[23.5px] flex items-start justify-center text-[var(--color-text)]"
+  >
     <div class="mx-auto max-w-6xl px-4 sm:px-5 md:px-6 w-full">
       <!-- Section Header -->
       <div class="scroll-reveal scroll-reveal-item text-center mb-8">
         <h2 class="mb-0">My Experience</h2>
       </div>
-      
+
       <!-- Card Stack Component -->
       <div class="scroll-reveal scroll-reveal-item scroll-reveal-delay-1">
-        <CardStack 
+        <CardStack
           cards={experienceCards}
           cardWidth="650px"
           cardHeight="300px"
@@ -388,7 +657,7 @@ const toolsetData = [
       <div class="scroll-reveal scroll-reveal-item text-center mb-8">
         <h2 class="mb-0">What Clients Say</h2>
       </div>
-      <TestimonialsBento testimonials={clientTestimonials} />
+      <TestimonialGrid testimonials={clientTestimonials} />
     </div>
   </section>
 
@@ -407,10 +676,16 @@ const toolsetData = [
     <div class="mx-auto max-w-4xl px-4 sm:px-5 md:px-6 text-center">
       <div class="scroll-reveal scroll-reveal-item mb-8">
         <h2 class="mb-6">Ready to Work Together?</h2>
-        <p class="text-[var(--color-muted)] mb-6 text-base sm:text-lg max-w-2xl mx-auto">
-          I'm always excited to collaborate on new projects. Whether you need copywriting, content strategy, SEO-focused writing, or full stack development, let's discuss how I can help bring your ideas to life.
+        <p
+          class="text-[var(--color-muted)] mb-6 text-base sm:text-lg max-w-2xl mx-auto"
+        >
+          I'm always excited to collaborate on new projects. Whether you need
+          copywriting, content strategy, SEO-focused writing, or full stack
+          development, let's discuss how I can help bring your ideas to life.
         </p>
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+        <div
+          class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
+        >
           <a
             href="/contact"
             class="btn-primary inline-flex h-11 sm:h-12 items-center justify-center rounded-full px-6 sm:px-8 text-sm sm:text-base font-semibold transition-all duration-200 w-full sm:w-auto"
@@ -431,13 +706,17 @@ const toolsetData = [
 
   <!-- Smooth scroll (no visual style changes) -->
   <style is:global>
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
 
     /* Scroll reveal animations */
     .scroll-reveal {
       opacity: 0;
       transform: translateY(40px);
-      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      transition:
+        opacity 0.8s ease-out,
+        transform 0.8s ease-out;
     }
 
     .scroll-reveal.is-visible {
@@ -449,7 +728,9 @@ const toolsetData = [
     .scroll-reveal-item {
       opacity: 0;
       transform: translateY(30px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      transition:
+        opacity 0.6s ease-out,
+        transform 0.6s ease-out;
     }
 
     .scroll-reveal.is-visible .scroll-reveal-item {
@@ -474,7 +755,11 @@ const toolsetData = [
   <style>
     /* Hero section with mathematically perfect positioning */
     .hero-section {
-      min-height: clamp(520px, calc(100vh - 88px), 720px) !important; /* Fill viewport while maintaining comfortable bounds */
+      min-height: clamp(
+        520px,
+        calc(100vh - 88px),
+        720px
+      ) !important; /* Fill viewport while maintaining comfortable bounds */
       padding: clamp(4rem, 6vw, 5rem) 0 !important; /* Match section spacing while keeping symmetry */
       margin-top: -88px !important; /* Compensate for BaseLayout's pt-[88px] on smooth-content */
       background-color: var(--section-bg);
@@ -482,19 +767,21 @@ const toolsetData = [
       align-items: center !important; /* Center content vertically */
       justify-content: center !important;
     }
-    
+
     /* Mobile hero section adjustments */
     @media (max-width: 768px) {
       .hero-section {
         height: auto !important;
-        min-height: calc(100vh - 88px) !important; /* Take full viewport to push experience below fold */
+        min-height: calc(
+          100vh - 88px
+        ) !important; /* Take full viewport to push experience below fold */
         padding: 4rem 0 8rem 0 !important; /* Top padding for breathing room, large bottom padding to push experience out of view */
         margin-top: -88px !important; /* Maintain negative margin on mobile */
         display: flex !important;
         align-items: flex-start !important;
       }
     }
-    
+
     @media (max-width: 480px) {
       .hero-section {
         min-height: calc(100vh - 88px) !important;
@@ -511,14 +798,14 @@ const toolsetData = [
     .role-badge:hover {
       transform: translateY(-2px) scale(1.05);
       border-color: var(--color-muted);
-      box-shadow: 
+      box-shadow:
         0 4px 12px color-mix(in srgb, var(--color-text) 10%, transparent),
         0 0 0 1px color-mix(in srgb, var(--color-muted) 20%, transparent);
     }
 
     /* Light mode glow */
     :root:not(.dark) .role-badge:hover {
-      box-shadow: 
+      box-shadow:
         0 4px 16px color-mix(in srgb, var(--color-text) 12%, transparent),
         0 2px 8px color-mix(in srgb, var(--color-text) 8%, transparent),
         0 0 0 1px color-mix(in srgb, var(--color-muted) 25%, transparent);
@@ -526,7 +813,7 @@ const toolsetData = [
 
     /* Dark mode glow */
     .dark .role-badge:hover {
-      box-shadow: 
+      box-shadow:
         0 4px 16px color-mix(in srgb, var(--color-text) 15%, transparent),
         0 2px 8px color-mix(in srgb, var(--color-text) 10%, transparent),
         0 0 0 1px color-mix(in srgb, var(--color-muted) 30%, transparent);
@@ -563,7 +850,7 @@ const toolsetData = [
         margin-top: 0; /* Remove negative margin on mobile */
       }
     }
-    
+
     @media (max-width: 480px) {
       .cta-section {
         padding: 3rem 0 0 0; /* Match page-section padding on small screens */
@@ -576,40 +863,47 @@ const toolsetData = [
     // Intersection Observer for scroll animations
     const observerOptions = {
       root: null,
-      rootMargin: '0px 0px -100px 0px', // Trigger slightly before element is fully in view
-      threshold: 0.15 // Trigger when 15% of element is visible
+      rootMargin: "0px 0px -100px 0px", // Trigger slightly before element is fully in view
+      threshold: 0.15, // Trigger when 15% of element is visible
     };
 
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
+          entry.target.classList.add("is-visible");
         } else {
           // Remove is-visible class when element leaves viewport
           // This ensures animations can trigger again when scrolling back
-          entry.target.classList.remove('is-visible');
+          entry.target.classList.remove("is-visible");
         }
       });
     }, observerOptions);
 
     // Observe all scroll-reveal elements (excluding toolset categories which have their own system)
-    document.addEventListener('DOMContentLoaded', () => {
-      const revealElements = document.querySelectorAll('.scroll-reveal:not(.scroll-reveal-category)');
-      revealElements.forEach(el => observer.observe(el));
+    document.addEventListener("DOMContentLoaded", () => {
+      const revealElements = document.querySelectorAll(
+        ".scroll-reveal:not(.scroll-reveal-category)",
+      );
+      revealElements.forEach((el) => observer.observe(el));
 
-      const experienceTrigger = document.querySelector('a[aria-label="View my experience"]');
-      const experienceSection = document.querySelector('#my-experiences');
+      const experienceTrigger = document.querySelector(
+        'a[aria-label="View my experience"]',
+      );
+      const experienceSection = document.querySelector("#my-experiences");
 
       if (experienceTrigger && experienceSection) {
-        experienceTrigger.addEventListener('click', (event) => {
-          const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        experienceTrigger.addEventListener("click", (event) => {
+          const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
           if (!isMobile) {
             return;
           }
 
           event.preventDefault();
-          experienceSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          experienceSection.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
         });
       }
     });
