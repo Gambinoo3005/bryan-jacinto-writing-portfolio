@@ -28,7 +28,7 @@ const {
   stackScale = 0.05,
   enterRotation = 6,
   enterOpacity = 0.7,
-  transitionDuration = 400
+  transitionDuration = 400,
 } = Astro.props;
 
 if (!cards || cards.length === 0) {
@@ -36,23 +36,26 @@ if (!cards || cards.length === 0) {
 }
 ---
 
-<div class="card-stack-container" 
-     data-card-width={cardWidth} 
-     data-card-height={cardHeight}
-     data-stack-shift={stackShift}
-     data-stack-scale={stackScale}
-     data-enter-rotation={enterRotation}
-     data-enter-opacity={enterOpacity}
-     data-transition-duration={transitionDuration}>
+<div
+  class="card-stack-container"
+  data-card-width={cardWidth}
+  data-card-height={cardHeight}
+  data-stack-shift={stackShift}
+  data-stack-scale={stackScale}
+  data-enter-rotation={enterRotation}
+  data-enter-opacity={enterOpacity}
+  data-transition-duration={transitionDuration}
+>
   <div class="card-stack-wrapper">
     <!-- Card Deck -->
     <div class="card-deck">
-      {cards.map((card, index) => (
-        <div 
-          class={`card ${index === 0 ? 'card-active' : 'card-stacked'}`}
-          data-index={index}
-          data-card-id={card.id}
-          style={`
+      {
+        cards.map((card, index) => (
+          <div
+            class={`card ${index === 0 ? "card-active" : "card-stacked"}`}
+            data-index={index}
+            data-card-id={card.id}
+            style={`
             --stack-shift: ${stackShift}px;
             --stack-scale: ${stackScale};
             --enter-rotation: ${enterRotation}deg;
@@ -61,41 +64,58 @@ if (!cards || cards.length === 0) {
             --card-width: ${cardWidth};
             --card-height: ${cardHeight};
           `}
-        >
-          <div class="card-content">
-            {card.image && (
-              <div class="card-image">
-                <img src={card.image} alt={card.title} />
+          >
+            <div class="card-content">
+              {card.image && (
+                <div class="card-image">
+                  <img src={card.image} alt={card.title} />
+                </div>
+              )}
+              <div class="card-body">
+                <div class="card-header">
+                  <h3>{card.title}</h3>
+                  {card.company && (
+                    <div class="card-meta">
+                      <span class="card-company">{card.company}</span>
+                      {card.period && (
+                        <span class="card-period">{card.period}</span>
+                      )}
+                      {card.location && (
+                        <span class="card-location">
+                          <svg
+                            class="location-icon"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                            focusable="false"
+                          >
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 4.77 5.7 12.13 6.01 12.52.21.27.56.27.77 0C13.3 21.13 19 13.77 19 9c0-3.87-3.13-7-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z" />
+                          </svg>
+                          {card.location}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+                <p class="card-description">{card.description}</p>
               </div>
-            )}
-            <div class="card-body">
-              <div class="card-header">
-                <h3>{card.title}</h3>
-                {card.company && (
-                  <div class="card-meta">
-                    <span class="card-company">{card.company}</span>
-                    {card.period && <span class="card-period">{card.period}</span>}
-                    {card.location && (
-                      <span class="card-location">
-                        <svg class="location-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                          <path d="M12 2C8.13 2 5 5.13 5 9c0 4.77 5.7 12.13 6.01 12.52.21.27.56.27.77 0C13.3 21.13 19 13.77 19 9c0-3.87-3.13-7-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z" />
-                        </svg>
-                        {card.location}
-                      </span>
-                    )}
-                  </div>
-                )}
-              </div>
-              <p class="card-description">{card.description}</p>
             </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
 
     <!-- Mobile Swipe Hint -->
     <div class="swipe-hint">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <polyline points="5 12 12 12 12 5"></polyline>
         <path d="M12 12l7 7-7 7"></path>
       </svg>
@@ -104,33 +124,53 @@ if (!cards || cards.length === 0) {
 
     <!-- Navigation Controls - Arrows and Dots -->
     <div class="card-nav-controls">
-      <button 
-        class="card-nav-btn card-nav-prev" 
+      <button
+        class="card-nav-btn card-nav-prev"
         aria-label="Previous experience"
         disabled
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </button>
-      
+
       <!-- Dot Indicators -->
       <div class="card-dots">
-        {cards.map((_, index) => (
-          <button 
-            class={`card-dot ${index === 0 ? 'active' : ''}`}
-            data-index={index}
-            aria-label={`Go to experience ${index + 1}`}
-          ></button>
-        ))}
+        {
+          cards.map((_, index) => (
+            <button
+              class={`card-dot ${index === 0 ? "active" : ""}`}
+              data-index={index}
+              aria-label={`Go to experience ${index + 1}`}
+            />
+          ))
+        }
       </div>
-      
-      <button 
-        class="card-nav-btn card-nav-next" 
+
+      <button
+        class="card-nav-btn card-nav-next"
         aria-label="Next experience"
         disabled={cards.length <= 1}
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
       </button>
@@ -142,626 +182,697 @@ if (!cards || cards.length === 0) {
   // Prevent script from running multiple times during hot reload
   if (!(window as any).__CARD_STACK_SCRIPT_LOADED__) {
     (window as any).__CARD_STACK_SCRIPT_LOADED__ = true;
-  
-  // Simple singleton pattern to prevent duplicate initialization
-  const CARD_STACK_INITIALIZED = Symbol('cardStackInitialized');
 
-  type CardVisualState = {
-    transform: string;
-    opacity: string;
-    zIndex: string;
-  };
+    // Simple singleton pattern to prevent duplicate initialization
+    const CARD_STACK_INITIALIZED = Symbol("cardStackInitialized");
 
-  class CardStack {
-    private container: HTMLElement;
-    private cards: HTMLElement[];
-    private prevButton: HTMLButtonElement;
-    private nextButton: HTMLButtonElement;
-    private dots: NodeListOf<HTMLButtonElement>;
-    private swipeHint: HTMLElement | null;
-    private _currentIndex: number = 0;
-    private totalCards: number;
-    private hoveredCard: HTMLElement | null = null;
-    private cardRandomOffsets: Array<{ x: number; y: number; rotation: number }> = [];
-    private isTransitioning: boolean = false;
-    private hasIntroPrepared: boolean = false;
-    private hasIntroAnimated: boolean = false;
-    private cardFinalStates: CardVisualState[] = [];
+    type CardVisualState = {
+      transform: string;
+      opacity: string;
+      zIndex: string;
+    };
 
-    // Getter/setter for currentIndex with automatic UI update
-    private get currentIndex(): number {
-      return this._currentIndex;
-    }
+    class CardStack {
+      private container: HTMLElement;
+      private cards: HTMLElement[];
+      private prevButton: HTMLButtonElement;
+      private nextButton: HTMLButtonElement;
+      private dots: NodeListOf<HTMLButtonElement>;
+      private swipeHint: HTMLElement | null;
+      private _currentIndex: number = 0;
+      private totalCards: number;
+      private hoveredCard: HTMLElement | null = null;
+      private cardRandomOffsets: Array<{
+        x: number;
+        y: number;
+        rotation: number;
+      }> = [];
+      private isTransitioning: boolean = false;
+      private hasIntroPrepared: boolean = false;
+      private hasIntroAnimated: boolean = false;
+      private cardFinalStates: CardVisualState[] = [];
 
-    private set currentIndex(value: number) {
-      // Clamp value to valid range
-      const newIndex = Math.max(0, Math.min(value, this.totalCards - 1));
-      
-      // Only update if value actually changed
-      if (this._currentIndex !== newIndex) {
-        this._currentIndex = newIndex;
+      // Getter/setter for currentIndex with automatic UI update
+      private get currentIndex(): number {
+        return this._currentIndex;
+      }
+
+      private set currentIndex(value: number) {
+        // Clamp value to valid range
+        const newIndex = Math.max(0, Math.min(value, this.totalCards - 1));
+
+        // Only update if value actually changed
+        if (this._currentIndex !== newIndex) {
+          this._currentIndex = newIndex;
+          this.updateDots();
+        }
+      }
+
+      constructor(container: HTMLElement) {
+        this.container = container;
+        this.cards = Array.from(
+          container.querySelectorAll(".card"),
+        ) as HTMLElement[];
+        this.prevButton = container.querySelector(
+          ".card-nav-prev",
+        ) as HTMLButtonElement;
+        this.nextButton = container.querySelector(
+          ".card-nav-next",
+        ) as HTMLButtonElement;
+        this.dots = container.querySelectorAll(".card-dot");
+        this.swipeHint = container.querySelector(".swipe-hint");
+        this.totalCards = this.cards.length;
+        this.hoveredCard = null;
+        this.isTransitioning = false;
+
+        // Generate random offsets for each card to create organic stack appearance
+        this.cardRandomOffsets = this.cards.map(() => ({
+          x: (Math.random() - 0.5) * 8,
+          y: (Math.random() - 0.5) * 6,
+          rotation: (Math.random() - 0.5) * 2,
+        }));
+
+        this.init();
+      }
+
+      init() {
+        this.setupEventListeners();
         this.updateDots();
+        this.updateButtonStates();
+        this.positionCards();
+        this.prepareIntroState();
+        this.setupIntroReveal();
       }
-    }
 
-    constructor(container: HTMLElement) {
-      this.container = container;
-      this.cards = Array.from(container.querySelectorAll('.card')) as HTMLElement[];
-      this.prevButton = container.querySelector('.card-nav-prev') as HTMLButtonElement;
-      this.nextButton = container.querySelector('.card-nav-next') as HTMLButtonElement;
-      this.dots = container.querySelectorAll('.card-dot');
-      this.swipeHint = container.querySelector('.swipe-hint');
-      this.totalCards = this.cards.length;
-      this.hoveredCard = null;
-      this.isTransitioning = false;
-      
-      // Generate random offsets for each card to create organic stack appearance
-      this.cardRandomOffsets = this.cards.map(() => ({
-        x: (Math.random() - 0.5) * 8,
-        y: (Math.random() - 0.5) * 6,
-        rotation: (Math.random() - 0.5) * 2
-      }));
-      
-      this.init();
-    }
+      // Dedicated method to update dot indicators
+      private updateDots() {
+        this.dots.forEach((dot, index) => {
+          if (index === this._currentIndex) {
+            dot.classList.add("active");
+          } else {
+            dot.classList.remove("active");
+          }
+        });
+      }
 
-    init() {
-      this.setupEventListeners();
-      this.updateDots();
-      this.updateButtonStates();
-      this.positionCards();
-      this.prepareIntroState();
-      this.setupIntroReveal();
-    }
+      setupEventListeners() {
+        // Button navigation
+        this.prevButton.addEventListener("click", () => this.navigate(-1));
+        this.nextButton.addEventListener("click", () => this.navigate(1));
 
-    // Dedicated method to update dot indicators
-    private updateDots() {
-      this.dots.forEach((dot, index) => {
-        if (index === this._currentIndex) {
-          dot.classList.add('active');
-        } else {
-          dot.classList.remove('active');
-        }
-      });
-    }
+        // Dot navigation
+        this.dots.forEach((dot, index) => {
+          dot.addEventListener("click", () => this.goToIndex(index));
+        });
 
-    setupEventListeners() {
-      // Button navigation
-      this.prevButton.addEventListener('click', () => this.navigate(-1));
-      this.nextButton.addEventListener('click', () => this.navigate(1));
-      
-      // Dot navigation
-      this.dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => this.goToIndex(index));
-      });
-      
-      // Keyboard support - only when hovering over card stack
-      let isHovered = false;
-      
-      this.container.addEventListener('mouseenter', () => { isHovered = true; });
-      this.container.addEventListener('mouseleave', () => { isHovered = false; });
-      
-      document.addEventListener('keydown', (e) => {
-        if (!isHovered || this.isTransitioning) return;
-        
-        if (e.key === 'ArrowLeft') {
-          e.preventDefault();
-          this.navigate(-1);
-        } else if (e.key === 'ArrowRight') {
-          e.preventDefault();
-          this.navigate(1);
-        }
-      });
+        // Keyboard support - only when hovering over card stack
+        let isHovered = false;
 
-      // Touch/swipe support for mobile - improved
-      let startX = 0;
-      let startY = 0;
-      let isSwiping = false;
-      
-      this.container.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-        isSwiping = false;
-      }, { passive: true });
-      
-      this.container.addEventListener('touchmove', (e) => {
-        if (!startX || !startY) return;
-        
-        const currentX = e.touches[0].clientX;
-        const currentY = e.touches[0].clientY;
-        
-        const diffX = Math.abs(startX - currentX);
-        const diffY = Math.abs(startY - currentY);
-        
-        // If horizontal movement is greater than vertical, prevent scroll
-        if (diffX > diffY && diffX > 10) {
-          isSwiping = true;
-          e.preventDefault();
-        }
-      }, { passive: false });
-      
-      this.container.addEventListener('touchend', (e) => {
-        if (!startX || !startY) return;
-        
-        const endX = e.changedTouches[0].clientX;
-        const diffX = startX - endX;
-        const diffY = startY - e.changedTouches[0].clientY;
-        
-        // Only trigger if horizontal swipe and not transitioning
-        if (!this.isTransitioning && isSwiping && Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
-          this.navigate(diffX > 0 ? 1 : -1);
-        }
-        
-        startX = 0;
-        startY = 0;
-        isSwiping = false;
-      }, { passive: true });
+        this.container.addEventListener("mouseenter", () => {
+          isHovered = true;
+        });
+        this.container.addEventListener("mouseleave", () => {
+          isHovered = false;
+        });
 
-      // Hover effect for stacked cards - pull upward like pulling from a deck
-      this.cards.forEach((card: HTMLElement, index: number) => {
-        card.addEventListener('mouseenter', () => {
-          if (card.classList.contains('card-stacked')) {
-            // Clear any previously hovered card first
-            if (this.hoveredCard && this.hoveredCard !== card) {
-              const prevIndex = this.cards.indexOf(this.hoveredCard);
-              this.removeHoverEffect(this.hoveredCard, prevIndex);
+        document.addEventListener("keydown", (e) => {
+          if (!isHovered || this.isTransitioning) return;
+
+          if (e.key === "ArrowLeft") {
+            e.preventDefault();
+            this.navigate(-1);
+          } else if (e.key === "ArrowRight") {
+            e.preventDefault();
+            this.navigate(1);
+          }
+        });
+
+        // Touch/swipe support for mobile - improved
+        let startX = 0;
+        let startY = 0;
+        let isSwiping = false;
+
+        this.container.addEventListener(
+          "touchstart",
+          (e) => {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            isSwiping = false;
+          },
+          { passive: true },
+        );
+
+        this.container.addEventListener(
+          "touchmove",
+          (e) => {
+            if (!startX || !startY) return;
+
+            const currentX = e.touches[0].clientX;
+            const currentY = e.touches[0].clientY;
+
+            const diffX = Math.abs(startX - currentX);
+            const diffY = Math.abs(startY - currentY);
+
+            // If horizontal movement is greater than vertical, prevent scroll
+            if (diffX > diffY && diffX > 10) {
+              isSwiping = true;
+              e.preventDefault();
             }
-            // Apply hover effect to current card
-            this.hoveredCard = card;
-            this.applyHoverEffect(card, index);
-          }
+          },
+          { passive: false },
+        );
+
+        this.container.addEventListener(
+          "touchend",
+          (e) => {
+            if (!startX || !startY) return;
+
+            const endX = e.changedTouches[0].clientX;
+            const diffX = startX - endX;
+            const diffY = startY - e.changedTouches[0].clientY;
+
+            // Only trigger if horizontal swipe and not transitioning
+            if (
+              !this.isTransitioning &&
+              isSwiping &&
+              Math.abs(diffX) > Math.abs(diffY) &&
+              Math.abs(diffX) > 40
+            ) {
+              this.navigate(diffX > 0 ? 1 : -1);
+            }
+
+            startX = 0;
+            startY = 0;
+            isSwiping = false;
+          },
+          { passive: true },
+        );
+
+        // Hover effect for stacked cards - pull upward like pulling from a deck
+        this.cards.forEach((card: HTMLElement, index: number) => {
+          card.addEventListener("mouseenter", () => {
+            if (card.classList.contains("card-stacked")) {
+              // Clear any previously hovered card first
+              if (this.hoveredCard && this.hoveredCard !== card) {
+                const prevIndex = this.cards.indexOf(this.hoveredCard);
+                this.removeHoverEffect(this.hoveredCard, prevIndex);
+              }
+              // Apply hover effect to current card
+              this.hoveredCard = card;
+              this.applyHoverEffect(card, index);
+            }
+          });
+
+          card.addEventListener("mouseleave", () => {
+            if (
+              card.classList.contains("card-stacked") &&
+              this.hoveredCard === card
+            ) {
+              this.removeHoverEffect(card, index);
+              this.hoveredCard = null;
+            }
+          });
+
+          // Click functionality - bring clicked card to front
+          card.addEventListener("click", () => {
+            if (
+              !this.isTransitioning &&
+              card.classList.contains("card-stacked")
+            ) {
+              this.goToIndex(index);
+            }
+          });
         });
 
-        card.addEventListener('mouseleave', () => {
-          if (card.classList.contains('card-stacked') && this.hoveredCard === card) {
-            this.removeHoverEffect(card, index);
-            this.hoveredCard = null;
-          }
-        });
+        // Clear hover state when mouse leaves the entire card deck
+        const cardDeck = this.container.querySelector(".card-deck");
+        if (cardDeck) {
+          cardDeck.addEventListener("mouseleave", () => {
+            if (this.hoveredCard) {
+              const hoveredIndex = this.cards.indexOf(this.hoveredCard);
+              this.removeHoverEffect(this.hoveredCard, hoveredIndex);
+              this.hoveredCard = null;
+            }
+          });
+        }
+      }
 
-        // Click functionality - bring clicked card to front
-        card.addEventListener('click', () => {
-          if (!this.isTransitioning && card.classList.contains('card-stacked')) {
-            this.goToIndex(index);
-          }
-        });
-      });
+      applyHoverEffect(card: HTMLElement, index: number) {
+        const distance = index - this._currentIndex;
 
-      // Clear hover state when mouse leaves the entire card deck
-      const cardDeck = this.container.querySelector('.card-deck');
-      if (cardDeck) {
-        cardDeck.addEventListener('mouseleave', () => {
-          if (this.hoveredCard) {
-            const hoveredIndex = this.cards.indexOf(this.hoveredCard);
-            this.removeHoverEffect(this.hoveredCard, hoveredIndex);
-            this.hoveredCard = null;
-          }
-        });
-      }
-    }
+        // Calculate transform values for hover state
+        const offset = distance * this.getStackShift();
+        const scale = Math.max(
+          0.92,
+          1 - Math.abs(distance) * this.getStackScale(),
+        );
 
-    applyHoverEffect(card: HTMLElement, index: number) {
-      const distance = index - this._currentIndex;
-      
-      // Calculate transform values for hover state
-      const offset = distance * this.getStackShift();
-      const scale = Math.max(0.92, 1 - (Math.abs(distance) * this.getStackScale()));
-      
-      // Minimal pull - just enough to indicate hover
-      const pullUpDistance = -12; // Minimal 12px pull
-      const hoverScale = scale + 0.015; // Very subtle scale increase
-      
-      // Get random offsets for this card
-      const randomOffset = this.cardRandomOffsets[index];
-      const totalXOffset = offset + randomOffset.x;
-      const totalYOffset = randomOffset.y + pullUpDistance;
-      
-      if (distance > 0) {
-        // Future cards (right side)
-        const rotation = this.getEnterRotation() * (1 - distance * 0.08);
-        const totalRotation = rotation + randomOffset.rotation;
-        card.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${totalYOffset}px) scale(${hoverScale}) rotate(${totalRotation}deg)`;
-      } else {
-        // Past cards (left side)
-        const totalRotation = randomOffset.rotation;
-        card.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${totalYOffset}px) scale(${hoverScale}) rotate(${totalRotation}deg)`;
-      }
-      
-      // DON'T change z-index or opacity - maintain stack hierarchy and prevent transparency
-      
-      // Apply shadow and text visibility
-      const cardContent = card.querySelector('.card-content') as HTMLElement;
-      const cardBody = card.querySelector('.card-body') as HTMLElement;
-      if (cardContent) {
-        cardContent.style.boxShadow = 'none';
-      }
-      if (cardBody) {
-        cardBody.style.opacity = '0.2';
-      }
-    }
+        // Minimal pull - just enough to indicate hover
+        const pullUpDistance = -12; // Minimal 12px pull
+        const hoverScale = scale + 0.015; // Very subtle scale increase
 
-    removeHoverEffect(card: HTMLElement, index: number) {
-      const distance = index - this._currentIndex;
-      
-      // Restore original transform with random offsets
-      const offset = distance * this.getStackShift();
-      const scale = Math.max(0.92, 1 - (Math.abs(distance) * this.getStackScale()));
-      
-      // Get random offsets for this card
-      const randomOffset = this.cardRandomOffsets[index];
-      const totalXOffset = offset + randomOffset.x;
-      
-      if (distance > 0) {
-        const rotation = this.getEnterRotation() * (1 - distance * 0.08);
-        const totalRotation = rotation + randomOffset.rotation;
-        card.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${randomOffset.y}px) scale(${scale}) rotate(${totalRotation}deg)`;
-        card.style.opacity = '1'; // Keep fully opaque
-        card.style.zIndex = (50 - distance).toString();
-      } else {
-        const totalRotation = randomOffset.rotation;
-        card.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${randomOffset.y}px) scale(${scale}) rotate(${totalRotation}deg)`;
-        card.style.opacity = '1'; // Keep fully opaque
-        card.style.zIndex = (50 + distance).toString();
-      }
-      
-      // Restore original shadow and text visibility
-      const cardContent = card.querySelector('.card-content') as HTMLElement;
-      const cardBody = card.querySelector('.card-body') as HTMLElement;
-      if (cardContent) {
-        cardContent.style.boxShadow = '';
-      }
-      if (cardBody) {
-        cardBody.style.opacity = '';
-      }
-    }
+        // Get random offsets for this card
+        const randomOffset = this.cardRandomOffsets[index];
+        const totalXOffset = offset + randomOffset.x;
+        const totalYOffset = randomOffset.y + pullUpDistance;
 
-    // Unified navigation method
-    navigate(direction: number) {
-      if (this.isTransitioning) return;
-      
-      const newIndex = this._currentIndex + direction;
-      if (newIndex >= 0 && newIndex < this.totalCards) {
+        if (distance > 0) {
+          // Future cards (right side)
+          const rotation = this.getEnterRotation() * (1 - distance * 0.08);
+          const totalRotation = rotation + randomOffset.rotation;
+          card.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${totalYOffset}px) scale(${hoverScale}) rotate(${totalRotation}deg)`;
+        } else {
+          // Past cards (left side)
+          const totalRotation = randomOffset.rotation;
+          card.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${totalYOffset}px) scale(${hoverScale}) rotate(${totalRotation}deg)`;
+        }
+
+        // DON'T change z-index or opacity - maintain stack hierarchy and prevent transparency
+
+        // Apply shadow and text visibility
+        const cardContent = card.querySelector(".card-content") as HTMLElement;
+        const cardBody = card.querySelector(".card-body") as HTMLElement;
+        if (cardContent) {
+          cardContent.style.boxShadow = "none";
+        }
+        if (cardBody) {
+          cardBody.style.opacity = "0.2";
+        }
+      }
+
+      removeHoverEffect(card: HTMLElement, index: number) {
+        const distance = index - this._currentIndex;
+
+        // Restore original transform with random offsets
+        const offset = distance * this.getStackShift();
+        const scale = Math.max(
+          0.92,
+          1 - Math.abs(distance) * this.getStackScale(),
+        );
+
+        // Get random offsets for this card
+        const randomOffset = this.cardRandomOffsets[index];
+        const totalXOffset = offset + randomOffset.x;
+
+        if (distance > 0) {
+          const rotation = this.getEnterRotation() * (1 - distance * 0.08);
+          const totalRotation = rotation + randomOffset.rotation;
+          card.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${randomOffset.y}px) scale(${scale}) rotate(${totalRotation}deg)`;
+          card.style.opacity = "1"; // Keep fully opaque
+          card.style.zIndex = (50 - distance).toString();
+        } else {
+          const totalRotation = randomOffset.rotation;
+          card.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${randomOffset.y}px) scale(${scale}) rotate(${totalRotation}deg)`;
+          card.style.opacity = "1"; // Keep fully opaque
+          card.style.zIndex = (50 + distance).toString();
+        }
+
+        // Restore original shadow and text visibility
+        const cardContent = card.querySelector(".card-content") as HTMLElement;
+        const cardBody = card.querySelector(".card-body") as HTMLElement;
+        if (cardContent) {
+          cardContent.style.boxShadow = "";
+        }
+        if (cardBody) {
+          cardBody.style.opacity = "";
+        }
+      }
+
+      // Unified navigation method
+      navigate(direction: number) {
+        if (this.isTransitioning) return;
+
+        const newIndex = this._currentIndex + direction;
+        if (newIndex >= 0 && newIndex < this.totalCards) {
+          this.isTransitioning = true;
+          this.hideSwipeHint();
+
+          // Set new index (triggers automatic display update via setter)
+          this.currentIndex = newIndex;
+
+          // Update visuals
+          this.updateButtonStates();
+          this.updateCards();
+
+          // Release lock after animation
+          setTimeout(() => {
+            this.isTransitioning = false;
+          }, 400);
+        }
+      }
+
+      // Jump to specific index
+      goToIndex(targetIndex: number) {
+        if (this.isTransitioning) return;
+        if (
+          targetIndex < 0 ||
+          targetIndex >= this.totalCards ||
+          targetIndex === this._currentIndex
+        )
+          return;
+
         this.isTransitioning = true;
         this.hideSwipeHint();
-        
+
         // Set new index (triggers automatic display update via setter)
-        this.currentIndex = newIndex;
-        
+        this.currentIndex = targetIndex;
+
         // Update visuals
         this.updateButtonStates();
         this.updateCards();
-        
+
         // Release lock after animation
         setTimeout(() => {
           this.isTransitioning = false;
         }, 400);
       }
-    }
 
-    // Jump to specific index
-    goToIndex(targetIndex: number) {
-      if (this.isTransitioning) return;
-      if (targetIndex < 0 || targetIndex >= this.totalCards || targetIndex === this._currentIndex) return;
-      
-      this.isTransitioning = true;
-      this.hideSwipeHint();
-      
-      // Set new index (triggers automatic display update via setter)
-      this.currentIndex = targetIndex;
-      
-      // Update visuals
-      this.updateButtonStates();
-      this.updateCards();
-      
-      // Release lock after animation
-      setTimeout(() => {
-        this.isTransitioning = false;
-      }, 400);
-    }
+      hideSwipeHint() {
+        if (this.swipeHint) {
+          this.swipeHint.style.opacity = "0";
+          this.swipeHint.style.pointerEvents = "none";
+          setTimeout(() => {
+            if (this.swipeHint) {
+              this.swipeHint.style.display = "none";
+            }
+          }, 300);
+        }
+      }
 
-    hideSwipeHint() {
-      if (this.swipeHint) {
-        this.swipeHint.style.opacity = '0';
-        this.swipeHint.style.pointerEvents = 'none';
-        setTimeout(() => {
-          if (this.swipeHint) {
-            this.swipeHint.style.display = 'none';
+      updateCards() {
+        // Clear any hover state when navigating
+        if (this.hoveredCard) {
+          this.hoveredCard = null;
+        }
+
+        this.cards.forEach((card: HTMLElement, index: number) => {
+          const cardElement = card;
+          const distance = index - this._currentIndex;
+
+          // Clear any inline styles from hover effects to prevent text color bugs
+          const cardContent = card.querySelector(
+            ".card-content",
+          ) as HTMLElement;
+          const cardBody = card.querySelector(".card-body") as HTMLElement;
+          if (cardContent) {
+            cardContent.style.boxShadow = "";
           }
-        }, 300);
-      }
-    }
+          if (cardBody) {
+            cardBody.style.opacity = "";
+          }
 
-    updateCards() {
-      // Clear any hover state when navigating
-      if (this.hoveredCard) {
-        this.hoveredCard = null;
-      }
-      
-      this.cards.forEach((card: HTMLElement, index: number) => {
-        const cardElement = card;
-        const distance = index - this._currentIndex;
-        
-        // Clear any inline styles from hover effects to prevent text color bugs
-        const cardContent = card.querySelector('.card-content') as HTMLElement;
-        const cardBody = card.querySelector('.card-body') as HTMLElement;
-        if (cardContent) {
-          cardContent.style.boxShadow = '';
-        }
-        if (cardBody) {
-          cardBody.style.opacity = '';
-        }
-        
-        // Apply classes immediately without delay for instant visibility
-        cardElement.classList.remove('card-active', 'card-stacked', 'card-hidden', 'card-hidden-text');
-        
-        if (distance === 0) {
-          // Active card (centered) - show immediately
-          cardElement.classList.add('card-active');
-          cardElement.style.transitionDelay = '0ms';
-          cardElement.style.transform = 'translateX(-50%) scale(1) rotate(0deg)';
-          cardElement.style.opacity = '1';
-          cardElement.style.zIndex = '100';
-         } else if (distance > 0) {
-          // Future cards (right side, tilted) - hide text content
-          cardElement.classList.add('card-stacked', 'card-hidden-text');
-          const offset = distance * this.getStackShift();
-          const scale = Math.max(0.92, 1 - (distance * this.getStackScale()));
-          const rotation = this.getEnterRotation() * (1 - distance * 0.08);
-          
-          // Add random offsets for organic appearance
-          const randomOffset = this.cardRandomOffsets[index];
-          const totalXOffset = offset + randomOffset.x;
-          const totalRotation = rotation + randomOffset.rotation;
-          
-          cardElement.style.transitionDelay = '0ms';
-          cardElement.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${randomOffset.y}px) scale(${scale}) rotate(${totalRotation}deg)`;
-          cardElement.style.opacity = '1';
-          cardElement.style.zIndex = (50 - distance).toString();
-        } else {
-          // Past cards (left side, stacked) - hide text content
-          cardElement.classList.add('card-stacked', 'card-hidden-text');
-          const offset = distance * this.getStackShift();
-          const scale = Math.max(0.92, 1 - (Math.abs(distance) * this.getStackScale()));
-          
-          // Add random offsets for organic appearance
-          const randomOffset = this.cardRandomOffsets[index];
-          const totalXOffset = offset + randomOffset.x;
-          const totalRotation = randomOffset.rotation;
-          
-          cardElement.style.transitionDelay = '0ms';
-          cardElement.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${randomOffset.y}px) scale(${scale}) rotate(${totalRotation}deg)`;
-          cardElement.style.opacity = '1';
-          cardElement.style.zIndex = (50 + distance).toString();
-        }
-      });
-    }
+          // Apply classes immediately without delay for instant visibility
+          cardElement.classList.remove(
+            "card-active",
+            "card-stacked",
+            "card-hidden",
+            "card-hidden-text",
+          );
 
-    updateButtonStates() {
-      // Disable buttons only when at boundaries
-      this.prevButton.disabled = this._currentIndex === 0;
-      this.nextButton.disabled = this._currentIndex === this.totalCards - 1;
-    }
+          if (distance === 0) {
+            // Active card (centered) - show immediately
+            cardElement.classList.add("card-active");
+            cardElement.style.transitionDelay = "0ms";
+            cardElement.style.transform =
+              "translateX(-50%) scale(1) rotate(0deg)";
+            cardElement.style.opacity = "1";
+            cardElement.style.zIndex = "100";
+          } else if (distance > 0) {
+            // Future cards (right side, tilted) - hide text content
+            cardElement.classList.add("card-stacked", "card-hidden-text");
+            const offset = distance * this.getStackShift();
+            const scale = Math.max(0.92, 1 - distance * this.getStackScale());
+            const rotation = this.getEnterRotation() * (1 - distance * 0.08);
 
-    positionCards() {
-      this.updateCards();
-    }
+            // Add random offsets for organic appearance
+            const randomOffset = this.cardRandomOffsets[index];
+            const totalXOffset = offset + randomOffset.x;
+            const totalRotation = rotation + randomOffset.rotation;
 
-    private prepareIntroState() {
-      if (this.hasIntroPrepared || this.totalCards <= 1) {
-        return;
-      }
+            cardElement.style.transitionDelay = "0ms";
+            cardElement.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${randomOffset.y}px) scale(${scale}) rotate(${totalRotation}deg)`;
+            cardElement.style.opacity = "1";
+            cardElement.style.zIndex = (50 - distance).toString();
+          } else {
+            // Past cards (left side, stacked) - hide text content
+            cardElement.classList.add("card-stacked", "card-hidden-text");
+            const offset = distance * this.getStackShift();
+            const scale = Math.max(
+              0.92,
+              1 - Math.abs(distance) * this.getStackScale(),
+            );
 
-      this.captureFinalStates();
+            // Add random offsets for organic appearance
+            const randomOffset = this.cardRandomOffsets[index];
+            const totalXOffset = offset + randomOffset.x;
+            const totalRotation = randomOffset.rotation;
 
-      if (!this.cardFinalStates.length) {
-        return;
-      }
-
-      this.hasIntroPrepared = true;
-      this.isTransitioning = true;
-      this.prevButton.disabled = true;
-      this.nextButton.disabled = true;
-
-      this.cards.forEach((card, index) => {
-        card.style.transition = 'none';
-        const stackedScale = Math.max(0.82, 0.9 - index * 0.02);
-        const stackedRotation = index % 2 === 0 ? -6 : 6;
-        const stackedOffset = Math.min(index, 4) * 6;
-        card.style.transform = `translateX(-50%) translateY(${stackedOffset}px) scale(${stackedScale}) rotate(${stackedRotation}deg)`;
-        card.style.opacity = index === 0 ? '1' : '0';
-        card.style.zIndex = (200 - index).toString();
-      });
-
-      requestAnimationFrame(() => {
-        this.cards.forEach((card) => {
-          card.style.transition = '';
+            cardElement.style.transitionDelay = "0ms";
+            cardElement.style.transform = `translateX(calc(-50% + ${totalXOffset}px)) translateY(${randomOffset.y}px) scale(${scale}) rotate(${totalRotation}deg)`;
+            cardElement.style.opacity = "1";
+            cardElement.style.zIndex = (50 + distance).toString();
+          }
         });
-      });
-    }
-
-    private setupIntroReveal() {
-      if (this.totalCards <= 1 || this.hasIntroAnimated) {
-        this.isTransitioning = false;
-        return;
       }
 
-      if (!('IntersectionObserver' in window)) {
-        this.restoreFinalStates();
-        this.hasIntroAnimated = true;
-        this.isTransitioning = false;
-        this.updateButtonStates();
-        return;
+      updateButtonStates() {
+        // Disable buttons only when at boundaries
+        this.prevButton.disabled = this._currentIndex === 0;
+        this.nextButton.disabled = this._currentIndex === this.totalCards - 1;
       }
 
-      const observer = new IntersectionObserver((entries) => {
-        const entry = entries[0];
-        if (entry && entry.isIntersecting && !this.hasIntroAnimated) {
-          observer.disconnect();
-          this.runIntroAnimation();
-        }
-      }, { threshold: 0.35 });
-
-      observer.observe(this.container);
-    }
-
-    private captureFinalStates() {
-      this.cardFinalStates = this.cards.map((card) => ({
-        transform: card.style.transform || 'translateX(-50%)',
-        opacity: card.style.opacity || '',
-        zIndex: card.style.zIndex || ''
-      }));
-    }
-
-    private restoreFinalStates() {
-      if (!this.cardFinalStates.length) {
+      positionCards() {
         this.updateCards();
-        return;
       }
 
-      this.cards.forEach((card, index) => {
-        const finalState = this.cardFinalStates[index];
-        card.style.transform = finalState.transform;
-        if (finalState.opacity !== '') {
-          card.style.opacity = finalState.opacity;
-        } else {
-          card.style.removeProperty('opacity');
+      private prepareIntroState() {
+        if (this.hasIntroPrepared || this.totalCards <= 1) {
+          return;
         }
 
-        if (finalState.zIndex !== '') {
-          card.style.zIndex = finalState.zIndex;
-        } else {
-          card.style.removeProperty('z-index');
-        }
-      });
-    }
+        this.captureFinalStates();
 
-    private async runIntroAnimation() {
-      if (this.hasIntroAnimated) {
-        return;
+        if (!this.cardFinalStates.length) {
+          return;
+        }
+
+        this.hasIntroPrepared = true;
+        this.isTransitioning = true;
+        this.prevButton.disabled = true;
+        this.nextButton.disabled = true;
+
+        this.cards.forEach((card, index) => {
+          card.style.transition = "none";
+          const stackedScale = Math.max(0.82, 0.9 - index * 0.02);
+          const stackedRotation = index % 2 === 0 ? -6 : 6;
+          const stackedOffset = Math.min(index, 4) * 6;
+          card.style.transform = `translateX(-50%) translateY(${stackedOffset}px) scale(${stackedScale}) rotate(${stackedRotation}deg)`;
+          card.style.opacity = index === 0 ? "1" : "0";
+          card.style.zIndex = (200 - index).toString();
+        });
+
+        requestAnimationFrame(() => {
+          this.cards.forEach((card) => {
+            card.style.transition = "";
+          });
+        });
       }
 
-      this.hasIntroAnimated = true;
+      private setupIntroReveal() {
+        if (this.totalCards <= 1 || this.hasIntroAnimated) {
+          this.isTransitioning = false;
+          return;
+        }
 
-      try {
-        const { gsap } = await import('gsap');
+        if (!("IntersectionObserver" in window)) {
+          this.restoreFinalStates();
+          this.hasIntroAnimated = true;
+          this.isTransitioning = false;
+          this.updateButtonStates();
+          return;
+        }
 
-        this.cards.forEach((card) => {
-          card.style.transition = 'none';
-        });
+        const observer = new IntersectionObserver(
+          (entries) => {
+            const entry = entries[0];
+            if (entry && entry.isIntersecting && !this.hasIntroAnimated) {
+              observer.disconnect();
+              this.runIntroAnimation();
+            }
+          },
+          { threshold: 0.35 },
+        );
 
-        const timeline = gsap.timeline({
-          defaults: { ease: 'power3.out', duration: 0.45 },
-          onComplete: () => {
-            this.cards.forEach((card) => {
-              card.style.transition = '';
-            });
-            this.restoreFinalStates();
-            this.isTransitioning = false;
-            this.updateButtonStates();
-          }
-        });
+        observer.observe(this.container);
+      }
 
-        const spreadDelay = 0.08;
-        const defaultState: CardVisualState = {
-          transform: 'translateX(-50%)',
-          opacity: '1',
-          zIndex: ''
-        };
-        const getFinalState = (index: number): CardVisualState => this.cardFinalStates[index] || defaultState;
-        const parseOpacity = (value: string) => (value !== '' ? parseFloat(value) : 1);
+      private captureFinalStates() {
+        this.cardFinalStates = this.cards.map((card) => ({
+          transform: card.style.transform || "translateX(-50%)",
+          opacity: card.style.opacity || "",
+          zIndex: card.style.zIndex || "",
+        }));
+      }
 
-        timeline.set(this.container, { opacity: 1 });
-
-        const firstCard = this.cards[0];
-
-        if (firstCard) {
-          const firstState = getFinalState(0);
-          const firstOpacity = parseOpacity(firstState.opacity);
-
-          if (firstState.zIndex !== '') {
-            firstCard.style.zIndex = firstState.zIndex;
-          }
-
-          timeline.to(firstCard, {
-            opacity: firstOpacity,
-            transform: firstState.transform,
-            duration: 0.45
-          }, 0);
-
-          if (this.cards.length > 1) {
-            timeline.add('spread', `+=${spreadDelay}`);
-          }
+      private restoreFinalStates() {
+        if (!this.cardFinalStates.length) {
+          this.updateCards();
+          return;
         }
 
         this.cards.forEach((card, index) => {
-          if (index === 0) {
-            return;
+          const finalState = this.cardFinalStates[index];
+          card.style.transform = finalState.transform;
+          if (finalState.opacity !== "") {
+            card.style.opacity = finalState.opacity;
+          } else {
+            card.style.removeProperty("opacity");
           }
 
-          const finalState = getFinalState(index);
-          const finalOpacity = parseOpacity(finalState.opacity);
-          const offsetIndex = index - 1;
-
-          if (finalState.zIndex !== '') {
+          if (finalState.zIndex !== "") {
             card.style.zIndex = finalState.zIndex;
+          } else {
+            card.style.removeProperty("z-index");
+          }
+        });
+      }
+
+      private async runIntroAnimation() {
+        if (this.hasIntroAnimated) {
+          return;
+        }
+
+        this.hasIntroAnimated = true;
+
+        try {
+          const { gsap } = await import("gsap");
+
+          this.cards.forEach((card) => {
+            card.style.transition = "none";
+          });
+
+          const timeline = gsap.timeline({
+            defaults: { ease: "power3.out", duration: 0.45 },
+            onComplete: () => {
+              this.cards.forEach((card) => {
+                card.style.transition = "";
+              });
+              this.restoreFinalStates();
+              this.isTransitioning = false;
+              this.updateButtonStates();
+            },
+          });
+
+          const spreadDelay = 0.08;
+          const defaultState: CardVisualState = {
+            transform: "translateX(-50%)",
+            opacity: "1",
+            zIndex: "",
+          };
+          const getFinalState = (index: number): CardVisualState =>
+            this.cardFinalStates[index] || defaultState;
+          const parseOpacity = (value: string) =>
+            value !== "" ? parseFloat(value) : 1;
+
+          timeline.set(this.container, { opacity: 1 });
+
+          const firstCard = this.cards[0];
+
+          if (firstCard) {
+            const firstState = getFinalState(0);
+            const firstOpacity = parseOpacity(firstState.opacity);
+
+            if (firstState.zIndex !== "") {
+              firstCard.style.zIndex = firstState.zIndex;
+            }
+
+            timeline.to(
+              firstCard,
+              {
+                opacity: firstOpacity,
+                transform: firstState.transform,
+                duration: 0.45,
+              },
+              0,
+            );
+
+            if (this.cards.length > 1) {
+              timeline.add("spread", `+=${spreadDelay}`);
+            }
           }
 
-          timeline.to(card, {
-            opacity: finalOpacity,
-            transform: finalState.transform,
-            duration: 0.45
-          }, `spread+=${offsetIndex * 0.06}`);
-        });
-      } catch (error) {
-        console.warn('CardStack intro animation failed to load GSAP', error);
-        this.restoreFinalStates();
-        this.isTransitioning = false;
-        this.updateButtonStates();
+          this.cards.forEach((card, index) => {
+            if (index === 0) {
+              return;
+            }
+
+            const finalState = getFinalState(index);
+            const finalOpacity = parseOpacity(finalState.opacity);
+            const offsetIndex = index - 1;
+
+            if (finalState.zIndex !== "") {
+              card.style.zIndex = finalState.zIndex;
+            }
+
+            timeline.to(
+              card,
+              {
+                opacity: finalOpacity,
+                transform: finalState.transform,
+                duration: 0.45,
+              },
+              `spread+=${offsetIndex * 0.06}`,
+            );
+          });
+        } catch (error) {
+          console.warn("CardStack intro animation failed to load GSAP", error);
+          this.restoreFinalStates();
+          this.isTransitioning = false;
+          this.updateButtonStates();
+        }
+      }
+
+      getStackShift(): number {
+        return parseInt(this.container.dataset.stackShift || "48");
+      }
+
+      getStackScale(): number {
+        return parseFloat(this.container.dataset.stackScale || "0.05");
+      }
+
+      getEnterRotation(): number {
+        return parseInt(this.container.dataset.enterRotation || "6");
+      }
+
+      getEnterOpacity(): number {
+        return parseFloat(this.container.dataset.enterOpacity || "0.7");
       }
     }
 
-    getStackShift(): number {
-      return parseInt(this.container.dataset.stackShift || '48');
+    // Initialize all card stacks on the page
+    function initializeCardStacks() {
+      const cardStacks = document.querySelectorAll(".card-stack-container");
+
+      cardStacks.forEach((container) => {
+        const containerElement = container as HTMLElement;
+
+        // Skip if already initialized
+        if ((containerElement as any)[CARD_STACK_INITIALIZED]) {
+          return;
+        }
+
+        // Mark as initialized and create instance
+        (containerElement as any)[CARD_STACK_INITIALIZED] = true;
+        new CardStack(containerElement);
+      });
     }
 
-    getStackScale(): number {
-      return parseFloat(this.container.dataset.stackScale || '0.05');
+    // Run initialization once DOM is ready
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initializeCardStacks);
+    } else {
+      initializeCardStacks();
     }
-
-    getEnterRotation(): number {
-      return parseInt(this.container.dataset.enterRotation || '6');
-    }
-
-    getEnterOpacity(): number {
-      return parseFloat(this.container.dataset.enterOpacity || '0.7');
-    }
-  }
-
-  // Initialize all card stacks on the page
-  function initializeCardStacks() {
-    const cardStacks = document.querySelectorAll('.card-stack-container');
-    
-    cardStacks.forEach(container => {
-      const containerElement = container as HTMLElement;
-      
-      // Skip if already initialized
-      if ((containerElement as any)[CARD_STACK_INITIALIZED]) {
-        return;
-      }
-      
-      // Mark as initialized and create instance
-      (containerElement as any)[CARD_STACK_INITIALIZED] = true;
-      new CardStack(containerElement);
-    });
-  }
-  
-  // Run initialization once DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeCardStacks);
-  } else {
-    initializeCardStacks();
-  }
-  
   } // End of script guard
 </script>
 
@@ -829,12 +940,15 @@ if (!cards || cards.length === 0) {
     color: var(--color-muted);
     margin-bottom: 0.5rem;
     animation: swipeHintPulse 2s ease-in-out infinite;
-    transition: opacity 300ms ease, display 300ms ease;
+    transition:
+      opacity 300ms ease,
+      display 300ms ease;
     user-select: none;
   }
 
   @keyframes swipeHintPulse {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 0.6;
       transform: translateX(0);
     }
@@ -885,10 +999,14 @@ if (!cards || cards.length === 0) {
   }
 
   .card-nav-btn::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at center, var(--color-link) 0%, transparent 70%);
+    background: radial-gradient(
+      circle at center,
+      var(--color-link) 0%,
+      transparent 70%
+    );
     opacity: 0;
     transition: opacity 250ms ease;
   }
@@ -918,7 +1036,9 @@ if (!cards || cards.length === 0) {
 
   .card-nav-btn:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px var(--color-bg), 0 0 0 5px var(--color-link);
+    box-shadow:
+      0 0 0 3px var(--color-bg),
+      0 0 0 5px var(--color-link);
   }
 
   .card-dots {
@@ -1040,7 +1160,7 @@ if (!cards || cards.length === 0) {
     border: 1px solid var(--color-border);
     border-radius: 16px;
     overflow: hidden; /* Keep hidden to maintain card boundaries */
-    box-shadow: 
+    box-shadow:
       0 1px 3px rgba(0, 0, 0, 0.05),
       0 0 0 1px rgba(0, 0, 0, 0.02) inset;
     transition: all 600ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -1052,35 +1172,35 @@ if (!cards || cards.length === 0) {
     z-index: 1;
     box-sizing: border-box;
     /* Polished glass effect with inner highlight */
-    background-image: 
-      linear-gradient(to bottom, 
-        rgba(255, 255, 255, 0.02) 0%, 
-        transparent 50%
-      );
+    background-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.02) 0%,
+      transparent 50%
+    );
   }
-  
+
   /* Dark mode card adjustments */
   .dark .card-content {
-    box-shadow: 
+    box-shadow:
       0 1px 3px rgba(0, 0, 0, 0.3),
       0 0 0 1px rgba(255, 255, 255, 0.03) inset;
-    background-image: 
-      linear-gradient(to bottom, 
-        rgba(255, 255, 255, 0.03) 0%, 
-        transparent 50%
-      );
+    background-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 50%
+    );
   }
 
   .card-active .card-content {
-    box-shadow: 
+    box-shadow:
       0 8px 30px rgba(0, 0, 0, 0.12),
       0 2px 8px rgba(0, 0, 0, 0.08),
       0 0 0 1px rgba(0, 0, 0, 0.03) inset;
     transform: scale(1.01);
   }
-  
+
   .dark .card-active .card-content {
-    box-shadow: 
+    box-shadow:
       0 8px 30px rgba(0, 0, 0, 0.5),
       0 2px 8px rgba(0, 0, 0, 0.3),
       0 0 0 1px rgba(255, 255, 255, 0.05) inset;
@@ -1088,7 +1208,7 @@ if (!cards || cards.length === 0) {
 
   /* Ensure card borders are always visible with subtle glow */
   .card-content::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -1100,12 +1220,12 @@ if (!cards || cards.length === 0) {
     z-index: 1;
     opacity: 0.8;
   }
-  
+
   .card-active .card-content::before {
     opacity: 1;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
   }
-  
+
   .dark .card-active .card-content::before {
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
   }
@@ -1128,14 +1248,14 @@ if (!cards || cards.length === 0) {
     background-color: var(--card-bg);
     border: 1px solid var(--color-border);
     /* Add subtle visual depth for stacked cards */
-    box-shadow: 
+    box-shadow:
       0 2px 8px rgba(0, 0, 0, 0.08),
       0 1px 3px rgba(0, 0, 0, 0.06),
       0 0 0 1px rgba(0, 0, 0, 0.02) inset;
   }
-  
+
   .dark .card-hidden-text .card-content {
-    box-shadow: 
+    box-shadow:
       0 2px 8px rgba(0, 0, 0, 0.3),
       0 1px 3px rgba(0, 0, 0, 0.2),
       0 0 0 1px rgba(255, 255, 255, 0.02) inset;
@@ -1148,14 +1268,14 @@ if (!cards || cards.length === 0) {
   }
 
   .card-active:hover .card-content {
-    box-shadow: 
+    box-shadow:
       0 12px 40px rgba(0, 0, 0, 0.15),
       0 4px 12px rgba(0, 0, 0, 0.1),
       0 0 0 1px rgba(0, 0, 0, 0.04) inset !important;
   }
-  
+
   .dark .card-active:hover .card-content {
-    box-shadow: 
+    box-shadow:
       0 12px 40px rgba(0, 0, 0, 0.6),
       0 4px 12px rgba(0, 0, 0, 0.4),
       0 0 0 1px rgba(255, 255, 255, 0.06) inset !important;
@@ -1163,9 +1283,10 @@ if (!cards || cards.length === 0) {
 
   /* Stacked cards - smooth transitions (hover effects handled by JavaScript) */
   .card-stacked {
-    transition: transform 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94), 
-                box-shadow 200ms ease,
-                opacity 200ms ease;
+    transition:
+      transform 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      box-shadow 200ms ease,
+      opacity 200ms ease;
     cursor: pointer; /* Indicate that stacked cards are clickable */
   }
 
@@ -1285,25 +1406,26 @@ if (!cards || cards.length === 0) {
     font-size: 1rem;
     font-weight: 600;
     color: var(--color-link);
-    background: linear-gradient(135deg, 
-      var(--surface-glass) 0%, 
+    background: linear-gradient(
+      135deg,
+      var(--surface-glass) 0%,
       var(--surface-glass-strong) 100%
     );
     padding: 0.35rem 0.75rem;
     border-radius: 0.45rem;
     border: 1px solid var(--color-border);
-    box-shadow: 
+    box-shadow:
       0 2px 8px rgba(0, 0, 0, 0.04),
       0 0 0 1px rgba(0, 0, 0, 0.02) inset;
     transition: all 250ms ease;
   }
-  
+
   .card-active .card-company {
     transform: translateY(0);
   }
-  
+
   .dark .card-company {
-    box-shadow: 
+    box-shadow:
       0 2px 8px rgba(0, 0, 0, 0.2),
       0 0 0 1px rgba(255, 255, 255, 0.03) inset;
   }
@@ -1354,7 +1476,6 @@ if (!cards || cards.length === 0) {
       -webkit-line-clamp: 2;
     }
   }
-
 
   .card-stack-indicator {
     position: absolute;
@@ -1487,7 +1608,7 @@ if (!cards || cards.length === 0) {
     .card {
       transition: opacity var(--transition-duration) ease;
     }
-    
+
     .card-content {
       transition: box-shadow var(--transition-duration) ease;
     }
