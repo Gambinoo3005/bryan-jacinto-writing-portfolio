@@ -452,34 +452,48 @@ const toolsetData = [
           >
             <a
               href="/work"
-              class="btn-primary inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-semibold transition-all duration-200 w-full sm:w-auto"
+              class="btn-primary work-cta-button inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-semibold transition-all duration-200 w-full sm:w-auto"
               data-hero-cta
               data-hero-animate
+              aria-label="See my work"
             >
-              See my work
+              <span class="work-cta-swap" aria-hidden="true">
+                <span class="work-cta-front">See my work</span>
+                <span class="work-cta-back">
+                  <svg
+                    class="work-cta-arrow-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14"></path>
+                    <path d="M13 7l6 5-6 5"></path>
+                  </svg>
+                </span>
+              </span>
             </a>
             <a
-              href="#my-experiences"
-              data-scroll-to="#my-experiences"
-              data-scroll-position="top top"
-              data-scroll-offset="40"
-              class="snake-border-button group inline-flex h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold focus:outline-none w-full sm:w-auto"
+              href="/contact"
+              class="snake-border-button book-call-button group inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-semibold focus:outline-none w-full sm:w-auto"
               data-hero-cta
               data-hero-animate
-              aria-label="View my experience"
+              aria-label="Book a call"
             >
-              <span>View my experience</span>
-              <svg
-                class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-                  clip-rule="evenodd"></path>
-              </svg>
+              <span class="book-call-swap" aria-hidden="true">
+                <span class="book-call-front">Book a Call</span>
+                <span class="book-call-back">
+                  <img
+                    src="/Bryan_hero_image.webp"
+                    alt=""
+                    class="book-call-avatar"
+                    loading="lazy"
+                    decoding="async"
+                    width="24"
+                    height="24"
+                  />
+                  <span class="book-call-plus">+</span>
+                  <span class="book-call-you">YOU</span>
+                </span>
+              </span>
             </a>
           </div>
         </div>
@@ -681,6 +695,15 @@ const toolsetData = [
     </div>
   </section>
 
+  <!-- Book a Call Inline Calendar -->
+  <section class="page-section">
+    <div class="mx-auto max-w-6xl px-4 sm:px-5 md:px-6 w-full">
+      <div class="scroll-reveal scroll-reveal-item">
+        <div id="my-cal-inline-30min" class="cal-inline-embed"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA Section -->
   <section class="cta-section">
     <div class="mx-auto max-w-4xl px-4 sm:px-5 md:px-6 text-center">
@@ -841,6 +864,207 @@ const toolsetData = [
       transform: translateY(-1px) scale(1.02);
     }
 
+    .work-cta-swap {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-width: 6.8rem;
+      height: 1.4rem;
+      overflow: hidden;
+    }
+
+    .work-cta-front,
+    .work-cta-back {
+      grid-area: 1 / 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      transition:
+        transform 0.3s cubic-bezier(0.2, 0.65, 0.2, 1),
+        opacity 0.3s ease;
+    }
+
+    .work-cta-front {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .work-cta-back {
+      transform: translateY(140%);
+      opacity: 0;
+    }
+
+    .work-cta-arrow-icon {
+      width: 1.35rem;
+      height: 1.35rem;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transform: translateY(-0.02em);
+    }
+
+    .work-cta-button:hover .work-cta-front,
+    .work-cta-button:focus-visible .work-cta-front {
+      transform: translateY(-140%);
+      opacity: 0;
+    }
+
+    .work-cta-button:hover .work-cta-back,
+    .work-cta-button:focus-visible .work-cta-back {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .book-call-swap {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-width: 7.6rem;
+      height: 1.7rem;
+      overflow: hidden;
+    }
+
+    .book-call-front,
+    .book-call-back {
+      grid-area: 1 / 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      transition:
+        transform 0.3s cubic-bezier(0.2, 0.65, 0.2, 1),
+        opacity 0.3s ease;
+    }
+
+    .book-call-front {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .book-call-back {
+      transform: translateY(140%);
+      opacity: 0;
+    }
+
+    .book-call-avatar {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 9999px;
+      border: 1px solid color-mix(in srgb, var(--color-text) 22%, transparent);
+      object-fit: cover;
+      object-position: center 18%;
+    }
+
+    .book-call-plus {
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .book-call-you {
+      display: grid;
+      place-items: center;
+      min-width: 2.5rem;
+      height: 1.5rem;
+      padding: 0 0.62rem;
+      border-radius: 9999px;
+      background: #ffffff;
+      color: #111827;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      line-height: 1;
+      text-align: center;
+      transform: translateY(-0.02em);
+    }
+
+    :root:not(.dark) .book-call-back {
+      color: #1f3c79;
+    }
+
+    :root:not(.dark) .book-call-avatar {
+      border-color: color-mix(in srgb, #1f3c79 35%, transparent);
+    }
+
+    :root:not(.dark) .book-call-you {
+      background: #111111;
+      color: #ffffff;
+      border: 1px solid color-mix(in srgb, #111111 70%, transparent);
+      box-shadow: none;
+    }
+
+    .book-call-button:hover .book-call-front,
+    .book-call-button:focus-visible .book-call-front {
+      transform: translateY(-140%);
+      opacity: 0;
+    }
+
+    .book-call-button:hover .book-call-back,
+    .book-call-button:focus-visible .book-call-back {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .work-cta-front,
+      .work-cta-back,
+      .book-call-front,
+      .book-call-back {
+        transition: none;
+      }
+    }
+
+    .cal-inline-embed {
+      position: relative;
+      width: 100%;
+      min-height: clamp(620px, 76vh, 900px);
+      background: var(--section-bg);
+      overflow: hidden;
+    }
+
+    .cal-inline-embed iframe {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      border: 0;
+      display: block;
+    }
+
+    .cal-inline-embed::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2.5rem;
+      background: var(--section-bg);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .cal-inline-embed a[href*="cal.com"],
+    .cal-inline-embed + a[href*="cal.com"],
+    .cal-inline-embed ~ a[href*="cal.com"] {
+      display: none !important;
+    }
+
+    @media (max-width: 768px) {
+      .cal-inline-embed {
+        min-height: clamp(660px, 84vh, 980px);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .cal-inline-embed {
+        min-height: clamp(700px, 88vh, 1040px);
+      }
+    }
+
     /* Compact CTA section - connected to footer */
     .cta-section {
       padding: 4rem 0 0 0; /* Remove bottom padding to connect to footer */
@@ -896,26 +1120,112 @@ const toolsetData = [
       );
       revealElements.forEach((el) => observer.observe(el));
 
-      const experienceTrigger = document.querySelector(
-        'a[aria-label="View my experience"]',
-      );
-      const experienceSection = document.querySelector("#my-experiences");
+      const calSelector = "#my-cal-inline-30min";
+      const calNamespace = "home30";
+      const calRoot = document.querySelector(calSelector);
 
-      if (experienceTrigger && experienceSection) {
-        experienceTrigger.addEventListener("click", (event) => {
-          const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
-          if (!isMobile) {
-            return;
-          }
-
-          event.preventDefault();
-          experienceSection.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-          });
-        });
+      if (!calRoot || calRoot.getAttribute("data-cal-ready") === "true") {
+        return;
       }
+
+      calRoot.setAttribute("data-cal-ready", "true");
+
+      (function (C, A, L) {
+        const p = function (a, ar) {
+          a.q.push(ar);
+        };
+        const d = C.document;
+        C.Cal =
+          C.Cal ||
+          function () {
+            const cal = C.Cal;
+            const ar = arguments;
+            if (!cal.loaded) {
+              cal.ns = {};
+              cal.q = cal.q || [];
+              d.head.appendChild(d.createElement("script")).src = A;
+              cal.loaded = true;
+            }
+            if (ar[0] === L) {
+              const api = function () {
+                p(api, arguments);
+              };
+              const namespace = ar[1];
+              api.q = api.q || [];
+              if (typeof namespace === "string") {
+                cal.ns[namespace] = cal.ns[namespace] || api;
+                p(cal.ns[namespace], ar);
+                p(cal, ["initNamespace", namespace]);
+              } else {
+                p(cal, ar);
+              }
+              return;
+            }
+            p(cal, ar);
+          };
+      })(window, "https://app.cal.com/embed/embed.js", "init");
+
+      Cal("init", calNamespace, { origin: "https://app.cal.com" });
+
+      Cal.ns[calNamespace]("inline", {
+        elementOrSelector: calSelector,
+        config: { layout: "month_view", useSlotsViewOnSmallScreen: true },
+        calLink: "bryanjacinto/30min",
+      });
+
+      const applyCalTheme = () => {
+        const isDark = document.documentElement.classList.contains("dark");
+        const pageBg =
+          getComputedStyle(document.documentElement)
+            .getPropertyValue("--section-bg")
+            .trim() || (isDark ? "#000000" : "#ffffff");
+
+        Cal.ns[calNamespace]("ui", {
+          hideEventTypeDetails: false,
+          layout: "month_view",
+          theme: isDark ? "dark" : "light",
+          styles: {
+            body: { background: pageBg },
+          },
+        });
+      };
+
+      const hideCalBranding = () => {
+        document
+          .querySelectorAll<HTMLAnchorElement>('a[href*="cal.com"]')
+          .forEach((link) => {
+            const label = (link.textContent || "").trim().toLowerCase();
+            if (label === "cal.com") {
+              link.style.display = "none";
+            }
+          });
+      };
+
+      applyCalTheme();
+      hideCalBranding();
+
+      const themeObserver = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+          if (mutation.attributeName === "class") {
+            applyCalTheme();
+            break;
+          }
+        }
+      });
+
+      themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+
+      const brandingObserver = new MutationObserver(() => {
+        hideCalBranding();
+      });
+
+      brandingObserver.observe(document.body, {
+        childList: true,
+        subtree: true,
+      });
     });
   </script>
 </BaseLayout>
