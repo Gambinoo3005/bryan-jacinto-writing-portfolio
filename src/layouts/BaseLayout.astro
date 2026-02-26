@@ -12,12 +12,14 @@ interface Props {
   description?: string;
   ogImage?: string;
   showProgressBar?: boolean;
+  heroHeader?: boolean;
 }
 const {
   title = "Bryan Jacinto - Copywriter & SEO",
   description = "UX & SEO writing portfolio.",
   ogImage,
   showProgressBar = false,
+  heroHeader = false,
 } = Astro.props;
 const url = Astro.url?.href ?? "";
 ---
@@ -136,7 +138,7 @@ const url = Astro.url?.href ?? "";
   </head>
 
   <!-- Normal document flow; viewport scroll bar stays as-is -->
-  <body class="antialiased min-h-svh">
+  <body class={`antialiased min-h-svh ${heroHeader ? "has-hero-header" : ""}`}>
     <!-- Site-wide layered background (z-0) -->
     <Background />
 
@@ -148,7 +150,10 @@ const url = Astro.url?.href ?? "";
 
 
     <!-- Main content wrapper -->
-    <div id="main-content" class="relative z-10 flex min-h-svh flex-col pt-[88px]">
+    <div
+      id="main-content"
+      class={`relative z-10 flex min-h-svh flex-col pt-[88px] ${heroHeader ? "-mt-[88px]" : ""}`}
+    >
       <!-- Page content -->
       <main id="content" class="relative z-10 flex-1">
         <slot />
@@ -254,4 +259,3 @@ const url = Astro.url?.href ?? "";
     </script>
   </body>
 </html>
-

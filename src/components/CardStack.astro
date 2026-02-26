@@ -897,7 +897,7 @@ if (!cards || cards.length === 0) {
   @media (max-width: 768px) {
     .card-stack-container {
       --card-width: calc(100vw - 3rem);
-      --card-height: 320px;
+      --card-height: 350px;
       --stack-shift: 25px;
       --stack-scale: 0.06;
       --enter-rotation: 3deg;
@@ -907,7 +907,7 @@ if (!cards || cards.length === 0) {
   @media (max-width: 480px) {
     .card-stack-container {
       --card-width: calc(100vw - 2rem);
-      --card-height: 300px;
+      --card-height: 360px;
       --stack-shift: 20px;
       --stack-scale: 0.08;
       --enter-rotation: 2deg;
@@ -1105,16 +1105,16 @@ if (!cards || cards.length === 0) {
   @media (max-width: 768px) {
     .card-deck {
       max-width: calc(100vw - 3rem);
-      height: 320px;
-      min-height: 320px;
+      height: 350px;
+      min-height: 350px;
     }
   }
 
   @media (max-width: 480px) {
     .card-deck {
       max-width: calc(100vw - 2rem);
-      height: 300px;
-      min-height: 300px;
+      height: 360px;
+      min-height: 360px;
     }
   }
 
@@ -1140,16 +1140,16 @@ if (!cards || cards.length === 0) {
   @media (max-width: 768px) {
     .card {
       max-width: calc(100vw - 3rem);
-      height: 320px;
-      min-height: 320px;
+      height: 350px;
+      min-height: 350px;
     }
   }
 
   @media (max-width: 480px) {
     .card {
       max-width: calc(100vw - 2rem);
-      height: 300px;
-      min-height: 300px;
+      height: 360px;
+      min-height: 360px;
     }
   }
 
@@ -1464,7 +1464,10 @@ if (!cards || cards.length === 0) {
       font-size: 0.9375rem;
       line-height: 1.5;
       margin-bottom: 0.875rem;
-      -webkit-line-clamp: 3;
+      display: block;
+      overflow: visible;
+      -webkit-line-clamp: unset;
+      -webkit-box-orient: initial;
     }
   }
 
@@ -1473,7 +1476,10 @@ if (!cards || cards.length === 0) {
       font-size: 0.875rem;
       line-height: 1.45;
       margin-bottom: 0.625rem;
-      -webkit-line-clamp: 2;
+      display: block;
+      overflow: visible;
+      -webkit-line-clamp: unset;
+      -webkit-box-orient: initial;
     }
   }
 

@@ -47,6 +47,7 @@ const shareLinks = [
   description={entry.data.description}
   ogImage={entry.data.ogImage}
   showProgressBar={true}
+  heroHeader={true}
 >
   <!-- Hero Section -->
   <section class="blog-hero">
@@ -63,12 +64,7 @@ const shareLinks = [
     
     <div class="hero-content">
       <div class="hero-inner">
-        <!-- Category Badge -->
-        {entry.data.category && (
-          <div class="category-badge">
-            {entry.data.category}
-          </div>
-        )}
+        <div class="hero-badge-spacer" aria-hidden="true"></div>
 
         <!-- Title -->
         <h1 class="hero-title">{entry.data.title}</h1>
@@ -268,18 +264,8 @@ const shareLinks = [
       text-align: center;
     }
 
-    .category-badge {
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      margin-bottom: 1.5rem;
-      font-size: 0.875rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--color-text);
-      background: var(--surface-glass);
-      border: 1px solid var(--color-border);
-      border-radius: 9999px;
+    .hero-badge-spacer {
+      height: 3.9rem;
     }
 
     .hero-title {
