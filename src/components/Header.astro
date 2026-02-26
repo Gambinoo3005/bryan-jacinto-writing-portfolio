@@ -3,10 +3,9 @@ const nav = [
   { href: "/about", label: "About" },
   { href: "/work", label: "Work" }, // or "Portfolio"
   { href: "/blogs", label: "Blogs" },
-  { href: "/contact", label: "Contact" },
 ];
 
-// Contact information
+// Profile links
 const LINKS = {
   linkedin: "https://www.linkedin.com/in/bryan-jacinto-writer/",
   phone: "+639944011975",
@@ -371,6 +370,7 @@ const current = Astro.url.pathname;
 
     [data-site-header].is-scrolled [data-header-frame] {
       border-radius: 0;
+      border-top-width: 0;
       border-left-width: 0;
       border-right-width: 0;
       box-shadow: none;

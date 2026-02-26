@@ -482,7 +482,7 @@ const toolsetData = [
             </span>
           </a>
           <a
-            href="/contact"
+            href="#book-a-call"
             class="snake-border-button book-call-button group inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-semibold focus:outline-none w-full sm:w-auto"
             data-hero-cta
             data-hero-animate
@@ -636,7 +636,7 @@ const toolsetData = [
   <!-- Experience section with Card Stack -->
   <section
     id="my-experiences"
-    class="page-section scroll-mt-[70px] md:scroll-mt-[23.5px] flex items-start justify-center text-[var(--color-text)]"
+    class="page-section home-experience-section scroll-mt-[70px] md:scroll-mt-[23.5px] flex items-start justify-center text-[var(--color-text)]"
   >
     <div class="mx-auto max-w-6xl px-4 sm:px-5 md:px-6 w-full">
       <!-- Section Header -->
@@ -676,15 +676,116 @@ const toolsetData = [
       <div class="scroll-reveal scroll-reveal-item text-center mb-8">
         <h2 class="mb-0">My Toolset</h2>
       </div>
-      <ToolsetGrid tools={toolsetData} />
+      <div class="scroll-reveal scroll-reveal-item scroll-reveal-delay-1">
+        <ToolsetGrid tools={toolsetData} />
+      </div>
     </div>
   </section>
 
   <!-- Book a Call Inline Calendar -->
-  <section class="page-section">
+  <section id="book-a-call" class="page-section home-cal-section">
     <div class="mx-auto max-w-6xl px-4 sm:px-5 md:px-6 w-full">
+      <div class="scroll-reveal scroll-reveal-item text-center mb-8">
+        <h2 class="mb-0">Book a Call</h2>
+      </div>
       <div class="scroll-reveal scroll-reveal-item">
-        <div id="my-cal-inline-30min" class="cal-inline-embed"></div>
+        <div
+          id="my-cal-inline-30min"
+          class="cal-inline-embed"
+          data-lenis-prevent
+        ></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Message Form Section -->
+  <section id="send-message" class="page-section home-message-section">
+    <div class="mx-auto max-w-6xl px-4 sm:px-5 md:px-6 w-full">
+      <div class="scroll-reveal scroll-reveal-item text-center mb-8">
+        <h2 class="mb-0">or Send Me a Message</h2>
+      </div>
+
+      <div class="scroll-reveal scroll-reveal-item">
+        <div class="home-contact-card">
+          <form id="home-contact-form" class="space-y-6" novalidate>
+            <div>
+              <label for="home-name" class="home-contact-label">Name *</label>
+              <input
+                type="text"
+                id="home-name"
+                name="name"
+                required
+                autocomplete="name"
+                class="home-contact-input"
+                placeholder="Your full name"
+              />
+            </div>
+
+            <div>
+              <label for="home-email" class="home-contact-label">Email *</label>
+              <input
+                type="email"
+                id="home-email"
+                name="email"
+                required
+                autocomplete="email"
+                class="home-contact-input"
+                placeholder="your.email@example.com"
+              />
+            </div>
+
+            <div>
+              <label for="home-phone" class="home-contact-label">Contact number</label>
+              <input
+                type="tel"
+                id="home-phone"
+                name="phone"
+                autocomplete="tel"
+                class="home-contact-input"
+                placeholder="+63 994 401 1975"
+              />
+            </div>
+
+            <div>
+              <label for="home-message" class="home-contact-label">How can I help? *</label>
+              <textarea
+                id="home-message"
+                name="message"
+                required
+                rows="6"
+                class="home-contact-textarea"
+                placeholder="Tell me about your project, goals, audience, and timeline."
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              class="btn-primary w-full h-12 rounded-full px-6 text-sm font-semibold transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              <span id="home-submit-text">Send message</span>
+              <span id="home-submit-loading" class="hidden items-center gap-2">
+                <svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                  <circle cx="12" cy="12" r="10" stroke-opacity="0.2" />
+                  <path d="M12 2a10 10 0 0 1 10 10" />
+                </svg>
+                Sending...
+              </span>
+            </button>
+
+            <div
+              id="home-form-message"
+              class="home-form-alert"
+              role="status"
+              aria-live="polite"
+              hidden
+            ></div>
+
+            <p class="home-contact-disclaimer">
+              By submitting this form you agree to receive a reply from me via email.
+              I keep your details private and never share them.
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   </section>
@@ -705,7 +806,7 @@ const toolsetData = [
           class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
         >
           <a
-            href="/contact"
+            href="#send-message"
             class="btn-primary inline-flex h-11 sm:h-12 items-center justify-center rounded-full px-6 sm:px-8 text-sm sm:text-base font-semibold transition-all duration-200 w-full sm:w-auto"
           >
             Get in touch
@@ -771,6 +872,41 @@ const toolsetData = [
   </style>
 
   <style>
+    /* Homepage section rhythm: consistent spacing without forced viewport-height gaps */
+    section.page-section {
+      min-height: auto;
+      padding-block: clamp(2.75rem, 5vw, 4.5rem);
+    }
+
+    @media (max-width: 768px) {
+      section.page-section {
+        padding-block: 3rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      section.page-section {
+        padding-block: 2.5rem;
+      }
+    }
+
+    /* First section after hero: use direct offset so spacing change is visually obvious */
+    .home-experience-section {
+      margin-top: 22px;
+    }
+
+    @media (max-width: 768px) {
+      .home-experience-section {
+        margin-top: 18px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .home-experience-section {
+        margin-top: 14px;
+      }
+    }
+
     /* Hero section with mathematically perfect positioning */
     .hero-section {
       min-height: calc(100vh - 88px) !important;
@@ -1039,6 +1175,20 @@ const toolsetData = [
       overflow: hidden;
     }
 
+    /* Tighten only the gap between Cal and message sections */
+    .home-cal-section {
+      padding-bottom: 0;
+    }
+
+    #book-a-call {
+      scroll-margin-top: 108px;
+    }
+
+    .home-message-section {
+      padding-top: 0;
+      margin-top: -50px;
+    }
+
     .cal-inline-embed iframe {
       position: relative;
       z-index: 1;
@@ -1047,6 +1197,7 @@ const toolsetData = [
       min-height: inherit;
       border: 0;
       display: block;
+      overscroll-behavior: contain;
     }
 
     .cal-inline-embed::after {
@@ -1071,37 +1222,145 @@ const toolsetData = [
       .cal-inline-embed {
         min-height: clamp(660px, 84vh, 980px);
       }
+
+      .home-cal-section {
+        padding-bottom: 0;
+      }
+
+      #book-a-call {
+        scroll-margin-top: 96px;
+      }
+
+      .home-message-section {
+        padding-top: 0;
+        margin-top: -40px;
+      }
     }
 
     @media (max-width: 480px) {
       .cal-inline-embed {
         min-height: clamp(700px, 88vh, 1040px);
       }
+
+      .home-cal-section {
+        padding-bottom: 0;
+      }
+
+      #book-a-call {
+        scroll-margin-top: 88px;
+      }
+
+      .home-message-section {
+        padding-top: 0;
+        margin-top: -30px;
+      }
+    }
+
+    .home-contact-card {
+      max-width: 840px;
+      margin: 0 auto;
+      border-radius: 1.5rem;
+      border: 1px solid var(--color-border);
+      background: var(--card-bg);
+      padding: clamp(1.2rem, 2.4vw, 2rem);
+      box-shadow: none;
+    }
+
+    .home-contact-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 0.4rem;
+    }
+
+    .home-contact-input,
+    .home-contact-textarea {
+      width: 100%;
+      border-radius: 0.9rem;
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      color: var(--color-text);
+      padding: 0.85rem 1rem;
+      font-size: 0.95rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .home-contact-textarea {
+      resize: vertical;
+      min-height: 170px;
+    }
+
+    .home-contact-input:focus,
+    .home-contact-textarea:focus {
+      outline: none;
+      border-color: color-mix(in srgb, var(--color-link) 40%, transparent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-link) 12%, transparent);
+    }
+
+    .home-contact-disclaimer {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--color-muted);
+      text-align: center;
+    }
+
+    .home-form-alert {
+      border-radius: 1rem;
+      padding: 1rem 1.25rem;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      color: var(--color-text);
+    }
+
+    .home-form-alert[hidden] {
+      display: none;
+    }
+
+    .home-form-alert[data-state="success"] {
+      border-color: color-mix(in srgb, #10b981 35%, transparent);
+      background: color-mix(in srgb, #10b981 10%, transparent);
+    }
+
+    .home-form-alert[data-state="error"] {
+      border-color: color-mix(in srgb, #ef4444 35%, transparent);
+      background: color-mix(in srgb, #ef4444 10%, transparent);
+    }
+
+    @media (max-width: 640px) {
+      .home-contact-card {
+        border-radius: 1.25rem;
+        padding: 1.1rem;
+      }
     }
 
     /* Compact CTA section - connected to footer */
     .cta-section {
-      padding: 4rem 0 0 0; /* Remove bottom padding to connect to footer */
+      padding-top: clamp(3.5rem, 7vw, 6rem);
+      padding-bottom: 0;
       background-color: var(--section-bg);
-      min-height: auto; /* No forced height */
-      border: none !important; /* Remove any borders */
+      min-height: auto;
+      border: none !important;
       border-top: none !important;
       border-bottom: none !important;
       box-shadow: none !important;
-      margin-top: -30px; /* Move section 30px up */
+      margin-top: 0;
     }
 
-    /* Responsive CTA spacing - uniform with other sections */
+    /* Match page-section rhythm on smaller screens */
     @media (max-width: 768px) {
       .cta-section {
-        padding: 4rem 0 0 0; /* Match page-section padding */
-        margin-top: 0; /* Remove negative margin on mobile */
+        padding-top: 4rem;
+        padding-bottom: 0;
       }
     }
 
     @media (max-width: 480px) {
       .cta-section {
-        padding: 3rem 0 0 0; /* Match page-section padding on small screens */
+        padding-top: 3rem;
+        padding-bottom: 0;
       }
     }
   </style>
@@ -1119,19 +1378,14 @@ const toolsetData = [
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("is-visible");
-        } else {
-          // Remove is-visible class when element leaves viewport
-          // This ensures animations can trigger again when scrolling back
-          entry.target.classList.remove("is-visible");
+          observer.unobserve(entry.target);
         }
       });
     }, observerOptions);
 
-    // Observe all scroll-reveal elements (excluding toolset categories which have their own system)
+    // Observe all scroll-reveal elements.
     document.addEventListener("DOMContentLoaded", () => {
-      const revealElements = document.querySelectorAll(
-        ".scroll-reveal:not(.scroll-reveal-category)",
-      );
+      const revealElements = document.querySelectorAll(".scroll-reveal");
       revealElements.forEach((el) => observer.observe(el));
 
       const calSelector = "#my-cal-inline-30min";
@@ -1143,6 +1397,21 @@ const toolsetData = [
       }
 
       calRoot.setAttribute("data-cal-ready", "true");
+
+      const configureLenisForCalEmbed = () => {
+        const lenis = (window as any).lenis as
+          | { stop?: () => void; start?: () => void }
+          | undefined;
+        if (!lenis) return;
+
+        const stopLenis = () => lenis.stop?.();
+        const startLenis = () => lenis.start?.();
+
+        calRoot.addEventListener("mouseenter", stopLenis);
+        calRoot.addEventListener("mouseleave", startLenis);
+        calRoot.addEventListener("touchstart", stopLenis, { passive: true });
+        window.addEventListener("touchend", startLenis, { passive: true });
+      };
 
       (function (C, A, L) {
         const p = function (a, ar) {
@@ -1204,19 +1473,18 @@ const toolsetData = [
         });
       };
 
-      const hideCalBranding = () => {
-        document
-          .querySelectorAll<HTMLAnchorElement>('a[href*="cal.com"]')
-          .forEach((link) => {
-            const label = (link.textContent || "").trim().toLowerCase();
-            if (label === "cal.com") {
-              link.style.display = "none";
-            }
-          });
+      const configureCalIframeScroll = () => {
+        const iframe = calRoot.querySelector<HTMLIFrameElement>("iframe");
+        if (!iframe || iframe.dataset.scrollConfigured === "true") return;
+
+        iframe.dataset.scrollConfigured = "true";
+        iframe.setAttribute("scrolling", "no");
+        iframe.style.overflow = "hidden";
       };
 
       applyCalTheme();
-      hideCalBranding();
+      configureCalIframeScroll();
+      configureLenisForCalEmbed();
 
       const themeObserver = new MutationObserver((mutations) => {
         for (const mutation of mutations) {
@@ -1232,13 +1500,134 @@ const toolsetData = [
         attributeFilter: ["class"],
       });
 
-      const brandingObserver = new MutationObserver(() => {
-        hideCalBranding();
+      const iframeObserver = new MutationObserver(() => {
+        configureCalIframeScroll();
       });
 
-      brandingObserver.observe(document.body, {
+      iframeObserver.observe(calRoot, {
         childList: true,
         subtree: true,
+      });
+    });
+  </script>
+
+  <script>
+    const HOME_EMAILJS_SERVICE_ID = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID;
+    const HOME_EMAILJS_TEMPLATE_ID = import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID;
+    const HOME_EMAILJS_PUBLIC_KEY = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
+
+    function initEmailJsForHome() {
+      if (!HOME_EMAILJS_PUBLIC_KEY) return;
+
+      if (window.emailjs) {
+        window.emailjs.init(HOME_EMAILJS_PUBLIC_KEY);
+        return;
+      }
+
+      const existing = document.querySelector<HTMLScriptElement>(
+        'script[src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"]',
+      );
+
+      if (existing) {
+        existing.addEventListener(
+          "load",
+          () => window.emailjs?.init(HOME_EMAILJS_PUBLIC_KEY),
+          { once: true },
+        );
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src =
+        "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
+      script.onload = () => window.emailjs?.init(HOME_EMAILJS_PUBLIC_KEY);
+      document.head.appendChild(script);
+    }
+
+    function setHomeFormMessage(
+      node: HTMLElement,
+      message: string,
+      state: "success" | "error",
+    ) {
+      node.textContent = message;
+      node.dataset.state = state;
+      node.hidden = false;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initEmailJsForHome();
+
+      const form = document.getElementById(
+        "home-contact-form",
+      ) as HTMLFormElement | null;
+      const formMessage = document.getElementById("home-form-message");
+
+      if (!form || !formMessage) return;
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const submitButton = form.querySelector(
+          'button[type="submit"]',
+        ) as HTMLButtonElement | null;
+        const submitText = document.getElementById("home-submit-text");
+        const submitLoading = document.getElementById("home-submit-loading");
+
+        if (!submitButton || !submitText || !submitLoading) return;
+
+        submitButton.disabled = true;
+        submitText.classList.add("hidden");
+        submitLoading.classList.remove("hidden");
+        formMessage.hidden = true;
+
+        try {
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+
+          if (!data.name || !data.email || !data.message) {
+            throw new Error("Name, email, and message are required.");
+          }
+
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(data.email as string)) {
+            throw new Error("Please provide a valid email address.");
+          }
+
+          if (!window.emailjs) {
+            throw new Error("EmailJS is still loading. Please try again.");
+          }
+
+          await window.emailjs.send(
+            HOME_EMAILJS_SERVICE_ID,
+            HOME_EMAILJS_TEMPLATE_ID,
+            {
+              from_name: data.name,
+              from_email: data.email,
+              phone: data.phone || "Not provided",
+              message: data.message,
+              to_email: "jacintobryan3@gmail.com",
+            },
+          );
+
+          setHomeFormMessage(
+            formMessage,
+            "Thank you! Your message has been sent successfully. I'll get back to you shortly.",
+            "success",
+          );
+          form.reset();
+        } catch (error) {
+          console.error("Home contact form error:", error);
+          setHomeFormMessage(
+            formMessage,
+            "Sorry, there was an issue sending your message. Please try again or email me at jacintobryan3@gmail.com.",
+            "error",
+          );
+        } finally {
+          submitButton.disabled = false;
+          submitText.classList.remove("hidden");
+          submitLoading.classList.add("hidden");
+          formMessage.hidden = false;
+        }
       });
     });
   </script>

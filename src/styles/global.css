@@ -568,7 +568,6 @@ button:hover,
 .icon-btn:hover,
 .nav-link:hover,
 header a:hover,
-a[href="/contact"]:hover,
 a[href="/work"]:hover {
   transform: translateY(-1px);
   transition: transform 150ms ease-out;
@@ -579,7 +578,6 @@ button:active,
 .icon-btn:active,
 .nav-link:active,
 header a:active,
-a[href="/contact"]:active,
 a[href="/work"]:active {
   transform: translateY(0);
   transition: transform 100ms ease-out;
