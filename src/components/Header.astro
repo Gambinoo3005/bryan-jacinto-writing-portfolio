@@ -17,11 +17,13 @@ const current = Astro.url.pathname;
 ---
 
 <header
-  class="sticky top-0 z-50 bg-[var(--header-bg)] dark:bg-gradient-to-br dark:from-[var(--header-bg)] dark:via-[var(--header-bg)] dark:to-[color-mix(in_srgb,var(--header-bg)_95%,var(--color-accent)_5%)] py-3 text-[var(--color-text)]"
+  data-site-header
+  class="sticky top-0 z-50 bg-[var(--section-bg)] py-3 text-[var(--color-text)]"
 >
-  <div class="mx-auto max-w-6xl px-4 relative">
+  <div data-header-shell class="mx-auto max-w-6xl px-4 relative">
     <!-- grid: 1fr (left) | auto (center nav) | 1fr (right) for desktop; flex justify-between for mobile -->
     <div
+      data-header-frame
       class="h-16 flex md:grid md:grid-cols-[1fr_auto_1fr] items-center justify-between
              rounded-2xl bg-[var(--surface-glass-strong)]
              border border-[var(--color-border)]
@@ -337,11 +339,76 @@ const current = Astro.url.pathname;
   </div>
 </header>
 
+<style>
+  [data-site-header] {
+    transition: padding 260ms ease;
+  }
+
+  [data-header-shell] {
+    transition:
+      max-width 260ms ease,
+      padding 260ms ease;
+  }
+
+  [data-header-frame] {
+    transition:
+      border-radius 260ms ease,
+      box-shadow 260ms ease,
+      border-color 260ms ease;
+  }
+
+  @media (min-width: 768px) {
+    [data-site-header].is-scrolled {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    [data-site-header].is-scrolled [data-header-shell] {
+      max-width: 100%;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    [data-site-header].is-scrolled [data-header-frame] {
+      border-radius: 0;
+      border-left-width: 0;
+      border-right-width: 0;
+      box-shadow: none;
+      padding-left: clamp(0.85rem, 2vw, 1.85rem);
+      padding-right: clamp(0.85rem, 2vw, 1.85rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-site-header],
+    [data-header-shell],
+    [data-header-frame] {
+      transition: none;
+    }
+  }
+</style>
+
 <script>
   /// <reference lib="dom" />
 
   const btn = document.querySelector("[data-menu-button]");
   const panel = document.getElementById("mobile-menu");
+  const siteHeader = document.querySelector<HTMLElement>("[data-site-header]");
+
+  if (siteHeader) {
+    const scrollThreshold = 20;
+    let isScrolled = false;
+
+    const syncHeaderScrollState = () => {
+      const next = window.scrollY > scrollThreshold;
+      if (next === isScrolled) return;
+      isScrolled = next;
+      siteHeader.classList.toggle("is-scrolled", isScrolled);
+    };
+
+    syncHeaderScrollState();
+    window.addEventListener("scroll", syncHeaderScrollState, { passive: true });
+  }
 
   if (btn && panel) {
     btn.addEventListener("click", () => {

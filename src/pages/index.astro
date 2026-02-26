@@ -379,152 +379,132 @@ const toolsetData = [
     class="hero-section flex items-center justify-center text-[var(--color-text)]"
     data-hero
   >
-    <div class="w-full max-w-7xl mx-auto px-5">
+    <div class="w-full max-w-6xl mx-auto px-5 sm:px-6">
       <div
-        class="flex flex-col lg:flex-row justify-center items-center gap-10 lg:gap-16 w-full"
+        class="hero-content-wrap mx-auto w-full max-w-4xl flex flex-col items-center text-center gap-5 sm:gap-6"
       >
-        <!-- Left Column: Hero Content -->
         <div
-          class="flex flex-col space-y-6 text-center lg:text-left max-w-2xl lg:max-w-xl"
+          class="hero-avatar-wrap"
+          data-hero-avatar
+          data-hero-animate
         >
-          <!-- Name -->
-          <h1 class="hero" data-hero-title data-hero-animate>Bryan Jacinto</h1>
-
-          <!-- Roles as refined chips -->
-          <ul
-            class="flex flex-wrap items-center justify-center lg:justify-start gap-2.5"
-            data-hero-roles
-          >
-            {
-              roles.map((r) => (
-                <li
-                  class="role-badge inline-flex items-center gap-2 rounded-md
-                       px-3.5 py-1.5
-                       text-[12.5px] sm:text-[13px] font-medium tracking-tight
-                       text-[var(--color-text)]
-                       bg-[var(--surface-glass)]
-                       border border-[var(--color-border)]
-                       ring-1 ring-[#0E335733] dark:ring-[#86B7FF2D]
-                       shadow-sm
-                       transition-all duration-300 ease-out
-                       cursor-default"
-                  data-hero-animate
-                >
-                  <span class="role-badge-dot h-1.5 w-1.5 rounded-full bg-current/50 transition-all duration-300" />
-                  {r}
-                </li>
-              ))
-            }
-          </ul>
-
-          <!-- Compact blurb -->
-          <p
-            class="text-[15px] sm:text-base md:text-[17px] leading-relaxed text-[var(--color-muted)] max-w-2xl mx-auto lg:mx-0"
-            data-hero-text
-            data-hero-animate
-          >
-            Copywriter with seven years of experience creating SEO content, blog
-            posts, landing pages, and marketing copy for global clients.
-            Currently crafting meaningful content for <a
-              href="https://www.mobiloud.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-[var(--color-text)] font-medium hover:text-[var(--color-accent)] transition-colors duration-200 underline decoration-1 underline-offset-2"
-              >Mobiloud</a
-            >, <a
-              href="https://www.monok.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-[var(--color-text)] font-medium hover:text-[var(--color-accent)] transition-colors duration-200 underline decoration-1 underline-offset-2"
-              >Monok</a
-            >, and <a
-              href="https://thefriendlyskies.net/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-[var(--color-text)] font-medium hover:text-[var(--color-accent)] transition-colors duration-200 underline decoration-1 underline-offset-2"
-              >The Friendly Skies</a
-            >.
-          </p>
-
-          <!-- CTAs -->
-          <div
-            class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2"
-          >
-            <a
-              href="/work"
-              class="btn-primary work-cta-button inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-semibold transition-all duration-200 w-full sm:w-auto"
-              data-hero-cta
-              data-hero-animate
-              aria-label="See my work"
-            >
-              <span class="work-cta-swap" aria-hidden="true">
-                <span class="work-cta-front">See my work</span>
-                <span class="work-cta-back">
-                  <svg
-                    class="work-cta-arrow-icon"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path d="M5 12h14"></path>
-                    <path d="M13 7l6 5-6 5"></path>
-                  </svg>
-                </span>
-              </span>
-            </a>
-            <a
-              href="/contact"
-              class="snake-border-button book-call-button group inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-semibold focus:outline-none w-full sm:w-auto"
-              data-hero-cta
-              data-hero-animate
-              aria-label="Book a call"
-            >
-              <span class="book-call-swap" aria-hidden="true">
-                <span class="book-call-front">Book a Call</span>
-                <span class="book-call-back">
-                  <img
-                    src="/Bryan_hero_image.webp"
-                    alt=""
-                    class="book-call-avatar"
-                    loading="lazy"
-                    decoding="async"
-                    width="24"
-                    height="24"
-                  />
-                  <span class="book-call-plus">+</span>
-                  <span class="book-call-you">YOU</span>
-                </span>
-              </span>
-            </a>
-          </div>
+          <img
+            src="/Bryan_hero_image.webp"
+            alt="Bryan Jacinto"
+            class="hero-avatar-image"
+            loading="eager"
+            fetchpriority="high"
+            width="96"
+            height="96"
+          />
         </div>
 
-        <!-- Right Column: Profile Image (Desktop Only) -->
-        <div class="hidden lg:flex justify-center items-center flex-shrink-0">
-          <div
-            class="relative w-72 h-72 xl:w-80 xl:h-80 aspect-square"
-            data-hero-image
+        <h1 class="hero hero-main-title" data-hero-title data-hero-animate>
+          Hi, I'm Bryan Jacinto 👋
+        </h1>
+
+        <ul
+          class="flex flex-wrap items-center justify-center gap-2.5"
+          data-hero-roles
+        >
+          {
+            roles.map((r) => (
+              <li
+                class="role-badge inline-flex items-center gap-2 rounded-md
+                     px-3.5 py-1.5
+                     text-[12.5px] sm:text-[13px] font-medium tracking-tight
+                     text-[var(--color-text)]
+                     bg-[var(--surface-glass)]
+                     border border-[var(--color-border)]
+                     ring-1 ring-[#0E335733] dark:ring-[#86B7FF2D]
+                     shadow-sm
+                     transition-all duration-300 ease-out
+                     cursor-default"
+                data-hero-animate
+              >
+                <span class="role-badge-dot h-1.5 w-1.5 rounded-full bg-current/50 transition-all duration-300" />
+                {r}
+              </li>
+            ))
+          }
+        </ul>
+
+        <p
+          class="text-[15px] sm:text-base md:text-[17px] leading-relaxed text-[var(--color-muted)] max-w-3xl mx-auto"
+          data-hero-text
+          data-hero-animate
+        >
+          Copywriter with seven years of experience creating SEO content, blog
+          posts, landing pages, and marketing copy for global clients.
+          Currently crafting meaningful content for <a
+            href="https://www.mobiloud.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-[var(--color-text)] font-medium hover:text-[var(--color-accent)] transition-colors duration-200 underline decoration-1 underline-offset-2"
+            >Mobiloud</a
+          >, <a
+            href="https://www.monok.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-[var(--color-text)] font-medium hover:text-[var(--color-accent)] transition-colors duration-200 underline decoration-1 underline-offset-2"
+            >Monok</a
+          >, and <a
+            href="https://thefriendlyskies.net/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-[var(--color-text)] font-medium hover:text-[var(--color-accent)] transition-colors duration-200 underline decoration-1 underline-offset-2"
+            >The Friendly Skies</a
+          >.
+        </p>
+
+        <div
+          class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2"
+        >
+          <a
+            href="/work"
+            class="btn-primary work-cta-button inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-semibold transition-all duration-200 w-full sm:w-auto"
+            data-hero-cta
             data-hero-animate
+            aria-label="See my work"
           >
-            <!-- Profile Image -->
-            <div
-              class="absolute inset-0 rounded-2xl overflow-hidden border border-[var(--color-border)] shadow-xl"
-            >
-              <img
-                src="/Bryan_hero_image.webp"
-                alt="Bryan Jacinto"
-                class="w-full h-full object-cover"
-                loading="eager"
-                fetchpriority="high"
-                width="320"
-                height="320"
-              />
-            </div>
-            <!-- Decorative element -->
-            <div
-              class="absolute -inset-4 rounded-2xl border border-[var(--color-border)] opacity-20 -z-10"
-            >
-            </div>
-          </div>
+            <span class="work-cta-swap" aria-hidden="true">
+              <span class="work-cta-front">See my work</span>
+              <span class="work-cta-back">
+                <svg
+                  class="work-cta-arrow-icon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path d="M5 12h14"></path>
+                  <path d="M13 7l6 5-6 5"></path>
+                </svg>
+              </span>
+            </span>
+          </a>
+          <a
+            href="/contact"
+            class="snake-border-button book-call-button group inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-semibold focus:outline-none w-full sm:w-auto"
+            data-hero-cta
+            data-hero-animate
+            aria-label="Book a call"
+          >
+            <span class="book-call-swap" aria-hidden="true">
+              <span class="book-call-front">Book a Call</span>
+              <span class="book-call-back">
+                <img
+                  src="/Bryan_hero_image.webp"
+                  alt=""
+                  class="book-call-avatar"
+                  loading="lazy"
+                  decoding="async"
+                  width="24"
+                  height="24"
+                />
+                <span class="book-call-plus">+</span>
+                <span class="book-call-you">YOU</span>
+              </span>
+            </span>
+          </a>
         </div>
       </div>
     </div>
@@ -560,6 +540,7 @@ const toolsetData = [
         gsap.registerPlugin(ScrollTrigger);
 
         const heroTitle = hero.querySelector("[data-hero-title]");
+        const heroAvatar = hero.querySelector("[data-hero-avatar]");
         const roleItems = hero.querySelectorAll("[data-hero-roles] li");
         const heroText = hero.querySelector("[data-hero-text]");
         const heroCtas = hero.querySelectorAll("[data-hero-cta]");
@@ -579,8 +560,12 @@ const toolsetData = [
           // No ScrollTrigger - animations start immediately for initial viewport
         });
 
+        if (heroAvatar) {
+          tl.to(heroAvatar, { opacity: 1, y: 0, duration: 0.35 });
+        }
+
         if (heroTitle) {
-          tl.to(heroTitle, { opacity: 1, y: 0, duration: 0.4 });
+          tl.to(heroTitle, { opacity: 1, y: 0, duration: 0.4 }, "-=0.08");
         }
 
         if (roleItems.length) {
@@ -788,17 +773,42 @@ const toolsetData = [
   <style>
     /* Hero section with mathematically perfect positioning */
     .hero-section {
-      min-height: clamp(
-        520px,
-        calc(100vh - 88px),
-        720px
-      ) !important; /* Fill viewport while maintaining comfortable bounds */
-      padding: clamp(4rem, 6vw, 5rem) 0 !important; /* Match section spacing while keeping symmetry */
+      min-height: calc(100vh - 88px) !important;
+      padding: clamp(1.4rem, 2.6vw, 2.2rem) 0 !important;
       margin-top: -88px !important; /* Compensate for BaseLayout's pt-[88px] on smooth-content */
       background-color: var(--section-bg);
       display: flex !important;
-      align-items: center !important; /* Center content vertically */
+      align-items: center !important;
       justify-content: center !important;
+    }
+
+    .hero-content-wrap {
+      padding-top: 0;
+    }
+
+    .hero-main-title {
+      margin: 0;
+      max-width: 20ch;
+      line-height: 1.12;
+      font-size: clamp(1.9rem, 4.2vw, 3rem) !important;
+    }
+
+    .hero-avatar-wrap {
+      width: clamp(74px, 9vw, 102px);
+      height: clamp(74px, 9vw, 102px);
+      border-radius: 9999px;
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      box-shadow: 0 12px 24px color-mix(in srgb, var(--color-text) 16%, transparent);
+      background: var(--card-bg);
+    }
+
+    .hero-avatar-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 16%;
+      display: block;
     }
 
     /* Mobile hero section adjustments */
@@ -807,18 +817,22 @@ const toolsetData = [
         height: auto !important;
         min-height: calc(
           100vh - 88px
-        ) !important; /* Take full viewport to push experience below fold */
-        padding: 4rem 0 8rem 0 !important; /* Top padding for breathing room, large bottom padding to push experience out of view */
+        ) !important;
+        padding: 2.15rem 0 2.7rem 0 !important;
         margin-top: -88px !important; /* Maintain negative margin on mobile */
         display: flex !important;
-        align-items: flex-start !important;
+        align-items: center !important;
+      }
+
+      .hero-content-wrap {
+        padding-top: 0;
       }
     }
 
     @media (max-width: 480px) {
       .hero-section {
         min-height: calc(100vh - 88px) !important;
-        padding: 3rem 0 6rem 0 !important; /* Adjusted top padding, large bottom padding to hide experience section */
+        padding: 1.85rem 0 2.3rem 0 !important;
         margin-top: -88px !important; /* Maintain negative margin on mobile */
       }
     }
