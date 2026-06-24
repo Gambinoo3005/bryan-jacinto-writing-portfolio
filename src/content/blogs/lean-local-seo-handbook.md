@@ -13,7 +13,7 @@ I've been doing local SEO for small businesses for years now, and honestly? The 
 
 No tricks. No hacks. Just solid, consistent work.
 
-## Your Google Business Profile Is your digital storefront
+## Your Google Business Profile is your digital storefront
 
 Here's something I tell every client: your Google Business Profile is basically your digital storefront. And just like a physical storefront, if it looks abandoned or half-finished, people notice. They always do.
 

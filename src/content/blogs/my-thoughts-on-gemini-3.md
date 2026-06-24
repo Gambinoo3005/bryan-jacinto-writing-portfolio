@@ -26,7 +26,7 @@ I'm not easily impressed by "new AI model" announcements anymore because they al
 
 But Gemini 3 feels different. Not just incrementally better. Actually different in ways that made me stop and think "wait, how did it do that?"
 
-## The Numbers Are Ridiculous
+## The numbers are ridiculous
 
 Let me get the benchmark stuff out of the way first because the scores are genuinely impressive.
 
@@ -40,7 +40,7 @@ These aren't small improvements. These are "what the hell happened" jumps.
 
 But benchmarks are benchmarks. What matters is how it actually works when you use it.
 
-## It Reads the Room
+## It reads the room
 
 Here's what stood out immediately: Gemini 3 is way better at understanding what you're actually asking for without you having to spell everything out.
 
@@ -52,7 +52,7 @@ Google's calling this "reading the room," and it's accurate.
 
 The model picks up on subtle cues about what you need, not just what you said. It feels less like prompting an AI and more like working with someone who gets it.
 
-## The Multimodal Stuff Is Where It Gets Crazy
+## The multimodal stuff is where it gets crazy
 
 Gemini's always been good at handling multiple types of input like text, images, video, audio. But Gemini 3 takes that to another level.
 
@@ -62,7 +62,7 @@ The 1 million token context window means you can feed it massive amounts of info
 
 I tested this by giving it three hour-long YouTube tutorials on React and asking it to summarize the key differences in approach between them. It did. Accurately. That's insane.
 
-## Gemini 3 Deep Think Pushes Even Further
+## Gemini 3 Deep Think pushes even further
 
 There's also Gemini 3 Deep Think mode, which is basically Gemini 3 but with even more reasoning power.
 
@@ -70,7 +70,7 @@ It scored 41% on Humanity's Last Exam and 93.8% on GPQA Diamond. More impressive
 
 Deep Think mode isn't available to everyone yet. Google's doing safety testing and will roll it out to Ultra subscribers soon. But the benchmarks suggest it's a step-change in capability, not just a slight bump.
 
-## The Coding Improvements Are Real
+## The coding improvements are real
 
 I typically use Claude for general coding, Codex for intense backend stuff, and Gemini for tasks that need its large context window. Gemini 3 might actually be good at some front-end work now too.
 
@@ -88,7 +88,7 @@ I tried Antigravity right away when they launched the public preview on November
 
 But honestly, it feels like a copy of Windsurf. The rate limits are generous but not quite enough, and there are some QoL features missing. It needs more work before it feels like a complete product.
 
-## Long-Horizon Planning That Actually Works
+## Long-horizon planning that actually works
 
 One of the big improvements is Gemini 3's ability to plan and execute over longer time horizons without getting distracted or drifting off task.
 
@@ -100,7 +100,7 @@ Google AI Ultra subscribers can try these agentic capabilities with Gemini Agent
 
 I haven't tried Gemini Agent yet since I'm not an Ultra subscriber, but the demos look promising. If it actually works as advertised, this is the kind of AI assistance that changes how you work, not just speeds up what you already do.
 
-## Where It's Available
+## Where it's available
 
 Gemini 3 rolled out on November 18th across Google's ecosystem. It's in the Gemini app for everyone, in AI Mode in Search for Pro and Ultra subscribers, and available to developers through AI Studio, Vertex AI, and the new Antigravity platform.
 
@@ -108,7 +108,7 @@ It's also available in third-party tools like Cursor, GitHub Copilot, JetBrains,
 
 Deep Think mode rolled out to Ultra subscribers a few weeks after launch, following additional safety testing. By the time I'm writing this, it's already available if you're subscribed.
 
-## The "But" Section
+## The "but" section
 
 No model is perfect, and Gemini 3 has limitations.
 
