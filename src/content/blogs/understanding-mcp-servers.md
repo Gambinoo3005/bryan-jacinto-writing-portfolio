@@ -40,7 +40,7 @@ MCP turns that M×N problem into a tidy **M+N**. Each AI app implements the MCP 
 
 That shift, from "rebuild the same integration over and over" to "build it once, plug in everywhere," is what makes MCP worth caring about.
 
-## How it works: the three pieces
+## The three moving parts
 
 MCP has a simple architecture once you see the shape of it. There are three roles:
 
@@ -50,7 +50,7 @@ MCP has a simple architecture once you see the shape of it. There are three role
 
 The short version: the **host** is the application, the **client** is the connection, and the **server** is the thing on the other end offering up tools and data. A host can run several clients at once, each wired to a different server. That's how a single AI app ends up connected to your files, your calendar, and your codebase all at the same time.
 
-## What a server actually exposes
+## Tools, resources, and prompts
 
 So what does a server *give* the AI? MCP servers offer up to three kinds of things, and understanding these three is most of understanding MCP:
 
@@ -60,9 +60,9 @@ So what does a server *give* the AI? MCP servers offer up to three kinds of thin
 
 Tools get most of the attention, because they're what turn a chatbot into something that can act. But resources matter just as much. They're what let an AI work from *your* actual context: your files, your data, your specifics.
 
-## How the pieces talk
+## The wiring underneath
 
-Under the hood, MCP messages are sent using **JSON-RPC 2.0**, a long-established and pleasantly boring standard for structured request and response messaging. You don't need to memorize that. The takeaway is that MCP runs on proven, well-understood plumbing.
+At the message level, MCP messages are sent using **JSON-RPC 2.0**, a long-established and pleasantly boring standard for structured request and response messaging. You don't need to memorize that. The takeaway is that MCP runs on proven, well-understood plumbing.
 
 There are two main ways a host and server connect:
 
@@ -88,7 +88,7 @@ In practice, wiring up a local server can be as simple as a few lines of config 
 
 That's the host being told: "start this server, point it at my Documents folder, and let the AI use it." Once it's connected, the assistant can read and work with those files directly. No copy-pasting, no uploading the same document for the fifth time.
 
-## What this looks like in real life
+## Where it earns its keep
 
 This stopped being abstract for me the moment I connected a few servers to my own setup.
 
