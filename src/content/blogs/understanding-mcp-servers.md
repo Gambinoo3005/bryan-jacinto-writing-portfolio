@@ -28,7 +28,7 @@ Before USB-C, every device had its own plug. Your phone, your camera, your lapto
 
 MCP is that, but for AI. Instead of every AI app inventing its own way to connect to Google Drive, then Slack, then your database, then your CRM, there's now one standard plug. Build a connector once, and any MCP-aware AI app can use it.
 
-## The problem it actually solves
+## Why it exists
 
 To appreciate why this matters, you have to understand the mess it replaces.
 
@@ -40,7 +40,7 @@ MCP turns that M×N problem into a tidy **M+N**. Each AI app implements the MCP 
 
 That shift, from "rebuild the same integration over and over" to "build it once, plug in everywhere," is what makes MCP worth caring about.
 
-## The three moving parts
+## How it's put together
 
 MCP has a simple architecture once you see the shape of it. There are three roles:
 
@@ -60,7 +60,7 @@ So what does a server *give* the AI? MCP servers offer up to three kinds of thin
 
 Tools get most of the attention, because they're what turn a chatbot into something that can act. But resources matter just as much. They're what let an AI work from *your* actual context: your files, your data, your specifics.
 
-## The wiring underneath
+## Under the hood
 
 At the message level, MCP messages are sent using **JSON-RPC 2.0**, a long-established and pleasantly boring standard for structured request and response messaging. You don't need to memorize that. The takeaway is that MCP runs on proven, well-understood plumbing.
 
@@ -98,7 +98,7 @@ For someone whose job is content and SEO, that's a big deal. A lot of my value i
 
 And because it's a standard, the same connectors work across tools, so the setup I build isn't tied to any single app.
 
-## The catch (because there's always one)
+## Here's the catch
 
 I'm not going to pretend this is all upside. A few honest caveats.
 
