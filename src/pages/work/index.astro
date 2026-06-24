@@ -22,44 +22,10 @@ type WorkEntry = {
   ctaText: string;
 };
 
-const additionalProjects: WorkEntry[] = [
-  {
-    id: "website-1",
-    title: "Uragon Transport Services",
-    summary:
-      "Complete full-stack web development project including frontend design, backend development, SEO optimization, and copywriting for a car rental service in Bicol Region, Philippines.",
-    heroImage: "/hero-images/uragon-website.webp",
-    link: "https://uragon-transport-services.vercel.app/",
-    isExternal: true,
-    typeLabel: "Website",
-    filterType: "website",
-    client: "Uragon Transport Services",
-    industry: "Automotive",
-    pubDate: new Date("2025-01-01"),
-    ctaText: "Visit site",
-  },
-  {
-    id: "website-2",
-    title: "Go Leap Digital",
-    summary:
-      "Full-stack development for a digital marketing agency specializing in modern web solutions. Comprehensive project including Next.js frontend architecture, responsive design system, SEO optimization, and strategic copywriting to drive client conversions.",
-    heroImage: "/hero-images/go-leap-website.webp",
-    link: "https://go-leap-digital.vercel.app/",
-    isExternal: true,
-    typeLabel: "Website",
-    filterType: "website",
-    client: "Go Leap Digital",
-    industry: "Digital Marketing",
-    pubDate: new Date("2025-01-01"),
-    ctaText: "Visit site",
-  },
-];
-
 const priorityOrder: Record<string, number> = {
   "article-what-is-whatnot": 0,
   "case-study-aptean-erp-case-study": 1,
   "article-aptean-aps-manufacturing-efficiency": 2,
-  "website-1": 3,
 };
 
 const workEntries: WorkEntry[] = [
@@ -85,7 +51,6 @@ const workEntries: WorkEntry[] = [
       ctaText: isArticle ? "Read article" : "View case study",
     };
   }),
-  ...additionalProjects,
 ].sort((a, b) => {
   const priorityA = priorityOrder[a.id] ?? Number.MAX_SAFE_INTEGER;
   const priorityB = priorityOrder[b.id] ?? Number.MAX_SAFE_INTEGER;
@@ -124,7 +89,6 @@ const workEntries: WorkEntry[] = [
                 >Case Studies</button
               >
               <button class="filter-tab" data-filter="article">Articles</button>
-              <button class="filter-tab" data-filter="website">Websites</button>
             </div>
           </div>
         </aside>

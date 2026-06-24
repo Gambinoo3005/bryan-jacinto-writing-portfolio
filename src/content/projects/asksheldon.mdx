@@ -1,0 +1,62 @@
+---
+title: "AskSheldon"
+summary: "A private Discord bot that roleplays as Sheldon Cooper and answers questions on anything, fully in character. Powered by DeepSeek, written in Python, running 24/7 on Railway."
+tags: ["Discord Bot", "Python", "AI", "DeepSeek", "Railway"]
+pubDate: 2026-06-24
+repoUrl: "https://github.com/Gambinoo3005/asksheldon"
+stack: ["Python", "DeepSeek V4 Flash", "discord.py", "Railway"]
+role: "Solo build"
+year: "2026"
+status: "Running 24/7"
+featured: true
+draft: false
+---
+
+I built **AskSheldon**, a private Discord bot for a friend-group server that roleplays as Sheldon Cooper from *Young Sheldon*. It answers questions on basically anything, fully in character: brilliant, pedantic, endearingly arrogant, and somehow still genuinely helpful. It runs on DeepSeek's V4 Flash model, is written in Python, and stays online 24/7 on Railway.
+
+The goal was simple. A bot that's actually fun to talk to *and* actually useful, without the personality ever slipping.
+
+## Personality and voice
+
+The whole thing lives or dies on the character holding up, so most of the work went into the voice.
+
+- **Always in character.** Condescending but not cruel. He takes things literally, misses sarcasm, and reframes everything through physics, math, trains, comic books, and rules.
+- **Catchphrases used sparingly.** "Bazinga" and "I'm not crazy, my mother had me tested" show up rarely, so they land instead of turning into a tic.
+- **A contrarian, not a yes-man.** He pedantically corrects a flawed premise instead of just agreeing, but he concedes gracefully when you're actually right.
+- **Adaptive length.** Short and punchy for banter and memes, a fuller "teaching mode" when you genuinely ask him to explain something, and never a rambling essay.
+- **Genuinely creative.** He doesn't just answer, he invents. Ask what his Jujutsu Kaisen powers would be and he designs an "Infinite Whiteboard" domain expansion and a "Debug Mode" healing technique, completely in character.
+
+## What it can actually do
+
+- **Answer real questions usefully, on any topic.** Physics, nutrition, gaming laptops, League of Legends meta, anime lore, internet slang. The answers are correct and actionable, just delivered with a side of snide.
+- **Know the things "beneath" him.** An earlier version dodged games and slang with "I wouldn't know." Now he sniffs that a topic is trivial and then proves he knows it anyway, which is much truer to the character.
+- **Stay show-accurate.** A bundled knowledge file gives him precise *Young Sheldon* facts: the whole Cooper family, recurring characters, season arcs, even his future in *The Big Bang Theory*. It also patches in things past the model's training cutoff, like the 2026 TikTok brainrot meme wave he'd otherwise have no clue about.
+- **Ground answers in his own world.** Ask about alcohol and he brings up his father singing country music off-key, not just generic facts.
+- **Self-moderate by personality.** Crude or inappropriate bait gets a prissy, dismissive, in-character brush-off. The character itself acts as the guardrail, so there's no separate filter to maintain.
+- **Hold a conversation.** He remembers recent context per channel, so a follow-up like "and his brother?" just works.
+
+## How you talk to it
+
+- `!ask <question>` to ask him anything
+- `@mention` him, or reply to one of his messages, to talk without the command
+- `!reset` to wipe the channel's conversation memory
+- `!usage` to see token usage and an approximate running cost
+- `!ping` for latency, `!help` for the command list
+
+## Memory
+
+Conversation history and usage stats persist to disk on a Railway volume, so he keeps his memory across restarts and redeploys instead of starting fresh every time.
+
+## Speed and cost
+
+This was the surprising part. Replies land in about one to three seconds, and it's almost free to run. Between a cheap model, aggressive prompt caching, and deliberately short answers, even 100 messages a day for a full year costs roughly three to five dollars in API fees. The real cost is the host, not the AI.
+
+## Under the hood
+
+The bot holds a persistent connection to Discord. On each message it bundles three things into a single API call: a system prompt defining Sheldon's personality, a knowledge cheat sheet, and the channel's recent history. DeepSeek generates the reply, the bot saves the updated memory to disk, and posts the answer back. Thinking mode is off for speed, length is capped to keep things concise, and a per-user cooldown keeps the channel tidy.
+
+## What it can't do (yet)
+
+In the interest of honesty: the one thing he can't do is know about events after roughly April 2026, the model's training cutoff, unless they're written into his cheat sheet. So he's current, just not live. Web access is the obvious next upgrade.
+
+[The full source is on GitHub](https://github.com/Gambinoo3005/asksheldon) if you want to see how it's wired together.
