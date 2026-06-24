@@ -1,0 +1,66 @@
+---
+title: "This Very Site — A Portfolio Built From Scratch"
+summary: "I designed, wrote, and engineered my own portfolio in Astro — proof that I can do the words and ship the site they live on."
+tags: ["Website", "Astro", "Web Development", "Open Source", "SEO"]
+pubDate: 2026-06-24
+client: "Personal Project"
+results: "99 Performance · 100 SEO (Lighthouse)"
+hero: "/hero-images/astro.webp"
+industry: "Web Development"
+challenges: ["Stand out without a cookie-cutter template", "Prove copywriting and engineering in one place", "Stay fast and accessible on every device"]
+benefits: ["Sub-second loads with near-zero JavaScript", "Type-safe content I can publish in minutes", "Open-source code anyone can read"]
+---
+
+<div class="original-source">
+  <p><a href="https://bryanjacinto.com" target="_blank" rel="noopener noreferrer">See it live →</a> · <a href="https://github.com/Gambinoo3005/bryan-jacinto-writing-portfolio" target="_blank" rel="noopener noreferrer">View the source on GitHub →</a> · <a href="/blogs/why-i-built-my-portfolio-with-astro">Read the full build story →</a></p>
+</div>
+
+<div class="case-study-meta">
+  <div>
+    <h3>The Brief</h3>
+    <ul>
+      <li>Move off a rigid portfolio platform and own every pixel</li>
+      <li>Show — not just claim — that I can write copy and build the site</li>
+      <li>Keep it fast, accessible, and genuinely good at SEO</li>
+    </ul>
+  </div>
+  <div>
+    <h3>What I Shipped</h3>
+    <ul>
+      <li>A hand-built Astro site with an interactive experience timeline</li>
+      <li>Type-safe MDX content collections for blogs and case studies</li>
+      <li>Structured data, sitemap, and a polished dark/light experience</li>
+    </ul>
+  </div>
+</div>
+
+<div class="company-background">
+  <h2>Why I built it myself</h2>
+  <p>Most writers hand you a PDF and a Google Drive folder. I wanted to show, not tell — so instead of dropping my work into template #47, I built the whole thing from scratch. The words are mine, the design is mine, and so is every line of code. The fact that you can read the source on GitHub is sort of the point: I can write the copy <em>and</em> ship the site it lives on.</p>
+</div>
+
+<div class="section-header">
+  <h2>The stack</h2>
+</div>
+
+<p>It's a static <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a> site styled with Tailwind CSS v4 and written in TypeScript. Content lives in MDX collections validated with Zod, so a missing field fails the build instead of shipping a broken page. Animations run on GSAP with Lenis for smooth scroll, and the whole thing deploys on Vercel. Almost nothing ships JavaScript by default — the interactive pieces load only when they're actually needed and motion is allowed.</p>
+
+<div class="section-header">
+  <h2>The parts I'm proud of</h2>
+</div>
+
+<p><strong>An experience timeline that behaves like a real deck of cards.</strong> Swipe it on a phone, click through it, or arrow-key it on desktop — it's a custom card-stack component with organic depth and physics, and it never hijacks the page scroll the way most carousels do.</p>
+
+<p><strong>SEO wired the way I'd wire a client's.</strong> JSON-LD structured data (Person, Article, BlogPosting), a generated sitemap, canonical tags, and proper Open Graph and Twitter cards — not an afterthought, but the foundation.</p>
+
+<p><strong>Accessible and fast on purpose.</strong> Semantic HTML, ARIA where it counts, full keyboard navigation, and reduced-motion support. Images are WebP, the hero is preloaded, and the theme switches with no flash of the wrong colors.</p>
+
+<div class="case-study-meta">
+  <div>
+    <h3>Key Result</h3>
+    <p><strong>99 Performance · 100 SEO</strong></p>
+    <p>Measured with Lighthouse / PageSpeed Insights: 99 desktop performance, a perfect 100 SEO score, first contentful paint around 0.7s, and near-zero layout shift — with real content and animations, tested globally.</p>
+  </div>
+</div>
+
+<p>It's never really "finished" — I keep refining it. But that's the best part of owning the code: when I want to change something, I just change it. <a href="https://github.com/Gambinoo3005/bryan-jacinto-writing-portfolio" target="_blank" rel="noopener noreferrer">The repository is public</a> if you'd like to look under the hood.</p>

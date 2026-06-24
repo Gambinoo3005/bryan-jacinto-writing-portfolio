@@ -11,6 +11,8 @@ draft: false
 
 I rebuilt my portfolio with [Astro.js](https://astro.build/) about two months ago, and honestly? It was one of the best decisions I made this year.
 
+> 💻 **This site is open source.** Everything I describe below is in the repo — [browse the code on GitHub](https://github.com/Gambinoo3005/bryan-jacinto-writing-portfolio) or [see it live](https://bryanjacinto.com).
+
 For a while, I was using Journo Portfolio. It's fine if you need something quick, but I kept hitting walls. The design felt too cookie-cutter, and I couldn't customize things the way I wanted. Every time I tried to tweak something or add a feature, I'd run into limitations. It felt like trying to express yourself with someone else's words.
 
 I only started learning web dev this year, so I'm still pretty new to all of this. I've picked up React, Vue, Next.js, Astro, Tailwind, and the rest of the modern stack everyone mentions. But when I sat down to think about what I actually needed for a portfolio, most of what I'd learned felt like overkill. Did I really need a full React app just to show case studies and blog posts?
@@ -269,3 +271,5 @@ Astro isn't the answer to everything, but for content-focused sites where perfor
 The code's cleaner, the build process is straightforward, and even as someone still learning, it hasn't felt overwhelming. If you're outgrowing a portfolio platform or building something content-heavy from scratch, give Astro a shot.
 
 And if you want to get started yourself, head over to the [official Astro docs](https://docs.astro.build/en/getting-started/).
+
+> 📦 **Want to see exactly how it's wired?** This whole portfolio is open source — [check out the repository on GitHub](https://github.com/Gambinoo3005/bryan-jacinto-writing-portfolio). Read it, fork it, or just poke around the card stack and the SEO setup.
