@@ -37,7 +37,7 @@ Traditional SEO focused on getting clicks. But if AI is answering questions dire
 
 This is where the "snake oil" accusations come from.
 
-GEO isn't a replacement for SEO. It's an extension of it. A lot of what makes good SEO also makes good GEO: clear content, proper structure, answering user questions directly, authoritative sources.
+GEO isn't a replacement for SEO so much as an extension of it. A lot of what makes good SEO also makes good GEO: clear content, proper structure, answering user questions directly, authoritative sources.
 
 [About 50% of sources cited in Google AI Overviews](https://www.deptagency.com/insight/building-the-future-of-generative-engine-optimization-geo/) also rank in the top 10 traditional search results. So if your SEO fundamentals are solid, you're already halfway there.
 
@@ -76,7 +76,7 @@ Strip away the hype, and here's what seems practical:
 
 **Write with depth.** Shallow, keyword-stuffed articles don't cut it. AI platforms pull from sources that provide real substance.
 
-**Keep your SEO strong.** If you're not ranking well in traditional search, you probably won't show up in AI results either. GEO builds on good SEO, it doesn't replace it.
+**Keep your SEO strong.** If you're not ranking well in traditional search, you probably won't show up in AI results either. GEO builds on good SEO rather than replacing it.
 
 ## Red flags to watch for
 

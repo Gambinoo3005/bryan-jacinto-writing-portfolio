@@ -11,7 +11,7 @@ draft: false
 
 I rebuilt my portfolio with [Astro.js](https://astro.build/) about two months ago, and honestly? It was one of the best decisions I made this year.
 
-> 💻 **This site is open source.** Everything I describe below is in the repo — [browse the code on GitHub](https://github.com/Gambinoo3005/bryan-jacinto-writing-portfolio) or [see it live](https://bryanjacinto.com).
+> 💻 **This site is open source.** Everything I describe below is in the repo. [Browse the code on GitHub](https://github.com/Gambinoo3005/bryan-jacinto-writing-portfolio) or [see it live](https://bryanjacinto.com).
 
 For a while, I was using Journo Portfolio. It's fine if you need something quick, but I kept hitting walls. The design felt too cookie-cutter, and I couldn't customize things the way I wanted. Every time I tried to tweak something or add a feature, I'd run into limitations. It felt like trying to express yourself with someone else's words.
 
@@ -272,4 +272,4 @@ The code's cleaner, the build process is straightforward, and even as someone st
 
 And if you want to get started yourself, head over to the [official Astro docs](https://docs.astro.build/en/getting-started/).
 
-> 📦 **Want to see exactly how it's wired?** This whole portfolio is open source — [check out the repository on GitHub](https://github.com/Gambinoo3005/bryan-jacinto-writing-portfolio). Read it, fork it, or just poke around the card stack and the SEO setup.
+> 📦 **Want to see exactly how it's wired?** This whole portfolio is open source. [Check out the repository on GitHub](https://github.com/Gambinoo3005/bryan-jacinto-writing-portfolio). Read it, fork it, or just poke around the card stack and the SEO setup.

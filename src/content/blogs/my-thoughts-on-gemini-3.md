@@ -1,6 +1,6 @@
 ---
 title: "My thoughts on Gemini 3 (this model is insane)"
-description: "After weeks of daily testing, Gemini 3 isn't just better at benchmarks—it's better at understanding what you actually need without excessive prompting."
+description: "After weeks of daily testing, Gemini 3 impressed me less with its benchmark scores than with how well it understands what you actually need without much prompting."
 author: "Bryan Jacinto"
 category: "Tech"
 tags: ["AI Tools", "Gemini", "Large Language Models", "Developer Experience"]
@@ -126,7 +126,7 @@ At this level, choosing between them comes down to specific use cases and person
 
 I'm impressed. Genuinely.
 
-And look, I've had a few weeks to actually live with this model instead of forming opinions after a few hours of testing. That extra time confirmed my initial reaction: Gemini 3 isn't just "better at benchmarks." It's better at understanding what I need, handling complex multimodal inputs, and generating useful outputs without excessive prompting.
+And look, I've had a few weeks to actually live with this model instead of forming opinions after a few hours of testing. That extra time only confirmed my first reaction. The benchmark scores are nice, but what actually won me over is how well it understands what I need, handles complex multimodal inputs, and produces useful output without me over-explaining everything.
 
 The coding improvements are noticeable. The long-horizon planning capabilities suggest we're getting closer to AI that can actually handle end-to-end workflows autonomously. And the fact that it's been stable and consistent over weeks of daily use says something about how well it was tested before launch.
 

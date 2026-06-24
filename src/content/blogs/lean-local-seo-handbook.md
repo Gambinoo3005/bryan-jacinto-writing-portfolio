@@ -19,7 +19,7 @@ Here's something I tell every client: your Google Business Profile is basically 
 
 Start with picking the right primary category. Just the one that fits you best. Then add a few secondary ones if they actually make sense. Don't go overboard here.
 
-Now for the annoying part—and I know it's tedious, but trust me on this—your name, address, and phone number need to match everywhere. Your website, your Facebook page, that random directory you listed yourself on three years ago and forgot about. All of it. Because inconsistency? It confuses Google. And worse, it confuses your actual customers.
+Now for the annoying part. I know it's tedious, but trust me on this: your name, address, and phone number need to match everywhere. Your website, your Facebook page, that random directory you listed yourself on three years ago and forgot about. All of it. Because inconsistency? It confuses Google. And worse, it confuses your actual customers.
 
 Fill out every single field they give you. Services, attributes, business description. The whole thing. And write like you're talking to a neighbor, not feeding lines to a robot. Tell people what you do, who you help, and why they should care about your business specifically.
 
@@ -40,7 +40,7 @@ If they have to scroll and hunt for this information, you've already lost them. 
 
 Got multiple locations? Give each one its own dedicated page with real local details. Mention nearby landmarks, where to park, maybe throw in some photos of your actual team at that location. Make it feel like a real place run by real people, not a template you copied and pasted.
 
-Same thing with your services. Don't just list them out—explain how you work, what people should expect, and put a clear "next step" button right at the top. Remove all the guesswork.
+Same thing with your services. Don't just list them out. Explain how you work, what people should expect, and put a clear "next step" button right at the top. Remove all the guesswork.
 
 Work your city or service area into your content naturally. You know, like how an actual person would talk about it. "We serve Phoenix homeowners" beats "Phoenix plumbing services Phoenix AZ plumber Phoenix" every single time.
 
@@ -58,7 +58,7 @@ When someone leaves you a great review, thank them publicly. It shows you're pay
 
 Bad review? Take a breath, respond professionally, and move the conversation offline to actually fix whatever went wrong. Don't get defensive in public. I've never seen that go well.
 
-Aim for steady, consistent review growth. Not weird bursts of twenty reviews in one week—that looks sketchy to everyone. Just a steady trickle over time.
+Aim for steady, consistent review growth. Not weird bursts of twenty reviews in one week, because that looks sketchy to everyone. Just a steady trickle over time.
 
 Google's your main priority, obviously, but if your customers actually hang out on Yelp or Facebook, don't ignore those platforms either.
 
@@ -88,7 +88,7 @@ Keep paragraphs short. Make headlines clear. Put your calls-to-action where peop
 
 Your site needs to be fast, stable, and work perfectly on phones. This isn't optional anymore, it's just table stakes.
 
-Compress your images. Lazy-load your videos. Don't assault people with pop-ups the second they arrive—it's 2025, we all hate that by now.
+Compress your images. Lazy-load your videos. Don't assault people with pop-ups the second they arrive. It's 2025, we all hate that by now.
 
 Use HTTPS everywhere. This should be automatic at this point.
 
@@ -102,7 +102,7 @@ Here's the truth that nobody wants to hear: Google trusts what your community al
 
 Sponsor a local Little League team. Partner with neighboring businesses on something actually cool. Share your expertise with local news outlets when it makes sense. Be genuinely helpful, not spammy and transactional.
 
-Look for natural link opportunities on school websites, local associations, chamber sites—places where locals actually go for real information.
+Look for natural link opportunities on school websites, local associations, chamber sites, places where locals actually go for real information.
 
 Keep it authentic. No weird link schemes or buying your way onto sketchy directories. Just real community involvement that you'd do anyway because you care about where you work.
 

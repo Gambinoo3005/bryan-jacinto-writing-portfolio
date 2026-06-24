@@ -38,7 +38,7 @@ The staging area exists so you can be selective about what goes into each commit
 
 ## The commands I use every day
 
-`git status` — This is my most-used command. It shows what's changed, what's staged, and what's untracked. I run it constantly, sometimes multiple times between other commands, just to know where I am.
+`git status` is my most-used command. It shows what's changed, what's staged, and what's untracked. I run it constantly, sometimes multiple times between other commands, just to know where I am.
 
 ```bash
 git status
@@ -46,26 +46,26 @@ git status
 
 Always check status before committing to understand what you're actually about to save.
 
-`git add` — Stage changes for commit. You can add specific files or use `git add .` to stage everything. I usually stage specific files so I know exactly what's going into each commit.
+`git add` stages changes for commit. You can add specific files or use `git add .` to stage everything. I usually stage specific files so I know exactly what's going into each commit.
 
 ```bash
 git add filename.js
 git add .  # stages all changes
 ```
 
-`git commit` — Save your staged changes. Write clear messages that explain what changed and why. Not just "fixed bug" but "fixed authentication bug caused by expired session tokens."
+`git commit` saves your staged changes. Write clear messages that explain what changed and why. Not just "fixed bug" but "fixed authentication bug caused by expired session tokens."
 
 ```bash
 git commit -m "Add user authentication validation"
 ```
 
-`git pull` — Fetch and merge changes from the remote repository. I learned the hard way to always pull before starting work. Otherwise, you end up with merge conflicts that could've been avoided.
+`git pull` fetches and merges changes from the remote repository. I learned the hard way to always pull before starting work. Otherwise, you end up with merge conflicts that could've been avoided.
 
 ```bash
 git pull origin main
 ```
 
-`git push` — Upload your commits to the remote repository. This is how you share your work with others or back up to GitHub.
+`git push` uploads your commits to the remote repository. This is how you share your work with others or back up to GitHub.
 
 ```bash
 git push origin branch-name
@@ -82,14 +82,14 @@ git branch              # list branches
 git branch feature-x    # create new branch
 ```
 
-`git switch` — Move between branches. Older tutorials use `git checkout`, but `switch` is clearer.
+`git switch` moves between branches. Older tutorials use `git checkout`, but `switch` is clearer.
 
 ```bash
 git switch main
 git switch -c new-feature  # create and switch in one command
 ```
 
-`git merge` — Combine changes from one branch into another. Switch to the branch you want to merge into, then merge the other branch.
+`git merge` combines changes from one branch into another. Switch to the branch you want to merge into, then merge the other branch.
 
 ```bash
 git switch main
@@ -100,20 +100,20 @@ Sometimes you'll hit merge conflicts. Git can't automatically combine changes, s
 
 ## When things go wrong
 
-`git log` — View commit history. Use `--oneline` for a compact view or `--graph` to see branch structure.
+`git log` shows your commit history. Use `--oneline` for a compact view or `--graph` to see branch structure.
 
 ```bash
 git log --oneline --graph
 ```
 
-`git diff` — See what changed. Without arguments, it shows unstaged changes. Use `--staged` to see what's ready to commit.
+`git diff` lets you see what changed. Without arguments, it shows unstaged changes. Use `--staged` to see what's ready to commit.
 
 ```bash
 git diff              # unstaged changes
 git diff --staged     # staged changes
 ```
 
-`git reset` — Unstage files or undo commits. Be careful with this. `--soft` keeps your changes, `--hard` deletes them permanently.
+`git reset` unstages files or undoes commits. Be careful with this. `--soft` keeps your changes, `--hard` deletes them permanently.
 
 ```bash
 git reset filename.js        # unstage a file
@@ -123,7 +123,7 @@ git reset --hard HEAD~1      # undo last commit, delete changes
 
 I've used `--hard` exactly once and immediately regretted it. Lost an hour of work. Double-check before using that flag.
 
-`git stash` — Temporarily save changes without committing. Useful when you need to switch branches but aren't ready to commit.
+`git stash` temporarily saves changes without committing. Useful when you need to switch branches but aren't ready to commit.
 
 ```bash
 git stash              # save current changes
@@ -165,9 +165,9 @@ git config --list
 
 Once you're comfortable with the basics, these become useful:
 
-- `git rebase` — Rewrite commit history for a cleaner sequence. Controversial because it changes history, but useful for keeping branches tidy.
-- `git cherry-pick` — Apply specific commits from one branch to another. Handy for pulling hotfixes into multiple branches.
-- `git tag` — Mark specific commits as milestones like releases.
+- `git rebase` rewrites commit history for a cleaner sequence. Controversial because it changes history, but useful for keeping branches tidy.
+- `git cherry-pick` applies specific commits from one branch to another. Handy for pulling hotfixes into multiple branches.
+- `git tag` marks specific commits as milestones like releases.
 
 But honestly, you don't need these right away. Master the basics first. Everything else you can learn when you actually need it.
 
