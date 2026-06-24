@@ -334,6 +334,30 @@ main {
   overflow-x: clip;
 }
 
+/* Defensive: keep wide content (code, tables, media, long unbroken strings)
+   from blowing out article columns on small screens. Applies to every
+   current and future post / case study automatically via the .prose class.
+   Uses :where() so specificity stays 0 and never fights component styles. */
+:where(.prose) pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+:where(.prose) table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+:where(.prose) img {
+  max-width: 100%;
+  height: auto;
+}
+:where(.prose) :is(video, iframe) {
+  max-width: 100%;
+}
+:where(.prose) {
+  overflow-wrap: break-word;
+}
+
 /* Ensure sections extend full width without causing overflow */
 section {
   width: 100%;
