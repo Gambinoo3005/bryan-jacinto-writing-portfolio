@@ -1,6 +1,6 @@
 ---
-title: "This Very Site — A Portfolio Built From Scratch"
-summary: "I designed, wrote, and engineered my own portfolio in Astro — proof that I can do the words and ship the site they live on."
+title: "This Very Site: A Portfolio Built From Scratch"
+summary: "I designed, wrote, and engineered my own portfolio in Astro, proof that I can do the words and ship the site they live on."
 tags: ["Website", "Astro", "Web Development", "Open Source", "SEO"]
 pubDate: 2026-06-24
 client: "Personal Project"
@@ -16,7 +16,7 @@ benefits: ["Sub-second loads with near-zero JavaScript", "Type-safe content I ca
 **The brief**
 
 - Move off a rigid portfolio platform and own every pixel
-- Show — not just claim — that I can write copy and build the site
+- Show that I can write copy and build the site, not just claim it
 - Keep it fast, accessible, and genuinely good at SEO
 
 **What I shipped**
@@ -27,20 +27,20 @@ benefits: ["Sub-second loads with near-zero JavaScript", "Type-safe content I ca
 
 ## Why I built it myself
 
-Most writers hand you a PDF and a Google Drive folder. I wanted to show, not tell — so instead of dropping my work into template #47, I built the whole thing from scratch. The words are mine, the design is mine, and so is every line of code. The fact that you can read the source on GitHub is sort of the point: I can write the copy *and* ship the site it lives on.
+Most writers hand you a PDF and a Google Drive folder. I wanted to show, not tell. So instead of dropping my work into template #47, I built the whole thing from scratch. The words are mine, the design is mine, and so is every line of code. The fact that you can read the source on GitHub is sort of the point: I can write the copy *and* ship the site it lives on.
 
 ## The stack
 
-It's a static [Astro](https://astro.build) site styled with Tailwind CSS v4 and written in TypeScript. Content lives in MDX collections validated with Zod, so a missing field fails the build instead of shipping a broken page. Animations run on GSAP with Lenis for smooth scroll, and the whole thing deploys on Vercel. Almost nothing ships JavaScript by default — the interactive pieces load only when they're actually needed and motion is allowed.
+It's a static [Astro](https://astro.build) site styled with Tailwind CSS v4 and written in TypeScript. Content lives in MDX collections validated with Zod, so a missing field fails the build instead of shipping a broken page. Animations run on GSAP with Lenis for smooth scroll, and the whole thing deploys on Vercel. Almost nothing ships JavaScript by default. The interactive pieces load only when they're actually needed and motion is allowed.
 
 ## The parts I'm proud of
 
-**An experience timeline that behaves like a real deck of cards.** Swipe it on a phone, click through it, or arrow-key it on desktop — it's a custom card-stack component with organic depth and physics, and it never hijacks the page scroll the way most carousels do.
+**An experience timeline that behaves like a real deck of cards.** Swipe it on a phone, click through it, or arrow-key it on desktop. It's a custom card-stack component with organic depth and physics, and it never hijacks the page scroll the way most carousels do.
 
-**SEO wired the way I'd wire a client's.** JSON-LD structured data (Person, Article, BlogPosting), a generated sitemap, canonical tags, and proper Open Graph and Twitter cards — not an afterthought, but the foundation.
+**SEO wired the way I'd wire a client's.** JSON-LD structured data (Person, Article, BlogPosting), a generated sitemap, canonical tags, and proper Open Graph and Twitter cards, all built in from the start.
 
 **Accessible and fast on purpose.** Semantic HTML, ARIA where it counts, full keyboard navigation, and reduced-motion support. Images are WebP, the hero is preloaded, and the theme switches with no flash of the wrong colors.
 
-> **99 Performance · 100 SEO.** Measured with Lighthouse / PageSpeed Insights: 99 desktop performance, a perfect 100 SEO score, first contentful paint around 0.7s, and near-zero layout shift — with real content and animations, tested globally.
+> **99 Performance · 100 SEO.** Measured with Lighthouse / PageSpeed Insights: 99 desktop performance, a perfect 100 SEO score, first contentful paint around 0.7s, and near-zero layout shift, with real content and animations, tested globally.
 
-It's never really "finished" — I keep refining it. But that's the best part of owning the code: when I want to change something, I just change it. [The repository is public](https://github.com/Gambinoo3005/bryan-jacinto-writing-portfolio) if you'd like to look under the hood.
+It's never really "finished." I keep refining it. But that's the best part of owning the code: when I want to change something, I just change it. [The repository is public](https://github.com/Gambinoo3005/bryan-jacinto-writing-portfolio) if you'd like to look under the hood.
