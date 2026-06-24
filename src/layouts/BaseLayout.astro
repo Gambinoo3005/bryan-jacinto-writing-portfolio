@@ -13,6 +13,7 @@ interface Props {
   ogImage?: string;
   showProgressBar?: boolean;
   heroHeader?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 const {
   title = "Bryan Jacinto - Copywriter & SEO",
@@ -20,6 +21,7 @@ const {
   ogImage,
   showProgressBar = false,
   heroHeader = false,
+  jsonLd,
 } = Astro.props;
 const url = Astro.url?.href ?? "";
 ---
@@ -64,6 +66,14 @@ const url = Astro.url?.href ?? "";
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+    <!-- Structured data (JSON-LD) -->
+    {jsonLd && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(jsonLd)}
+      />
+    )}
 
     <!-- Fonts: Inter (variable) - Optimized loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

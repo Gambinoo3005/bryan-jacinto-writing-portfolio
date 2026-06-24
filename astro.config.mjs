@@ -5,7 +5,7 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: 'https://yourdomain.com', // Update this with your actual domain
+  site: 'https://bryanjacinto.com',
   integrations: [mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],

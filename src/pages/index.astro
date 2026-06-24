@@ -369,11 +369,46 @@ const toolsetData = [
     icon: "visme.webp",
   },
 ];
+
+const SITE_URL = "https://bryanjacinto.com";
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#person`,
+      name: "Bryan Jacinto",
+      url: SITE_URL,
+      jobTitle: "Copywriter & SEO Content Writer",
+      description:
+        "Copywriter with seven years of experience creating SEO content, blog posts, landing pages, and marketing copy for global clients.",
+      image: `${SITE_URL}/Bryan_hero_image.webp`,
+      sameAs: ["https://www.linkedin.com/in/bryan-jacinto-writer/"],
+      knowsAbout: [
+        "Copywriting",
+        "SEO",
+        "Content Strategy",
+        "B2B Content",
+        "Technical Writing",
+        "UX Writing",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "Bryan Jacinto",
+      description: "UX & SEO writing portfolio.",
+      publisher: { "@id": `${SITE_URL}/#person` },
+    },
+  ],
+};
 ---
 
 <BaseLayout
   title="Bryan Jacinto - Copy & SEO"
   description="Copywriting, editing, B2B content, and SEO-focused writing."
+  jsonLd={jsonLd}
 >
   <section
     class="hero-section flex items-center justify-center text-[var(--color-text)]"
@@ -443,17 +478,17 @@ const toolsetData = [
             class="text-[var(--color-text)] font-medium hover:text-[var(--color-accent)] transition-colors duration-200 underline decoration-1 underline-offset-2"
             >Mobiloud</a
           >, <a
-            href="https://www.monok.com/"
+            href="https://www.abhmediaco.com/"
             target="_blank"
             rel="noopener noreferrer"
             class="text-[var(--color-text)] font-medium hover:text-[var(--color-accent)] transition-colors duration-200 underline decoration-1 underline-offset-2"
-            >Monok</a
+            >ABHMedia</a
           >, and <a
-            href="https://thefriendlyskies.net/"
+            href="https://iconsofrealestate.com/"
             target="_blank"
             rel="noopener noreferrer"
             class="text-[var(--color-text)] font-medium hover:text-[var(--color-accent)] transition-colors duration-200 underline decoration-1 underline-offset-2"
-            >The Friendly Skies</a
+            >Icons of Real Estate</a
           >.
         </p>
 

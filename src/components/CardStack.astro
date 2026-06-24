@@ -1044,7 +1044,7 @@ if (!cards || cards.length === 0) {
   .card-dots {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.625rem;
     padding: 0.5rem 0.75rem;
     background-color: var(--surface-glass);
     border: 1px solid var(--color-border);
@@ -1053,6 +1053,7 @@ if (!cards || cards.length === 0) {
   }
 
   .card-dot {
+    position: relative;
     width: 8px;
     height: 8px;
     border-radius: 50%;
@@ -1061,6 +1062,13 @@ if (!cards || cards.length === 0) {
     cursor: pointer;
     transition: all 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
     padding: 0;
+  }
+
+  /* Expand the tap target to ~44px tall without changing the visual dot size */
+  .card-dot::before {
+    content: "";
+    position: absolute;
+    inset: -18px -5px;
   }
 
   .card-dot:hover {

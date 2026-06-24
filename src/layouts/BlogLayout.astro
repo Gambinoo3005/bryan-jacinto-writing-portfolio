@@ -14,6 +14,7 @@ interface Props {
   backHref?: string;
   backText?: string;
   headings?: MarkdownHeading[];
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
@@ -27,6 +28,7 @@ const {
   backHref = "/articles",
   backText = "Back to Articles",
   headings = [],
+  jsonLd,
 } = Astro.props;
 ---
 <BaseLayout
@@ -35,6 +37,7 @@ const {
   ogImage={ogImage}
   showProgressBar={true}
   heroHeader={true}
+  jsonLd={jsonLd}
 >
   <!-- Hero Section -->
   <section class="article-hero">

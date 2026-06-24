@@ -40,6 +40,32 @@ const shareLinks = [
     href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
   },
 ];
+
+const siteOrigin = Astro.site?.origin ?? "https://bryanjacinto.com";
+const articleImage = entry.data.ogImage || entry.data.heroImage;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: entry.data.title,
+  description: entry.data.description,
+  url: currentUrl,
+  mainEntityOfPage: { "@type": "WebPage", "@id": currentUrl },
+  datePublished: entry.data.pubDate.toISOString(),
+  ...(articleImage
+    ? { image: new URL(articleImage, siteOrigin).href }
+    : {}),
+  author: {
+    "@type": "Person",
+    name: entry.data.author,
+    url: siteOrigin,
+  },
+  publisher: {
+    "@type": "Person",
+    name: "Bryan Jacinto",
+    url: siteOrigin,
+  },
+  keywords: entry.data.tags?.join(", ") || undefined,
+};
 ---
 
 <BaseLayout
@@ -48,6 +74,7 @@ const shareLinks = [
   ogImage={entry.data.ogImage}
   showProgressBar={true}
   heroHeader={true}
+  jsonLd={jsonLd}
 >
   <!-- Hero Section -->
   <section class="blog-hero">

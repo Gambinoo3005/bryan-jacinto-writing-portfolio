@@ -21,6 +21,33 @@ const badgeLabel = tags.includes("Article")
     ? "Website"
     : "Case Study";
 const isArticle = badgeLabel === "Article";
+
+const currentUrl = Astro.url?.href ?? "";
+const siteOrigin = Astro.site?.origin ?? "https://bryanjacinto.com";
+const workImage = entry.data.ogImage || entry.data.heroImage || entry.data.hero;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": isArticle ? "Article" : "CreativeWork",
+  headline: entry.data.title,
+  name: entry.data.title,
+  description: entry.data.summary,
+  url: currentUrl,
+  mainEntityOfPage: { "@type": "WebPage", "@id": currentUrl },
+  datePublished: entry.data.pubDate.toISOString(),
+  ...(workImage ? { image: new URL(workImage, siteOrigin).href } : {}),
+  author: {
+    "@type": "Person",
+    name: "Bryan Jacinto",
+    url: siteOrigin,
+  },
+  ...(entry.data.client
+    ? { sourceOrganization: { "@type": "Organization", name: entry.data.client } }
+    : {}),
+  ...(entry.data.industry
+    ? { about: { "@type": "Thing", name: entry.data.industry } }
+    : {}),
+  keywords: tags.join(", ") || undefined,
+};
 ---
 
 {isArticle ? (
@@ -35,6 +62,7 @@ const isArticle = badgeLabel === "Article";
     backHref="/work"
     backText="Back to Work"
     headings={headings}
+    jsonLd={jsonLd}
   >
     <Content />
   </BlogLayout>
@@ -50,6 +78,7 @@ const isArticle = badgeLabel === "Article";
     industry={entry.data.industry}
     results={entry.data.results}
     headings={headings}
+    jsonLd={jsonLd}
   >
     <Content />
   </CaseStudyLayout>

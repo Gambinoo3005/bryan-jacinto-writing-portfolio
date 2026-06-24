@@ -416,29 +416,54 @@ const current = Astro.url.pathname;
   }
 
   if (btn && panel) {
-    btn.addEventListener("click", () => {
-      const isHidden = panel.classList.contains("hidden");
+    // Lenis smooth-scroll instance (set in BaseLayout); pause it while the menu is open
+    const lenis = () => (window as unknown as { lenis?: { stop(): void; start(): void } }).lenis;
 
-      if (isHidden) {
-        // Show menu with animation - use requestAnimationFrame to avoid forced reflow
-        panel.classList.remove("hidden");
-        // Use RAF to ensure DOM update before animation
-        requestAnimationFrame(() => {
-          panel.classList.remove("opacity-0", "scale-95");
-          panel.classList.add("opacity-100", "scale-100");
-        });
-        btn.setAttribute("aria-expanded", "true");
-        btn.setAttribute("aria-label", "Close navigation menu");
+    const openMenu = () => {
+      // Show menu with animation - use requestAnimationFrame to avoid forced reflow
+      panel.classList.remove("hidden");
+      requestAnimationFrame(() => {
+        panel.classList.remove("opacity-0", "scale-95");
+        panel.classList.add("opacity-100", "scale-100");
+      });
+      btn.setAttribute("aria-expanded", "true");
+      btn.setAttribute("aria-label", "Close navigation menu");
+      // Lock background scroll while the overlay is open
+      document.body.classList.add("overflow-hidden");
+      lenis()?.stop();
+    };
+
+    const closeMenu = () => {
+      panel.classList.remove("opacity-100", "scale-100");
+      panel.classList.add("opacity-0", "scale-95");
+      btn.setAttribute("aria-expanded", "false");
+      btn.setAttribute("aria-label", "Open navigation menu");
+      // Restore background scroll
+      document.body.classList.remove("overflow-hidden");
+      lenis()?.start();
+      // Wait for animation to finish before hiding
+      setTimeout(() => {
+        panel.classList.add("hidden");
+      }, 200);
+    };
+
+    btn.addEventListener("click", () => {
+      if (panel.classList.contains("hidden")) {
+        openMenu();
       } else {
-        // Hide menu with animation
-        panel.classList.remove("opacity-100", "scale-100");
-        panel.classList.add("opacity-0", "scale-95");
-        btn.setAttribute("aria-expanded", "false");
-        btn.setAttribute("aria-label", "Open navigation menu");
-        // Wait for animation to finish before hiding
-        setTimeout(() => {
-          panel.classList.add("hidden");
-        }, 200);
+        closeMenu();
+      }
+    });
+
+    // Close when a menu link is tapped
+    panel.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+
+    // Close on Escape
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !panel.classList.contains("hidden")) {
+        closeMenu();
       }
     });
   }
