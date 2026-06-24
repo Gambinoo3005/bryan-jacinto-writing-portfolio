@@ -355,13 +355,13 @@ const jsonLd = {
     .article-container.with-sidebar {
       max-width: 1280px;
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 3rem;
     }
 
     @media (min-width: 1024px) {
       .article-container.with-sidebar {
-        grid-template-columns: 240px 1fr;
+        grid-template-columns: 240px minmax(0, 1fr);
         align-items: start;
       }
     }
@@ -385,6 +385,7 @@ const jsonLd = {
       max-width: 100%; /* Let wrapper control width */
       margin: 0 auto;
       font-family: var(--font-serif);
+      overflow-wrap: break-word;
     }
 
     .prose :global(h2) {
