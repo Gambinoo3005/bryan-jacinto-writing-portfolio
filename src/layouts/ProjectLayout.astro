@@ -293,8 +293,10 @@ const metaBits = [role, year, status].filter(Boolean) as string[];
       border-color: var(--color-link);
     }
 
-    .dark .project-btn-primary {
-      color: var(--color-bg);
+    :global(.dark) .project-btn-primary {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
     }
 
     .btn-icon {

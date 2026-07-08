@@ -1,0 +1,66 @@
+---
+title: "gwmcp"
+summary: "An open-source Google Workspace MCP server with a guided setup wizard and one-command auth. Installs, authenticates, and exposes 114 Google Workspace tools to Claude Code, Cursor, or any MCP client."
+tags: ["MCP", "Python", "Google Workspace", "Open Source", "CLI"]
+pubDate: 2026-06-28
+repoUrl: "https://github.com/Gambinoo3005/gwmcp"
+stack: ["Python", "MCP", "Google APIs", "OAuth", "uv"]
+role: "Solo build"
+year: "2026"
+status: "Open Source"
+heroImage: "/hero-images/gwmcp.jpg"
+featured: false
+draft: false
+---
+
+**gwmcp** is an open-source [Model Context Protocol](https://modelcontextprotocol.io) server for Google Workspace. It connects AI clients like Claude Code and Cursor to Gmail, Drive, Docs, Sheets, Calendar, and more: 114 tools across 12 services, all through a single install-and-authenticate command.
+
+It's derived from Taylor Wilsdon's `google_workspace_mcp` (MIT) and rebuilt around one goal: making the setup painless for a local, single-user install.
+
+## What it does
+
+Once installed, gwmcp gives an AI assistant direct access to a user's Google Workspace:
+
+| Service | Examples |
+| --- | --- |
+| **Gmail** | Search, read, send, draft, label, filter |
+| **Drive** | Search, upload, download, share, permissions |
+| **Docs** | Create, read, edit, find & replace, export to PDF |
+| **Sheets** | Read, write, format, conditional formatting |
+| **Calendar** | Events, availability, multiple calendars |
+| **Slides** | Create, read, edit presentations |
+| **Forms** | Create, read responses |
+| **Tasks** | Create and manage task lists |
+| **Contacts** | Search, create, manage |
+| **Chat** | Spaces and messages |
+| **Apps Script** | Projects, deployments, versions |
+| **Search** | Custom search engine |
+
+## The problem it solves
+
+Setting up a Google Workspace MCP server the normal way is tedious: four environment variables configured by trial and error, manual JSON editing, a first-time auth flow that prints a dead URL and exits, and verbose tool responses full of raw IDs.
+
+gwmcp collapses all of that into `uvx gwmcp setup`. A guided wizard copies your credentials, opens the browser for sign-in, saves the auth token, and writes the MCP config file for you. Only one environment variable is needed, since the email and OAuth credentials are auto-detected from stored tokens.
+
+## Improvements over the original
+
+- **One env var instead of four.** Just `GOOGLE_CLIENT_SECRET_PATH`; everything else is auto-detected.
+- **A real auth flow.** The wizard opens the browser, runs a local callback server, waits, and retries automatically instead of printing a URL and quitting.
+- **Cleaner output.** Tool responses are human-readable rather than verbose JSON with raw IDs.
+- **Granular control.** Load specific services, restrict to a tool tier, run read-only, or set per-service permissions like `gmail:readonly drive:full`.
+
+## Usage
+
+The whole setup is a single command:
+
+```bash
+uvx gwmcp setup --email you@gmail.com --client-secret ~/Downloads/client_secret_*.json
+```
+
+After that, restart the MCP client and the Workspace tools are available. The repo includes a full step-by-step Google Cloud walkthrough for people with no prior GCP experience.
+
+## Under the hood
+
+Written entirely in Python (3.10+) and distributed through `uv`/`uvx`, so there's nothing to clone or build for end users. It's organized by service (`gmail`, `gdrive`, `gsheets`, and so on) with a shared core and auth layer, and ships under the MIT license.
+
+[View the project on GitHub →](https://github.com/Gambinoo3005/gwmcp)

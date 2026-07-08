@@ -13,34 +13,34 @@ heroImage: "/hero-images/astro.webp"
 draft: false
 ---
 
-**The brief**
+**Brief**
 
-- Move off a rigid portfolio platform and own every pixel
-- Show that I can write copy and build the site, not just claim it
-- Keep it fast, accessible, and genuinely good at SEO
+- Move off a rigid portfolio platform and control the full design
+- Show that I can write copy and build the site
+- Keep it fast, accessible, and strong on SEO
 
-**What I shipped**
+**Deliverables**
 
 - A hand-built Astro site with an interactive experience timeline
 - Type-safe MDX content collections for blogs, work, and projects
-- Structured data, sitemap, and a polished dark/light experience
+- Structured data, sitemap, and dark/light theme support
 
-## Why I built it myself
+## Rationale
 
-Most writers hand you a PDF and a Google Drive folder. I wanted to show, not tell. So instead of dropping my work into template #47, I built the whole thing from scratch. The words are mine, the design is mine, and so is every line of code. The fact that you can read the source on GitHub is sort of the point: I can write the copy *and* ship the site it lives on.
+Most writers hand you a PDF and a Google Drive folder. Instead of dropping my work into a template, I built the whole thing from scratch. The words are mine, the design is mine, and so is every line of code. The source is on GitHub, which is the point.
 
-## The stack
+## Stack
 
 It's a static [Astro](https://astro.build) site styled with Tailwind CSS v4 and written in TypeScript. Content lives in MDX collections validated with Zod, so a missing field fails the build instead of shipping a broken page. Animations run on GSAP with Lenis for smooth scroll, and the whole thing deploys on Vercel. Almost nothing ships JavaScript by default. The interactive pieces load only when they're actually needed and motion is allowed.
 
-## The parts I'm proud of
+## Highlights
 
-**An experience timeline that behaves like a real deck of cards.** Swipe it on a phone, click through it, or arrow-key it on desktop. It's a custom card-stack component with organic depth and physics, and it never hijacks the page scroll the way most carousels do.
+**An experience timeline that behaves like a deck of cards.** Swipe it on a phone, click through it, or arrow-key it on desktop. It's a custom card-stack component with depth and physics, and it doesn't hijack the page scroll the way most carousels do.
 
-**SEO wired the way I'd wire a client's.** JSON-LD structured data (Person, Article, BlogPosting), a generated sitemap, canonical tags, and proper Open Graph and Twitter cards, all built in from the start.
+**SEO wired the way I'd wire a client's.** JSON-LD structured data (Person, Article, BlogPosting), a generated sitemap, canonical tags, and proper Open Graph and Twitter cards.
 
-**Accessible and fast on purpose.** Semantic HTML, ARIA where it counts, full keyboard navigation, and reduced-motion support. Images are WebP, the hero is preloaded, and the theme switches with no flash of the wrong colors.
+**Accessible and fast.** Semantic HTML, ARIA where it counts, full keyboard navigation, and reduced-motion support. Images are WebP, the hero is preloaded, and the theme switches without flashing the wrong colors.
 
 > **99 Performance · 100 SEO.** Measured with Lighthouse / PageSpeed Insights: 99 desktop performance, a perfect 100 SEO score, first contentful paint around 0.7s, and near-zero layout shift, with real content and animations, tested globally.
 
-It's never really "finished." I keep refining it. But that's the best part of owning the code: when I want to change something, I just change it. If you want the longer story, I wrote up [why I built it with Astro](/blogs/why-i-built-my-portfolio-with-astro).
+It's never really "finished." I keep refining it, because owning the code means I can. If you want the longer story, I wrote up [why I built it with Astro](/blogs/why-i-built-my-portfolio-with-astro).
