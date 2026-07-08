@@ -1,37 +1,29 @@
 ---
 title: "This Portfolio Site"
-summary: "I designed, wrote, and engineered my own portfolio in Astro, proof that I can do the words and ship the site they live on."
+summary: "My personal portfolio, designed, written, and built from scratch in Astro. A fast, accessible, SEO-focused site with an interactive experience timeline and type-safe content collections."
 tags: ["Astro", "TypeScript", "Web Development", "Open Source", "SEO"]
-pubDate: 2026-06-20
+pubDate: 2025-06-20
 liveUrl: "https://bryanjacinto.com"
 repoUrl: "https://github.com/Gambinoo3005/bryan-jacinto-writing-portfolio"
 stack: ["Astro", "Tailwind CSS", "TypeScript", "MDX", "GSAP", "Vercel"]
 role: "Design + build + copy"
-year: "2026"
+year: "2025"
 status: "Live"
 heroImage: "/hero-images/astro.webp"
 draft: false
 ---
 
-**Brief**
+**This portfolio** is a site I designed, wrote, and built from the ground up in Astro. I wanted full control over the design instead of working around a rigid portfolio platform, and I wanted the copy, the layout, and the code to all be my own. The source is public on GitHub.
 
-- Move off a rigid portfolio platform and control the full design
-- Show that I can write copy and build the site
-- Keep it fast, accessible, and strong on SEO
+## Goals
 
-**Deliverables**
-
-- A hand-built Astro site with an interactive experience timeline
-- Type-safe MDX content collections for blogs, work, and projects
-- Structured data, sitemap, and dark/light theme support
-
-## Rationale
-
-Most writers hand you a PDF and a Google Drive folder. Instead of dropping my work into a template, I built the whole thing from scratch. The words are mine, the design is mine, and so is every line of code. The source is on GitHub, which is the point.
+- Own the full design rather than fitting my work into a template
+- Keep it fast and accessible without shipping unnecessary JavaScript
+- Build SEO in from the start, the way I would for a client
 
 ## Stack
 
-It's a static [Astro](https://astro.build) site styled with Tailwind CSS v4 and written in TypeScript. Content lives in MDX collections validated with Zod, so a missing field fails the build instead of shipping a broken page. Animations run on GSAP with Lenis for smooth scroll, and the whole thing deploys on Vercel. Almost nothing ships JavaScript by default. The interactive pieces load only when they're actually needed and motion is allowed.
+The site is static, built with [Astro](https://astro.build), styled with Tailwind CSS v4, and written in TypeScript. Content lives in MDX collections validated with Zod, so a missing field fails the build instead of shipping a broken page. Animations run on GSAP with Lenis for smooth scrolling, and it deploys on Vercel. Almost nothing ships JavaScript by default; the interactive pieces load only when they're needed and motion is allowed.
 
 ## Highlights
 
@@ -41,6 +33,4 @@ It's a static [Astro](https://astro.build) site styled with Tailwind CSS v4 and 
 
 **Accessible and fast.** Semantic HTML, ARIA where it counts, full keyboard navigation, and reduced-motion support. Images are WebP, the hero is preloaded, and the theme switches without flashing the wrong colors.
 
-> **99 Performance · 100 SEO.** Measured with Lighthouse / PageSpeed Insights: 99 desktop performance, a perfect 100 SEO score, first contentful paint around 0.7s, and near-zero layout shift, with real content and animations, tested globally.
-
-It's never really "finished." I keep refining it, because owning the code means I can. If you want the longer story, I wrote up [why I built it with Astro](/blogs/why-i-built-my-portfolio-with-astro).
+I keep refining it over time. If you want the longer story, I wrote up [why I built it with Astro](/blogs/why-i-built-my-portfolio-with-astro).
